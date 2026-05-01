@@ -1,0 +1,96 @@
+{
+  "agents": [
+    {
+      "id": "pm",
+      "display_name": "PM",
+      "summary": "Planning and specification; delegates implementation work to frontend/backend, then reviewer/verifier.",
+      "office_role": "pm",
+      "prompt_key": "agent_pm",
+      "prompt_file": "Resources/prompts/agent_pm.json",
+      "skill_bundle_role": "pm",
+      "skill_bundle_refs": [
+        "concise-planning",
+        "plan-writing",
+        "writing-plans",
+        "executing-plans",
+        "product-manager-toolkit",
+        "architecture-decision-records"
+      ],
+      "character": "pmData.json"
+    },
+    {
+      "id": "frontend",
+      "display_name": "Frontend Developer",
+      "summary": "UI/UX and client-side implementation per PM tasks.",
+      "office_role": "developer_front",
+      "prompt_key": "agent_frontend",
+      "prompt_file": "Resources/prompts/agent_frontend.json",
+      "skill_bundle_role": "developer",
+      "skill_bundle_refs": [
+        "typescript-pro",
+        "react-best-practices",
+        "clean-code",
+        "api-patterns",
+        "nextjs-app-router-patterns",
+        "javascript-mastery",
+        "error-handling-patterns"
+      ],
+      "character": "frontendData.json"
+    },
+    {
+      "id": "backend",
+      "display_name": "Backend Developer",
+      "summary": "APIs, data, and backend implementation per PM tasks.",
+      "office_role": "developer_back",
+      "prompt_key": "agent_backend",
+      "prompt_file": "Resources/prompts/agent_backend.json",
+      "skill_bundle_role": "developer",
+      "skill_bundle_refs": [
+        "rust",
+        "api-patterns",
+        "clean-code",
+        "database-design",
+        "sql-pro"
+      ],
+      "character": "backendData.json"
+    },
+    {
+      "id": "reviewer",
+      "display_name": "Reviewer",
+      "summary": "Quality review, regression detection, and readiness assessment.",
+      "office_role": "reviewer",
+      "prompt_key": "agent_reviewer",
+      "prompt_file": "Resources/prompts/agent_reviewer.json",
+      "skill_bundle_role": "reviewer",
+      "skill_bundle_refs": [
+        "code-reviewer",
+        "code-review-excellence",
+        "code-review-checklist",
+        "production-code-audit",
+        "security-auditor",
+        "systematic-debugging",
+        "verification-before-completion"
+      ],
+      "character": "reviewerData.json"
+    },
+    {
+      "id": "verifier",
+      "display_name": "Verifier",
+      "summary": "Executable verification, evidence collection, and delivery validation.",
+      "office_role": "verifier",
+      "prompt_key": "agent_verifier",
+      "prompt_file": "Resources/prompts/agent_verifier.json",
+      "skill_bundle_role": "verifier",
+      "skill_bundle_refs": [
+        "verification-before-completion",
+        "lint-and-validate",
+        "test-automator",
+        "test-fixing",
+        "systematic-debugging",
+        "performance-profiling",
+        "deployment-validation-config-validate"
+      ],
+      "character": "verifierData.json"
+    }
+  ]
+}

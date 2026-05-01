@@ -1,0 +1,62 @@
+@startuml 1
+title GoalMeetingPanel Prompting Sequencer Flow
+
+actor User
+participant "GoalMeetingPanel" as GMP
+participant "AgentRegistry\n(from agents_metadata.json)" as REG
+participant "Tauri CLI\nrunCliCommand" as CLI
+participant "PM Agent" as PM
+participant "Step Agent\n(frontend/backend/..)" as AG
+participant "Todo Store\n(prompting sequencer todo)" as TODO
+participant "SequencerCoordinator\n(AgentCommand cascade)" as COOR
+
+User -> GMP: Run Goal
+GMP -> CLI: prewarmOmniCli()
+GMP -> CLI: getAgentsMetadataJson()
+CLI --> GMP: agents_metadata.json
+GMP -> REG: new AgentRegistry(rosterAgents)
+
+GMP -> CLI: getPromptingSequencerSystemPrompt(pm channel)
+GMP -> CLI: getAgentPrompt("pm")
+GMP -> CLI: runCliCommand(goal,\nPhase-1 plan system prompt)
+CLI -> PM: plan request
+PM --> CLI: [SEQUENCER_PLAN]...[/SEQUENCER_PLAN]
+CLI --> GMP: planResult(stdout/stderr)
+
+GMP -> GMP: ParsePlanSteps(planResult)
+alt AGENT_COMMANDS only and no plan lines
+  GMP -> GMP: Ignore AGENT_COMMANDS in Phase-1
+end
+
+GMP -> TODO: savePromptingSequencerTodo(...)
+loop For each plan step (sequential)
+  GMP -> CLI: runCliCommand(instruction + Prompting_Sequencer_k,\nstep system prompt)
+  CLI -> AG: execute assigned step
+  AG --> CLI: [STEP_k_RESULT] ... {END_TASK_k}
+  CLI --> GMP: stepResult
+  GMP -> CLI: extractPromptingSequencerCommands(stepResult)
+  alt host [Command] exists and valid
+    GMP -> CLI: run host command
+    CLI --> GMP: command result
+  else invalid command
+    GMP -> GMP: skip invalid command
+  end
+  GMP -> TODO: markPromptingSequencerItemDone(...)
+end
+
+GMP -> COOR: CollectFollowAgentCommandsFromSeqRuns(...)
+alt follow AGENT_COMMANDS exists
+  GMP -> COOR: RunAgentCommandCascade(seed)
+  loop cascade until queue empty or maxCascade
+    COOR -> CLI: runCliCommand(delegated instruction)
+    CLI -> AG: delegated execution
+    AG --> CLI: output (+ nested AGENT_COMMANDS optional)
+    CLI --> COOR: result
+    COOR -> COOR: enqueue nested commands if any
+  end
+end
+
+GMP -> TODO: refreshTodo()
+GMP --> User: notify success / warning / error
+
+@enduml

@@ -1,0 +1,32 @@
+--- a/src/agents/cli_client.rs
++++ b/src/agents/cli_client.rs
+@@ -56,11 +56,26 @@ impl SessionBasedCLIClient {
+     /// 프롬프트 실행 (히스토리 포함)
+     pub async fn execute_with_history(&self, prompt: &str, history: &mut Vec<(String, String)>) -> Result<String> {
+         let response = match &self.provider {
+             ModelProvider::Claude | ModelProvider::Codex | ModelProvider::Gemini => {
+-                // CLI 모델은 자체 세션 관리 사용 (-c / --resume)
+-                // 히스토리는 참고용으로만 저장 (실제 컨텍스트 주입은 CLI가 담당)
+-                self.execute_cli(prompt).await?
++                // CLI 모델은 stateless이므로 히스토리를 프롬프트에 포함
++                let full_prompt = if history.is_empty() {
++                    prompt.to_string()
++                } else {
++                    let mut context = String::new();
++                    context.push_str("## Previous Conversation\n\n");
++
++                    // 최근 6개 메시지만 포함 (토큰 제한)
++                    let recent = history.iter().rev().take(6).collect::<Vec<_>>();
++                    for (role, content) in recent.iter().rev() {
++                        context.push_str(&format!("**{}**: {}\n\n", role, content.trim()));
++                    }
++
++                    context.push_str("## Current Request\n\n");
++                    context.push_str(prompt);
++                    context
++                };
++
++                self.execute_cli(&full_prompt).await?
+             }
+             ModelProvider::GLM => {
+                 crate::agents::glm_client::execute_with_history(prompt, history).await?

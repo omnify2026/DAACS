@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant Frontend
+    participant WebSocket
+    participant API
+    participant Orchestrator
+    participant Agents
+
+    Frontend->>WebSocket: Connect /ws/logs
+    WebSocket-->>Frontend: Connection established
+
+    Frontend->>API: POST /api/v1/projects/{id}/run
+    API->>Orchestrator: Start workflow
+
+    loop Workflow execution
+        Agents->>Orchestrator: Agent status update
+        Orchestrator->>WebSocket: Emit log event
+        WebSocket-->>Frontend: Stream log message
+        Frontend->>Frontend: Update UI (log viewer, status board)
+    end
+
+    Orchestrator->>WebSocket: Workflow complete
+    WebSocket-->>Frontend: Final status
+    Frontend->>Frontend: Display completion notification

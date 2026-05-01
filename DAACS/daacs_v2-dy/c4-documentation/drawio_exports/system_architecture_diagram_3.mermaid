@@ -1,0 +1,24 @@
+graph TB
+    subgraph "Frontend (React)"
+        App[App Root]
+        Home[Home Page]
+        Workspace[Workspace Page]
+
+        App --> Home
+        App --> Workspace
+
+        Home --> ProjectForm[Project Form]
+        Home --> ProjectList[Project List]
+
+        Workspace --> CodeEditor[Code Editor]
+        Workspace --> LogViewer[Log Viewer]
+        Workspace --> StatusBoard[Status Board]
+        Workspace --> DecisionTrace[Decision Trace Panel]
+
+        StatusBoard --> AgentCard[Agent Status Cards]
+        LogViewer --> WSClient[WebSocket Client]
+    end
+
+    API[Backend API] -.->|WebSocket| WSClient
+    API -.->|REST| ProjectForm
+    API -.->|REST| ProjectList

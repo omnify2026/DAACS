@@ -1,0 +1,6 @@
+/help
+/status
+/model
+/agent
+/sessions
+/exit

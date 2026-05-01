@@ -1,0 +1,219 @@
+# ===== DAACS OS — Agent Skill Bundles =====
+# Skill bundle templates for core agents and user-created agents.
+# A bundle entry does not create a default agent by itself.
+# Only PM, reviewer, and verifier are hardcoded core agents.
+# Other implementation/design/ops bundles are templates selected by user-created agent metadata.
+
+# 스킬 소스 경로 (SKILL.md 위치)
+skills_root: "${DAACS_SKILLS_PATH:-.daacs/skills}"
+
+# ─── Agent Bundles ───
+
+bundles:
+  # ═══════════════════════════════════════
+  # CEO — 전략 기획, 비전, 의사결정
+  # ═══════════════════════════════════════
+  ceo:
+    description: "전략적 추론 + 비즈니스 분석 + 시장 판단"
+    core_skills:
+      - startup-analyst              # 스타트업 비즈니스 분석
+      - product-manager-toolkit      # 프로덕트 관리 도구
+      - competitive-landscape        # 경쟁 환경 분석
+      - market-sizing-analysis       # 시장 규모 추정
+      - pricing-strategy             # 가격 전략
+      - launch-strategy              # 출시 전략
+      - risk-manager                 # 리스크 관리
+    support_skills:
+      - business-analyst             # 비즈니스 요구사항 분석
+      - team-composition-analysis    # 팀 구성 분석
+      - kpi-dashboard-design         # KPI 대시보드 설계
+      - data-storytelling            # 데이터 스토리텔링
+      - architecture-decision-records # ADR 기록
+
+  # ═══════════════════════════════════════
+  # PM — 기획, 일정 관리, 태스크 분해
+  # ═══════════════════════════════════════
+  pm:
+    description: "프로젝트 기획 + 태스크 관리 + 요구사항 분석"
+    core_skills:
+      - concise-planning             # 간결한 계획 수립
+      - plan-writing                 # 계획서 작성
+      - writing-plans                # 상세 구현 계획
+      - executing-plans              # 계획 실행 + 체크포인트
+      - product-manager-toolkit      # 프로덕트 관리
+      - architecture-decision-records # ADR 기록
+    support_skills:
+      - mermaid-expert               # 다이어그램 생성
+      - team-collaboration-standup-notes # 스탠드업 노트
+      - context-manager              # 컨텍스트 관리
+      - software-architecture        # 아키텍처 이해
+      - api-design-principles        # API 설계 원칙
+
+  # ═══════════════════════════════════════
+  # Developer — 코드 생성, Rust/Tauri/ClientSide 구현, 디버깅
+  # ═══════════════════════════════════════
+  developer:
+    description: "DAACS 방향에 맞는 ClientSide + Rust/Tauri 구현 + 디버깅"
+    core_skills:
+      - typescript-pro               # TypeScript 마스터
+      - react-best-practices         # React + Next.js 최적 패턴
+      - rust-pro                     # Rust 구현
+      - rust-async-patterns          # Rust async/Tauri 경계
+      - clean-code                   # 클린 코드 원칙
+      - api-patterns                 # 미래 API 경계를 위한 인터페이스 패턴
+      - error-handling-patterns      # 에러 처리 패턴
+    support_skills:
+      - database-design              # DB 스키마 설계
+      - git-advanced-workflows       # Git 고급 워크플로우
+      - test-driven-development      # TDD 워크플로우
+      - nextjs-app-router-patterns   # Next.js App Router
+      - sql-pro                      # SQL 최적화
+      - javascript-mastery           # JavaScript 심화
+      - typescript-advanced-types    # TypeScript 타입 설계
+
+  # ═══════════════════════════════════════
+  # Reviewer — 코드 리뷰, 품질 관리, 보안 감사
+  # ═══════════════════════════════════════
+  reviewer:
+    description: "코드 리뷰 + 품질 관리 + 보안 감사"
+    core_skills:
+      - code-reviewer                # 전문 코드 리뷰
+      - code-review-excellence       # 리뷰 엑셀런스
+      - code-review-checklist        # 리뷰 체크리스트
+      - production-code-audit        # 프로덕션 코드 감사
+      - security-auditor             # 보안 감사
+      - systematic-debugging         # 체계적 디버깅
+      - verification-before-completion # 완료 전 검증
+    support_skills:
+      - lint-and-validate            # 자동 린트 + 검증
+      - performance-profiling        # 성능 프로파일링
+      - cc-skill-security-review     # 보안 코드 리뷰
+      - error-detective              # 에러 탐지
+      - clean-code                   # 클린 코드 기준
+      - top-web-vulnerabilities      # OWASP Top 10
+
+  # ═══════════════════════════════════════
+  # Verifier — 테스트, 빌드, 린트, 실행 증거
+  # ═══════════════════════════════════════
+  verifier:
+    description: "테스트 검증 + 빌드 확인 + 수용 기준 증거화"
+    core_skills:
+      - verification-before-completion # 완료 전 검증
+      - lint-and-validate            # 자동 린트 + 검증
+      - test-automator               # 테스트 자동화
+      - test-fixing                  # 실패 테스트 수정
+      - systematic-debugging         # 체계적 디버깅
+      - performance-profiling        # 성능 프로파일링
+      - deployment-validation-config-validate # 배포/설정 검증
+    support_skills:
+      - playwright-skill             # 브라우저 검증
+      - api-testing-observability-api-mock # API 검증 보조
+      - error-detective              # 에러 탐지
+      - clean-code                   # 품질 기준
+      - github-actions-templates     # CI 검증 맥락
+      - bash-pro                     # 검증 스크립트
+
+  # ═══════════════════════════════════════
+  # DevOps — 인프라, CI/CD, 배포, 모니터링
+  # ═══════════════════════════════════════
+  devops:
+    description: "인프라 관리 + CI/CD + 컨테이너 + 모니터링"
+    core_skills:
+      - docker-expert                # Docker 마스터
+      - kubernetes-architect         # K8s 아키텍처
+      - terraform-specialist         # IaC Terraform
+      - github-actions-templates     # GitHub Actions CI/CD
+      - deployment-procedures        # 안전한 배포 전략
+      - observability-engineer       # 관측성 엔지니어링
+      - secrets-management           # 시크릿 관리
+    support_skills:
+      - server-management            # 서버 관리
+      - environment-setup-guide      # 환경 표준화
+      - cicd-automation-workflow-automate # CI/CD 자동화
+      - helm-chart-scaffolding       # Helm 차트
+      - prometheus-configuration     # Prometheus 설정
+      - grafana-dashboards           # Grafana 대시보드
+      - bash-pro                     # Bash 스크립팅
+
+  # ═══════════════════════════════════════
+  # Marketer — SEO, 콘텐츠, 마케팅 전략
+  # ═══════════════════════════════════════
+  marketer:
+    description: "SEO 최적화 + 콘텐츠 제작 + 마케팅 전략"
+    core_skills:
+      - seo-fundamentals             # SEO 기본
+      - seo-content-writer           # SEO 콘텐츠 작성
+      - seo-keyword-strategist       # 키워드 전략
+      - content-creator              # 콘텐츠 제작
+      - content-marketer             # 콘텐츠 마케팅
+      - copywriting                  # 카피라이팅
+      - marketing-psychology         # 마케팅 심리학
+    support_skills:
+      - social-content               # 소셜 미디어 콘텐츠
+      - programmatic-seo             # 프로그래매틱 SEO
+      - seo-audit                    # SEO 감사
+      - seo-meta-optimizer           # 메타태그 최적화
+      - app-store-optimization       # ASO
+      - email-sequence               # 이메일 시퀀스
+      - paid-ads                     # 유료 광고
+      - schema-markup                # 구조화 데이터
+
+  # ═══════════════════════════════════════
+  # Designer — UI/UX, 디자인 시스템, 접근성
+  # ═══════════════════════════════════════
+  designer:
+    description: "UI/UX 디자인 + 디자인 시스템 + 접근성"
+    core_skills:
+      - ui-ux-pro-max                # UI/UX 50+ 스타일 & 팔레트
+      - ui-ux-designer               # 인터페이스 디자인 + 디자인 시스템
+      - frontend-design              # UI 가이드라인 & 미학
+      - tailwind-design-system       # Tailwind 디자인 시스템
+      - web-design-guidelines        # 웹 인터페이스 가이드라인
+      - mobile-design                # 모바일 UI/UX
+      - accessibility-compliance-accessibility-audit # WCAG 접근성
+    support_skills:
+      - design-orchestration         # 디자인 오케스트레이션
+      - canvas-design                # 포스터/비주얼 디자인
+      - 3d-web-experience            # Three.js / R3F
+      - tailwind-patterns            # Tailwind CSS 패턴
+      - react-ui-patterns            # React UI 컴포넌트 패턴
+      - scroll-experience            # 스크롤 인터랙션
+      - theme-factory                # 테마 팩토리
+
+  # ═══════════════════════════════════════
+  # CFO — 비용 분석, 재무 모델링, 예산 관리
+  # ═══════════════════════════════════════
+  cfo:
+    description: "비용 최적화 + 재무 모델링 + 지표 분석"
+    core_skills:
+      - cost-optimization            # 클라우드/인프라 비용 최적화
+      - startup-financial-modeling   # 재무 모델링
+      - startup-metrics-framework    # 스타트업 지표 프레임워크
+      - risk-metrics-calculation     # 리스크 지표 계산
+      - pricing-strategy             # 가격 전략
+      - data-storytelling            # 데이터 스토리텔링
+      - kpi-dashboard-design         # KPI 대시보드
+    support_skills:
+      - billing-automation           # 빌링 자동화
+      - quant-analyst                # 정량 분석
+      - database-cloud-optimization-cost-optimize # 클라우드 DB 비용
+      - analytics-tracking           # 분석 트래킹
+      - ab-test-setup                # A/B 테스트 설정
+      - sql-optimization-patterns    # SQL 최적화
+
+# ─── Shared Skills (모든 에이전트 공통) ───
+shared:
+  description: "모든 에이전트가 공유하는 기반 스킬"
+  skills:
+    - concise-planning               # 간결한 계획
+    - context-manager                # 컨텍스트 관리
+    - verification-before-completion # 완료 전 검증
+    - mermaid-expert                 # 다이어그램
+    - safe-fs-write                  # 안전한 파일 쓰기 (Base64/Python)
+
+# ─── Skill Loading Policy ───
+policy:
+  max_skills_per_agent: 12     # 에이전트당 최대 로드 스킬 수
+  load_strategy: "core_first"  # core_first | all | on_demand
+  cache_ttl_seconds: 3600      # 스킬 캐시 유효 시간
+  fallback_on_missing: true    # 스킬 파일 없으면 무시

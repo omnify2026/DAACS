@@ -1,0 +1,19 @@
+graph TD
+    PA["PlannerAgent<br/>(planner-01)"] -->|MessageType.TASK| CA["CoderAgent<br/>(coder-01)"]
+    CA -->|MessageType.REQUEST| RA["ReviewerAgent<br/>(reviewer-01)"]
+    RA -->|MessageType.DONE<br/>verified| PA
+    RA -->|MessageType.REJECT<br/>failed| PA
+    PA -->|MessageType.TASK<br/>fix_instruction| CA
+
+    PA -.->|retrieve_experience| MEM["MemoryManager<br/>long_term memory"]
+    PA -.->|save_experience| MEM
+
+    CA -.->|get_constraints| CFG["DAACSConfig"]
+    RA -.->|get_constraints| CFG
+
+    CA -.->|execute_prompt| LLM["SessionBasedCLIClient<br/>LLM Executor"]
+    PA -.->|execute_prompt| LLM
+
+    RA -.->|score_code| QS["QualityScorer"]
+    RA -.->|check_syntax| CP["CodePatcher"]
+    RA -.->|patch_constraints| CP

@@ -1,0 +1,16 @@
+{
+    "version": "bootstrap-1",
+    "scope": "desktop_app",
+    "updated_at": "2025-Q1",
+    "description": "데스크톱 앱용 기술 스택 가이드",
+    "facts": [
+        "경량 데스크톱 앱에서는 Electron보다 Tauri 사용 비중이 증가하는 추세",
+        "Tauri는 번들 사이즈가 작고 보안이 강화됨",
+        "크로스 플랫폼이 필수가 아니면 네이티브(Swift/Kotlin)도 고려",
+        "Electron은 기존 웹 코드베이스 재활용 시 적합"
+    ],
+    "sources": [
+        "curated-knowledge-2025-Q1",
+        "github-star-trends-2024"
+    ]
+}

@@ -1,0 +1,39 @@
+{
+    "$schema":  "https://schema.tauri.app/config/2",
+    "productName":  "DAACS OS",
+    "version":  "0.1.0",
+    "identifier":  "com.daacs.desktop",
+    "build":  {
+                  "beforeDevCommand":  "cd ../web && npm run dev",
+                  "beforeBuildCommand":  "cd ../web && npm run build",
+                  "devUrl":  "http://localhost:3001",
+                  "frontendDist":  "../../web/dist"
+              },
+    "app":  {
+                "withGlobalTauri":  true,
+                "windows":  [
+                                {
+                                    "label":  "main",
+                                    "create":  false,
+                                    "title":  "DAACS OS",
+                                    "width":  1400,
+                                    "height":  900,
+                                    "resizable":  true
+                                }
+                            ],
+                "security":  {
+                                 "csp":  "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' http://localhost:8001 https://localhost:8001 http://127.0.0.1:8001 https://127.0.0.1:8001 https://*.daacs.io"
+                             }
+            },
+    "bundle":  {
+                   "active":  true,
+                   "targets":  "all",
+                   "icon":  [
+                                "icons/icon.ico",
+                                "icons/icon.png"
+                            ],
+                   "macOS":  {
+                                 "infoPlist":  "Info.plist"
+                             }
+               }
+}

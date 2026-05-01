@@ -1,0 +1,15 @@
+{
+    "version": "bootstrap-1",
+    "scope": "mobile_app",
+    "updated_at": "2025-Q1",
+    "description": "모바일 앱용 기술 스택 가이드",
+    "facts": [
+        "크로스 플랫폼 모바일 앱에서 React Native와 Flutter가 주로 사용됨",
+        "Flutter는 UI 커스터마이징이 강점, React Native는 웹 개발자 친화적",
+        "MVP에서는 Expo(React Native)로 빠른 프로토타이핑 가능",
+        "네이티브 성능이 필수면 Swift(iOS)/Kotlin(Android) 선택"
+    ],
+    "sources": [
+        "curated-knowledge-2025-Q1"
+    ]
+}

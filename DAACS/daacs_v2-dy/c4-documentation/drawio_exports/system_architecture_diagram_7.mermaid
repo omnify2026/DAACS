@@ -1,0 +1,25 @@
+sequenceDiagram
+    actor User
+    participant Frontend
+    participant API
+    participant Orchestrator
+    participant Agents
+    participant LLM
+    participant Workspace
+
+    User->>Frontend: Submit project requirements
+    Frontend->>API: POST /api/v1/projects
+    API->>Orchestrator: Create project instance
+    Orchestrator->>Workspace: Create project directory
+    Orchestrator->>Agents: Initialize PlannerAgent
+
+    Agents->>LLM: Clarify requirements (Gemini)
+    LLM-->>Agents: Clarification response
+    Agents->>Agents: Retrieve similar experiences
+    Agents->>LLM: Generate execution plan (Gemini)
+    LLM-->>Agents: Task breakdown
+
+    Agents-->>Orchestrator: Planning complete
+    Orchestrator-->>API: Project created
+    API-->>Frontend: ProjectResponse
+    Frontend-->>User: Display project dashboard

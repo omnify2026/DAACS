@@ -1,0 +1,35 @@
+C4Context
+    title DAACS System Context
+
+    Person(developer, "Developer", "Software engineer or product builder who wants to rapidly prototype ideas")
+    Person(stakeholder, "Stakeholder", "Product owner or manager who reviews generated projects")
+    Person(devops, "DevOps Engineer", "Deploys and maintains generated applications")
+
+    System(daacs, "DAACS Platform", "AI-powered development orchestration system that generates code from requirements")
+
+    System_Ext(codex, "Codex API", "OpenAI GPT-based code generation service")
+    System_Ext(claude, "Claude API", "Anthropic Claude LLM for code review and analysis")
+    System_Ext(gemini, "Gemini API", "Google Gemini LLM for architecture planning")
+    System_Ext(git, "Git VCS", "Version control system for generated projects")
+    System_Ext(npm, "npm Registry", "JavaScript package repository")
+    System_Ext(pypi, "PyPI", "Python package index")
+    System_Ext(github, "GitHub", "Code hosting and collaboration (future)")
+
+    Rel(developer, daacs, "Creates projects, monitors progress", "HTTPS + WebSocket")
+    Rel(stakeholder, daacs, "Reviews generated code, provides feedback", "HTTPS")
+    Rel(devops, daacs, "Exports projects for deployment", "HTTPS")
+
+    Rel(daacs, codex, "Requests code generation", "REST API")
+    Rel(daacs, claude, "Requests code review", "REST API")
+    Rel(daacs, gemini, "Requests architecture planning", "REST API")
+    Rel(daacs, git, "Initializes repos, commits code", "Git CLI")
+    Rel(daacs, npm, "Downloads frontend dependencies", "npm CLI")
+    Rel(daacs, pypi, "Downloads backend dependencies", "pip CLI")
+    Rel(daacs, github, "Pushes generated repos (future)", "Git Protocol")
+
+    UpdateRelStyle(developer, daacs, $offsetY="-40", $offsetX="-50")
+    UpdateRelStyle(daacs, codex, $offsetY="-30")
+    UpdateRelStyle(daacs, claude, $offsetY="10")
+    UpdateRelStyle(daacs, gemini, $offsetY="30")
+
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")

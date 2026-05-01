@@ -1,0 +1,202 @@
+{
+  "ceo": {
+    "description": "전략적 추론 + 비즈니스 분석 + 시장 판단",
+    "core_count": 7,
+    "support_count": 5,
+    "core_skills": [
+      "startup-analyst",
+      "product-manager-toolkit",
+      "competitive-landscape",
+      "market-sizing-analysis",
+      "pricing-strategy",
+      "launch-strategy",
+      "risk-manager"
+    ],
+    "support_skills": [
+      "business-analyst",
+      "team-composition-analysis",
+      "kpi-dashboard-design",
+      "data-storytelling",
+      "architecture-decision-records"
+    ]
+  },
+  "pm": {
+    "description": "프로젝트 기획 + 태스크 관리 + 요구사항 분석",
+    "core_count": 6,
+    "support_count": 5,
+    "core_skills": [
+      "concise-planning",
+      "plan-writing",
+      "writing-plans",
+      "executing-plans",
+      "product-manager-toolkit",
+      "architecture-decision-records"
+    ],
+    "support_skills": [
+      "mermaid-expert",
+      "team-collaboration-standup-notes",
+      "context-manager",
+      "software-architecture",
+      "api-design-principles"
+    ]
+  },
+  "developer": {
+    "description": "DAACS 방향에 맞는 ClientSide + Rust/Tauri 구현 + 디버깅",
+    "core_count": 7,
+    "support_count": 7,
+    "core_skills": [
+      "typescript-pro",
+      "react-best-practices",
+      "rust-pro",
+      "rust-async-patterns",
+      "clean-code",
+      "api-patterns",
+      "error-handling-patterns"
+    ],
+    "support_skills": [
+      "database-design",
+      "git-advanced-workflows",
+      "test-driven-development",
+      "nextjs-app-router-patterns",
+      "sql-pro",
+      "javascript-mastery",
+      "typescript-advanced-types"
+    ]
+  },
+  "reviewer": {
+    "description": "코드 리뷰 + 품질 관리 + 보안 감사",
+    "core_count": 7,
+    "support_count": 6,
+    "core_skills": [
+      "code-reviewer",
+      "code-review-excellence",
+      "code-review-checklist",
+      "production-code-audit",
+      "security-auditor",
+      "systematic-debugging",
+      "verification-before-completion"
+    ],
+    "support_skills": [
+      "lint-and-validate",
+      "performance-profiling",
+      "cc-skill-security-review",
+      "error-detective",
+      "clean-code",
+      "top-web-vulnerabilities"
+    ]
+  },
+  "verifier": {
+    "description": "테스트 검증 + 빌드 확인 + 수용 기준 증거화",
+    "core_count": 7,
+    "support_count": 6,
+    "core_skills": [
+      "verification-before-completion",
+      "lint-and-validate",
+      "test-automator",
+      "test-fixing",
+      "systematic-debugging",
+      "performance-profiling",
+      "deployment-validation-config-validate"
+    ],
+    "support_skills": [
+      "playwright-skill",
+      "api-testing-observability-api-mock",
+      "error-detective",
+      "clean-code",
+      "github-actions-templates",
+      "bash-pro"
+    ]
+  },
+  "devops": {
+    "description": "인프라 관리 + CI/CD + 컨테이너 + 모니터링",
+    "core_count": 7,
+    "support_count": 7,
+    "core_skills": [
+      "docker-expert",
+      "kubernetes-architect",
+      "terraform-specialist",
+      "github-actions-templates",
+      "deployment-procedures",
+      "observability-engineer",
+      "secrets-management"
+    ],
+    "support_skills": [
+      "server-management",
+      "environment-setup-guide",
+      "cicd-automation-workflow-automate",
+      "helm-chart-scaffolding",
+      "prometheus-configuration",
+      "grafana-dashboards",
+      "bash-pro"
+    ]
+  },
+  "marketer": {
+    "description": "SEO 최적화 + 콘텐츠 제작 + 마케팅 전략",
+    "core_count": 7,
+    "support_count": 8,
+    "core_skills": [
+      "seo-fundamentals",
+      "seo-content-writer",
+      "seo-keyword-strategist",
+      "content-creator",
+      "content-marketer",
+      "copywriting",
+      "marketing-psychology"
+    ],
+    "support_skills": [
+      "social-content",
+      "programmatic-seo",
+      "seo-audit",
+      "seo-meta-optimizer",
+      "app-store-optimization",
+      "email-sequence",
+      "paid-ads",
+      "schema-markup"
+    ]
+  },
+  "designer": {
+    "description": "UI/UX 디자인 + 디자인 시스템 + 접근성",
+    "core_count": 7,
+    "support_count": 7,
+    "core_skills": [
+      "ui-ux-pro-max",
+      "ui-ux-designer",
+      "frontend-design",
+      "tailwind-design-system",
+      "web-design-guidelines",
+      "mobile-design",
+      "accessibility-compliance-accessibility-audit"
+    ],
+    "support_skills": [
+      "design-orchestration",
+      "canvas-design",
+      "3d-web-experience",
+      "tailwind-patterns",
+      "react-ui-patterns",
+      "scroll-experience",
+      "theme-factory"
+    ]
+  },
+  "cfo": {
+    "description": "비용 최적화 + 재무 모델링 + 지표 분석",
+    "core_count": 7,
+    "support_count": 6,
+    "core_skills": [
+      "cost-optimization",
+      "startup-financial-modeling",
+      "startup-metrics-framework",
+      "risk-metrics-calculation",
+      "pricing-strategy",
+      "data-storytelling",
+      "kpi-dashboard-design"
+    ],
+    "support_skills": [
+      "billing-automation",
+      "quant-analyst",
+      "database-cloud-optimization-cost-optimize",
+      "analytics-tracking",
+      "ab-test-setup",
+      "sql-optimization-patterns"
+    ]
+  }
+}

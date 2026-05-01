@@ -1,0 +1,38 @@
+# Skill Bundles Configuration
+# Define groups of skills for specific roles or tasks.
+
+[bundles.essentials]
+description = "🚀 For everyone. Start here."
+skills = ["concise-planning", "coding-standards"]
+
+[bundles.web-wizard]
+description = "🌐 For building modern, high-performance web apps."
+skills = ["frontend-developer", "web-artifacts-builder", "ui-ux-pro-max", "frontend-design"]
+
+[bundles.python-pro]
+description = "🐍 For backend heavyweights (Python)."
+skills = ["python-pro", "fastapi-pro", "django-pro", "backend-patterns"]
+
+[bundles.web-designer]
+description = "🎨 For UI/UX design."
+skills = ["ui-ux-pro-max", "frontend-design", "tailwind-patterns"]
+
+[bundles.devops-cloud]
+description = "☁️ For infrastructure and deployment."
+skills = ["devops-troubleshooter", "docker-expert", "k8s-manifest-generator", "aws-serverless"]
+
+[bundles.security-engineer]
+description = "🛡️ For pentesting and hardening."
+skills = ["security-auditor", "backend-security-coder", "pentest-checklist"]
+
+[bundles.agent-architect]
+description = "🤖 For building AI systems."
+skills = ["ai-agents-architect", "prompt-engineering-patterns", "langchain-architecture"]
+
+[bundles.startup-founder]
+description = "💼 For business and product strategy."
+skills = ["startup-analyst", "product-manager-toolkit", "pitch-deck-creator"]
+
+[bundles.creative-director]
+description = "✨ For high-level creative direction."
+skills = ["ui-ux-designer", "brand-guidelines", "copywriting"]

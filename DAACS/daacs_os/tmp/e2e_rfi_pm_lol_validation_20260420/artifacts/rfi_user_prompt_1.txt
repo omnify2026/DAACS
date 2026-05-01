@@ -1,0 +1,54 @@
+RFI request for DAACS.
+
+    Goal:
+    롤 픽창에서 챔피언 서로 고를때 추천해주는 웹사이트만들어줘
+상대팀 조합과 우리팀 조합을 감안해서 내가좋아하는최적의 챔피언을찾아주는 웹사이트
+고려해야할것.
+사거리
+Ap ad 밸런스
+하드 cc유무
+원딜, 누커, 탱커등의 유무
+포킹조합, 받아치는조합, 돌진조합등.
+(리그 오브 레전드(LoL)의 교차 선택(Draft Pick) 방식은 랭크 게임 및 일반 교차 선택 모드에서 적용되는 규칙으로, 양 팀이 서로의 챔피언을 확인하며 금지(Ban)하고 선택(Pick)하여 전략적인 대결을 펼치는 방식입니다.
+주요 단계 및 규칙
+밴(Ban) 단계 (금지)
+10명의 플레이어가 각각 1명씩, 총 10명의 챔피언을 금지합니다.
+자신이 플레이할 챔피언에 가리키기(의사 표시)를 할 수 있으나, 금지 과정에서는 해당 챔피언이 금지될 수 있습니다.
+픽(Pick) 단계 (선택)
+블루 팀이 1픽을 먼저 선택합니다.
+레드 팀이 2, 3픽을 선택합니다.
+블루 팀이 4, 5픽을 선택합니다.
+레드 팀이 6, 7픽을 선택합니다.
+블루 팀이 8, 9픽을 선택합니다.
+레드 팀이 10픽을 마지막으로 선택합니다. (레드 팀 5픽이 후픽의 장점을 가짐)
+)
+
+    Prior summary:
+    (none)
+
+    Known answers:
+    (none)
+
+    Workspace files:
+    (none)
+
+    Maximum clarification questions: 3
+
+    Allowed topics:
+    - platform
+- frontend
+- backend
+- database
+- auth
+- ui
+- users
+- deployment
+- integrations
+- constraints
+- acceptance_criteria
+
+    Interpret the request by structure first, not by a fixed domain catalog.
+    Infer a question_level (l0-l3) and a precise execution_contract for PM handoff.
+    If you ask questions, make them simple for a non-technical user to answer.
+
+    Return strict JSON only.

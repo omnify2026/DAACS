@@ -1,0 +1,21 @@
+graph TD
+    Start[Code Generated] --> Syntax[Syntax Check]
+    Syntax -->|Pass| Quality[Quality Scoring]
+    Syntax -->|Fail| AutoFix[Auto-Fix Attempt]
+    AutoFix -->|Fixed| Quality
+    AutoFix -->|Unfixable| Reject[REJECT to Planner]
+
+    Quality --> Extension[Extension Validation]
+    Extension -->|Allowed| Constraints[Constraint Check]
+    Extension -->|Blocked| Reject
+
+    Constraints -->|Pass| Score[Calculate Final Score]
+    Constraints -->|Fail| Patch[Auto-Patch Attempt]
+    Patch -->|Patched| Rescore[Rescore Patched Code]
+    Patch -->|Unpatchable| CapScore[Cap Score at 5.0]
+
+    Rescore --> Score
+    CapScore --> Score
+
+    Score -->|≥ 8.0| Done[DONE to Planner]
+    Score -->|< 8.0| Reject

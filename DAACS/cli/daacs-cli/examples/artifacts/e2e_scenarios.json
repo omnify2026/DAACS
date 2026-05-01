@@ -1,0 +1,4 @@
+[
+  { "id": "E2E-001", "name": "Homepage loads" },
+  { "id": "E2E-002", "name": "Login flow" }
+]

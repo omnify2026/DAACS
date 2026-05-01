@@ -1,0 +1,41 @@
+graph TB
+    subgraph "Backend API Container"
+        API[API Layer]
+        Orch[Orchestrator]
+        Agents[Agent System]
+        LLM[LLM Provider]
+        Memory[Memory Store]
+        Quality[Quality Assurance]
+        Context[Context Management]
+        Infra[Infrastructure]
+    end
+
+    subgraph "Frontend UI Container"
+        Dashboard[Project Dashboard]
+        Workspace[Workspace Viewer]
+        State[State Management]
+    end
+
+    User[Developer] --> Dashboard
+    User --> Workspace
+
+    Dashboard --> API
+    Workspace --> API
+
+    API --> Orch
+    Orch --> Agents
+    Agents --> LLM
+    Agents --> Memory
+    Agents --> Quality
+    Agents --> Context
+    Orch --> Infra
+
+    State -.->|manages| Dashboard
+    State -.->|manages| Workspace
+
+    LLM -.->|API calls| CodexAPI[Codex API]
+    LLM -.->|API calls| ClaudeAPI[Claude API]
+    LLM -.->|API calls| GeminiAPI[Gemini API]
+
+    Infra -.->|file I/O| FS[File System]
+    Infra -.->|git ops| Git[Git CLI]

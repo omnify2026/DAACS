@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "channel_id": "444e45a6",
+      "last_file": "psc_444e45a6.dat",
+      "last_updated_utc": "SystemTime { tv_sec: 1774336821, tv_nsec: 344289000 }"
+    },
+    {
+      "channel_id": "e179dbd8",
+      "last_file": "psc_e179dbd8.dat",
+      "last_updated_utc": "SystemTime { tv_sec: 1774336838, tv_nsec: 134799000 }"
+    }
+  ]
+}

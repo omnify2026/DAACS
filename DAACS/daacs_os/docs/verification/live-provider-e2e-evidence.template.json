@@ -1,0 +1,46 @@
+{
+  "provider": "codex",
+  "workspace_path": "/absolute/path/to/workspace-root",
+  "domains": [
+    {
+      "name": "game",
+      "prompt": "Build a playable browser mini game with score, restart, keyboard, and touch controls.",
+      "artifact_path": "/absolute/path/to/generated-game-artifact",
+      "final_status": "ready",
+      "quality_score": 90,
+      "modification_request": "Add a restart button and verify it preserves score reset behavior.",
+      "commands": ["npm run build", "npm run smoke"],
+      "evidence": [
+        "npm run build passed",
+        "npm run smoke passed",
+        "Artifact opened and score/restart/keyboard/touch flows were checked"
+      ],
+      "trace": [
+        { "role": "pm", "status": "completed" },
+        { "role": "frontend", "status": "completed" },
+        { "role": "reviewer", "status": "completed" },
+        { "role": "verifier", "status": "completed" }
+      ]
+    },
+    {
+      "name": "booking",
+      "prompt": "Build a meeting room booking website with room filters, availability, and reservation states.",
+      "artifact_path": "/absolute/path/to/generated-booking-artifact",
+      "final_status": "ready",
+      "quality_score": 90,
+      "modification_request": "Add an unavailable-room edge case and verify the disabled reservation state.",
+      "commands": ["npm run build", "npm run smoke"],
+      "evidence": [
+        "npm run build passed",
+        "npm run smoke passed",
+        "Artifact opened and filters/empty/unavailable/reservation states were checked"
+      ],
+      "trace": [
+        { "role": "pm", "status": "completed" },
+        { "role": "frontend", "status": "completed" },
+        { "role": "reviewer", "status": "completed" },
+        { "role": "verifier", "status": "completed" }
+      ]
+    }
+  ]
+}

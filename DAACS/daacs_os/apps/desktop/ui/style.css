@@ -1,0 +1,25 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, sans-serif; background: #1a1a2e; color: #eee; min-height: 100vh; }
+#root { max-width: 420px; margin: 0 auto; padding: 2rem; }
+.header { text-align: center; margin-bottom: 2rem; }
+.header h1 { font-size: 1.5rem; font-weight: 600; }
+.auth-section, .me-section { background: #16213e; border-radius: 12px; padding: 1.5rem; }
+.tabs { display: flex; gap: 0; margin-bottom: 1rem; }
+.tab { flex: 1; padding: 0.6rem; border: none; background: transparent; color: #888; cursor: pointer; font-size: 0.95rem; border-bottom: 2px solid transparent; }
+.tab.active { color: #0f4c81; border-bottom-color: #0f4c81; }
+.form { display: flex; flex-direction: column; gap: 0.75rem; }
+.form input { padding: 0.6rem 0.8rem; border: 1px solid #333; border-radius: 6px; background: #0f3460; color: #eee; font-size: 0.95rem; }
+.form input::placeholder { color: #666; }
+.form button, #logout-btn { padding: 0.7rem; border: none; border-radius: 6px; background: #0f4c81; color: #fff; font-size: 0.95rem; cursor: pointer; }
+.form button:hover, #logout-btn:hover { background: #1a6bb3; }
+.error { color: #e57373; font-size: 0.9rem; margin-top: 0.5rem; }
+.hidden { display: none !important; }
+.user-email { margin-bottom: 1rem; font-size: 1rem; }
+#auth-error.hidden { display: none; }
+.command-area { margin: 1rem 0; }
+.cli-hint { font-size: 0.85rem; color: #888; margin-bottom: 0.5rem; }
+#command-input { width: 100%; padding: 0.6rem; border: 1px solid #333; border-radius: 6px; background: #0f3460; color: #eee; font-size: 0.9rem; resize: vertical; }
+#command-run { margin-top: 0.5rem; padding: 0.5rem 1rem; border: none; border-radius: 6px; background: #0f4c81; color: #fff; cursor: pointer; }
+#command-run:hover { background: #1a6bb3; }
+#command-run:disabled { opacity: 0.6; cursor: not-allowed; }
+.command-output { background: #0d2137; border-radius: 6px; padding: 0.75rem; font-size: 0.85rem; white-space: pre-wrap; word-break: break-all; max-height: 300px; overflow: auto; margin-top: 0.75rem; }

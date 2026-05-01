@@ -1,0 +1,31 @@
+[package]
+name = "daacs_desktop"
+version = "0.1.0"
+description = "DAACS OS Desktop Shell"
+authors = ["DAACS"]
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+omni_ai_core = { path = "../../../../../OmniAICore" }
+omni_localization = { path = "../../../../../OmniLocalization" }
+omni_utilities = { path = "../../../../../OmniUtilities" }
+infra_error = { path = "../../../../crates/infra-error" }
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
+dirs = "5"
+reqwest = { version = "0.12", features = ["json"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_yaml = "0.9"
+tokio = { version = "1", features = ["full"] }
+chrono = "0.4"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["fmt"] }
+shell-words = "1"
+
+[features]
+default = []

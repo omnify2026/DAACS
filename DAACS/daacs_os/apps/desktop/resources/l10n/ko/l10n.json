@@ -1,0 +1,26 @@
+{
+  "cli": {
+    "errorEmptyInstruction": "명령이 비어 있습니다.",
+    "errorNoProvider": "gemini 또는 codex CLI를 찾지 못했습니다. 설치하거나 DAACS_GEMINI_CLI_PATH / DAACS_CODEX_CLI_PATH를 설정하세요.",
+    "errorInvalidPath": "유효하지 않은 경로입니다.",
+    "errorNoProviderAll": "사용 가능한 CLI provider를 찾지 못했습니다. codex, gemini, ollama CLI를 설치하거나 DAACS_*_CLI_PATH 환경 변수를 설정하세요.",
+    "errorClaudeProviderRequiresOllama": "Claude provider는 Ollama 실행 파일이 필요합니다. DAACS_LOCAL_LLM_CLI_PATH에 Ollama 전체 경로를 설정하세요.",
+    "workspaceCommandTimedOut": "워크스페이스 명령이 120초 후 타임아웃되었습니다. 대화형 명령이거나 장시간 실행 중일 수 있습니다.",
+    "localLlmTimedOut": "Local LLM이 {seconds}초 후 타임아웃되었습니다. 모델이 너무 크거나 멈췄을 수 있습니다.",
+    "geminiTimedOut": "Gemini CLI가 {seconds}초 후 타임아웃되었습니다.",
+    "codexTimedOut": "Codex CLI가 {seconds}초 후 타임아웃되었습니다.",
+    "claudeTimedOut": "Ollama/Claude CLI가 {seconds}초 후 타임아웃되었습니다."
+  },
+  "lobby": {
+    "starting": "시작 중...",
+    "clockIn": "출근하기"
+  },
+  "goal": {
+    "sequencerTitle": "PromptingSequencer TODO 목록",
+    "loading": "불러오는 중...",
+    "refresh": "새로고침",
+    "sequencerDone": "완료됨",
+    "sequencerMarkDone": "완료 처리",
+    "sequencerEmpty": "저장된 TODO 목록이 없습니다."
+  }
+}

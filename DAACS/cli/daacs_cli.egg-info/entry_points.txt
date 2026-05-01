@@ -1,0 +1,2 @@
+[console_scripts]
+daacs = daacs_cli.main:app

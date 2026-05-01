@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAACS v6.0 - 마스터피스 발표자료 v5</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a24;
+            --text-primary: #f0f0f5;
+            --text-secondary: #a0a0b0;
+            --accent-cyan: #00e5ff;
+            --accent-purple: #b388ff;
+            --accent-green: #69f0ae;
+            --accent-orange: #ffab40;
+            --accent-red: #ff5252;
+            --border-color: #2a2a3a;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        .slide {
+            min-height: 100vh;
+            padding: 50px 70px;
+            border-bottom: 1px solid var(--border-color);
+            page-break-after: always;
+            position: relative;
+        }
+
+        .slide-title {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, var(--bg-primary) 70%);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            font-size: 2em;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 35px 0 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--accent-cyan);
+        }
+
+        h3 {
+            font-size: 1.5em;
+            font-weight: 500;
+            color: var(--accent-purple);
+            margin: 25px 0 15px;
+        }
+
+        h4 {
+            font-size: 1.2em;
+            color: var(--accent-green);
+            margin: 15px 0 10px;
+        }
+
+        p {
+            font-size: 1.15em;
+            margin: 12px 0;
+            color: var(--text-primary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 20px 0;
+            font-size: 1em;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: var(--bg-card);
+            color: var(--accent-cyan);
+            padding: 14px 18px;
+            text-align: left;
+            font-weight: 500;
+            border-bottom: 2px solid var(--accent-cyan);
+        }
+
+        td {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: var(--bg-card);
+        }
+
+        pre {
+            background: #0d1117;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 18px 0;
+            overflow-x: auto;
+            font-size: 0.88em;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95em;
+        }
+
+        .inline-code {
+            background: var(--bg-card);
+            color: var(--accent-green);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+            border-left: 4px solid var(--accent-cyan);
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .info-box {
+            background: rgba(0, 229, 255, 0.08);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box {
+            background: rgba(255, 171, 64, 0.08);
+            border: 1px solid rgba(255, 171, 64, 0.3);
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+            margin: 4px;
+        }
+
+        .badge-cyan {
+            background: rgba(0, 229, 255, 0.15);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+        }
+
+        .badge-green {
+            background: rgba(105, 240, 174, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(105, 240, 174, 0.3);
+        }
+
+        .badge-purple {
+            background: rgba(179, 136, 255, 0.15);
+            color: var(--accent-purple);
+            border: 1px solid rgba(179, 136, 255, 0.3);
+        }
+
+        .badge-orange {
+            background: rgba(255, 171, 64, 0.15);
+            color: var(--accent-orange);
+            border: 1px solid rgba(255, 171, 64, 0.3);
+        }
+
+        .folder-tree {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95em;
+            line-height: 1.9;
+            white-space: pre;
+            color: var(--text-secondary);
+        }
+
+        .folder-tree .folder {
+            color: var(--accent-cyan);
+        }
+
+        .folder-tree .file {
+            color: var(--accent-green);
+        }
+
+        .folder-tree .comment {
+            color: var(--text-secondary);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .card-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .card-desc {
+            font-size: 0.95em;
+            color: var(--text-secondary);
+        }
+
+        .subtitle {
+            font-size: 1.4em;
+            color: var(--text-secondary);
+            margin-top: 15px;
+            font-weight: 300;
+        }
+
+        ol,
+        ul {
+            margin: 15px 0 15px 35px;
+            font-size: 1.1em;
+            line-height: 2.2;
+        }
+
+        li {
+            margin: 6px 0;
+            color: var(--text-primary);
+        }
+
+        .slide::after {
+            content: attr(data-page);
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            color: var(--text-secondary);
+            font-size: 0.85em;
+        }
+
+        .flowchart {
+            background: #f8f9fa;
+            padding: 40px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .flow-node {
+            background: #e3f2fd;
+            border: 2px solid #1976d2;
+            border-radius: 8px;
+            padding: 12px 20px;
+            text-align: center;
+            color: #1a237e;
+            font-weight: 500;
+            font-size: 0.95em;
+        }
+
+        .flow-arrow {
+            color: #1976d2;
+            font-size: 1.5em;
+            text-align: center;
+            margin: 5px 0;
+        }
+
+        .flow-subgraph {
+            background: #fff8e1;
+            border: 2px solid #ffc107;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 10px;
+        }
+
+        .flow-subgraph-title {
+            color: #ff6f00;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .flow-label {
+            background: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .prompt-table th {
+            background: #1e3a5f;
+        }
+
+        .prompt-table td:first-child {
+            color: var(--accent-cyan);
+            font-weight: 500;
+        }
+
+        .sequence-diagram {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+        }
+
+        .seq-row {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .seq-actor {
+            width: 100px;
+            text-align: center;
+            padding: 10px;
+            background: var(--bg-card);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .seq-arrow {
+            flex: 1;
+            height: 2px;
+            background: var(--accent-cyan);
+            position: relative;
+            margin: 0 10px;
+        }
+
+        .seq-arrow::after {
+            content: '→';
+            position: absolute;
+            right: -5px;
+            top: -10px;
+            color: var(--accent-cyan);
+        }
+
+        .seq-msg {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8em;
+            color: var(--accent-green);
+            white-space: nowrap;
+        }
+
+        .workflow-diagram {
+            background: linear-gradient(135deg, #1a1a24 0%, #0a0a0f 100%);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .flow-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 10px 0;
+        }
+
+        .flow-node {
+            background: var(--bg-card);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 8px;
+            padding: 12px 24px;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 0.95em;
+        }
+
+        .flow-node.user {
+            border-color: var(--accent-purple);
+        }
+
+        .flow-node.orchestrator {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 229, 255, 0.1);
+        }
+
+        .flow-node.parallel {
+            border-color: var(--accent-orange);
+        }
+
+        .flow-node.coder {
+            border-color: var(--accent-green);
+        }
+
+        .flow-node.verifier {
+            border-color: var(--accent-cyan);
+        }
+
+        .flow-node.done {
+            border-color: var(--accent-green);
+            background: rgba(105, 240, 174, 0.1);
+        }
+
+        .flow-node.judgment {
+            border-color: var(--accent-purple);
+            background: rgba(179, 136, 255, 0.1);
+        }
+
+        .flow-node.save {
+            border-color: var(--accent-cyan);
+        }
+
+        .flow-node.deliver {
+            border-color: var(--accent-orange);
+        }
+
+        .flow-node.complete {
+            border-color: var(--accent-green);
+            background: rgba(105, 240, 174, 0.2);
+            font-size: 1.1em;
+        }
+
+        .flow-arrow-down {
+            color: var(--accent-cyan);
+            font-size: 1.3em;
+            margin: 5px 0;
+        }
+
+        .flow-arrow-down.small {
+            font-size: 1em;
+            margin: 3px 0;
+        }
+
+        .flow-arrow-split,
+        .flow-arrow-merge {
+            color: var(--accent-cyan);
+            font-size: 1.5em;
+            display: flex;
+            justify-content: center;
+        }
+
+        .flow-subgraph {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            min-width: 200px;
+        }
+
+        .flow-subgraph.backend {
+            border-color: rgba(0, 229, 255, 0.5);
+        }
+
+        .flow-subgraph.frontend {
+            border-color: rgba(179, 136, 255, 0.5);
+        }
+
+        .subgraph-title {
+            color: var(--text-secondary);
+            font-size: 0.85em;
+            margin-bottom: 10px;
+        }
+
+        .flow-arrow-loop {
+            color: var(--accent-orange);
+            font-size: 0.9em;
+            margin: 3px 0;
+        }
+
+        .flow-decision {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin: 10px 0;
+        }
+
+        .flow-path {
+            color: var(--accent-green);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .flow-path.replan {
+            color: var(--accent-orange);
+            flex-direction: row;
+        }
+
+        .flow-path .label {
+            font-size: 0.85em;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Slide 1: Title -->
+    <section class="slide slide-title" data-page="1">
+        <div style="font-size: 4em; margin-bottom: 20px;"><img
+                src="C:\Users\Admin\Desktop\AgentForge-v4.0-FINAL\Nova-Canvas\client\public\favicon.png" alt=""></div>
+        <h1 style="font-size: 3.5em; margin-bottom: 10px;">DAACS v6.0</h1>
+        <p class="subtitle">Dynamic Agentic AI Coding System</p>
+        <p style="font-size: 1.3em; margin-top: 35px; color: var(--accent-cyan);">LangGraph 기반 멀티 에이전트 풀스택 자동화 시스템</p>
+        <div style="margin-top: 50px;">
+            <span class="badge badge-cyan">Python 3.12</span>
+            <span class="badge badge-green">LangGraph</span>
+            <span class="badge badge-purple">FastAPI</span>
+            <span class="badge badge-orange">CLI Agentic</span>
+        </div>
+        <p style="margin-top: 70px; color: var(--text-secondary);">2025.12.12 | v5.0 Enhanced</p>
+    </section>
+
+
+    <!-- Slide 2: 목차 -->
+    <section class="slide" data-page="2">
+        <h1>📋 목차</h1>
+        <ol style="font-size: 1.3em; line-height: 2.3; margin-top: 30px;">
+            <li>프로젝트 개요 (배경/필요성/목표)</li>
+            <li>시스템 아키텍처 (워크플로우 다이어그램)</li>
+            <li>폴더 구조 및 파일 역할</li>
+            <li>핵심 파일 상세 코드 분석</li>
+            <li><strong style="color: var(--accent-cyan);">CLI 실행 프로세스 ⭐</strong></li>
+            <li><strong style="color: var(--accent-cyan);">LangGraph 워크플로우 상세 ⭐</strong></li>
+            <li><strong style="color: var(--accent-cyan);">파일 간 유기적 연결 ⭐</strong></li>
+            <li>프롬프트 엔지니어링</li>
+            <li>설정 파일 상세</li>
+            <li>결론</li>
+        </ol>
+    </section>
+
+
+    <!-- Slide 3: 프로젝트 개요 -->
+    <section class="slide" data-page="3">
+        <h1>1. 프로젝트 개요</h1>
+        <h2>DAACS란?</h2>
+        <div class="highlight-box">
+            <p style="font-size: 1.4em;"><strong style="color: var(--accent-cyan);">DAACS</strong> =
+                <strong>D</strong>ynamic <strong>A</strong>gentic <strong>A</strong>I <strong>C</strong>oding
+                <strong>S</strong>ystem
+            </p>
+            <p style="margin-top: 15px; font-size: 1.15em;">
+                사용자의 자연어 요구사항을 받아 <strong style="color: var(--accent-green);">완전한 풀스택 애플리케이션</strong>을
+                <strong style="color: var(--accent-orange);">자동으로 설계, 구현, 검증</strong>하는
+                <strong style="color: var(--accent-purple);">지능형 멀티 에이전트 시스템</strong>
+            </p>
+        </div>
+        <h3>핵심 특징</h3>
+        <div class="grid-4" style="margin-top: 25px;">
+            <div class="card">
+                <div class="card-icon">🤝</div>
+                <div class="card-title">멀티 에이전트 협업</div>
+                <div class="card-desc">Orchestrator, Backend, Frontend, Verifier가 협력</div>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔧</div>
+                <div class="card-title">Agentic CLI</div>
+                <div class="card-desc">Codex, Claude, Gemini로 실제 파일 생성</div>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔄</div>
+                <div class="card-title">자가 치유</div>
+                <div class="card-desc">에러 시 자동 분석 및 수정 Feedback Loop</div>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <div class="card-title">병렬 실행</div>
+                <div class="card-desc">Backend/Frontend 동시 개발</div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Slide 4: 프로젝트 배경 및 필요성 -->
+    <section class="slide" data-page="4">
+        <h2>1.1 프로젝트 배경 및 필요성</h2>
+        <div class="grid-2">
+            <div>
+                <h3>📌 Motivation</h3>
+                <ul style="font-size: 1em; line-height: 1.9;">
+                    <li>LLM AI tool 사용 시 <strong style="color: var(--accent-orange);">반복적 개입</strong> 필요</li>
+                    <li><strong style="color: var(--accent-orange);">하나의 AI Model만</strong> 사용 제약</li>
+                    <li><strong style="color: var(--accent-orange);">개발 구현 방안 반영 부족</strong></li>
+                    <li><strong style="color: var(--accent-orange);">초기 환경 설정에 많은 시간</strong></li>
+                </ul>
+            </div>
+            <div>
+                <h3>💡 Solution</h3>
+                <ul style="font-size: 1em; line-height: 1.9;">
+                    <li><strong style="color: var(--accent-green);">보유/비보유자 모두</strong> DAACS 시뮬레이션</li>
+                    <li>Orchestrator로 <strong style="color: var(--accent-green);">프롬프트 정교화</strong></li>
+                    <li><strong style="color: var(--accent-green);">Iteration 기능</strong> 자동화</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Slide 5: 프로젝트 목표 -->
+    <section class="slide" data-page="5">
+        <h2>1.2 프로젝트 목표</h2>
+        <div class="highlight-box">
+            <p>🎯 개발 프로세스 <strong style="color: var(--accent-cyan);">80%+</strong> AI 위임</p>
+        </div>
+        <div class="grid-3" style="margin-top: 20px;">
+            <div class="card" style="text-align: left; padding: 18px;">
+                <div class="card-title" style="color: var(--accent-cyan);">📅 단기</div>
+                <ul style="font-size: 0.85em; line-height: 1.7; margin-left: 15px;">
+                    <li>자연어로 프로세스 단계 감소</li>
+                    <li>CLI 시뮬레이션</li>
+                    <li>Backend-Frontend 연결</li>
+                </ul>
+            </div>
+            <div class="card" style="text-align: left; padding: 18px;">
+                <div class="card-title" style="color: var(--accent-purple);">📅 중장기</div>
+                <ul style="font-size: 0.85em; line-height: 1.7; margin-left: 15px;">
+                    <li>RAG 도입</li>
+                    <li>파일 추가 기능</li>
+                    <li>DB 설계</li>
+                </ul>
+            </div>
+            <div class="card" style="text-align: left; padding: 18px;">
+                <div class="card-title" style="color: var(--accent-orange);">📅 장기</div>
+                <ul style="font-size: 0.85em; line-height: 1.7; margin-left: 15px;">
+                    <li>Context Prompting</li>
+                    <li>토큰 효율성</li>
+                    <li>사용자 개입 시점</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Slide 6: 시스템 아키텍처 (워크플로우 다이어그램) -->
+    <section class="slide" data-page="6">
+        <h1>2. 시스템 아키텍처</h1>
+        <h2>전체 워크플로우 다이어그램</h2>
+        <div class="workflow-diagram">
+            <div class="flow-row">
+                <div class="flow-node user">👤 사용자 요구사항</div>
+            </div>
+            <div class="flow-arrow-down">↓</div>
+            <div class="flow-row">
+                <div class="flow-node orchestrator">📋 Orchestrator Planning</div>
+            </div>
+            <div class="flow-arrow-down">↓ Plan & API Spec</div>
+            <div class="flow-row">
+                <div class="flow-node parallel">⚡ Start Parallel</div>
+            </div>
+            <div class="flow-arrow-split">
+                <span>↙</span>
+                <span style="margin: 0 50px;"></span>
+                <span>↘</span>
+            </div>
+            <div class="flow-row" style="gap: 40px;">
+                <div class="flow-subgraph backend">
+                    <div class="subgraph-title">Backend SubGraph</div>
+                    <div class="flow-node coder">⚙️ Backend Coder</div>
+                    <div class="flow-arrow-down small">↓ Code</div>
+                    <div class="flow-node verifier">✅ Backend Verifier</div>
+                    <div class="flow-arrow-loop">↺ Fail</div>
+                    <div class="flow-node done">✔️ Backend Done</div>
+                </div>
+                <div class="flow-subgraph frontend">
+                    <div class="subgraph-title">Frontend SubGraph</div>
+                    <div class="flow-node coder">🎨 Frontend Coder</div>
+                    <div class="flow-arrow-down small">↓ Code</div>
+                    <div class="flow-node verifier">✅ Frontend Verifier</div>
+                    <div class="flow-arrow-loop">↺ Fail</div>
+                    <div class="flow-node done">✔️ Frontend Done</div>
+                </div>
+            </div>
+            <div class="flow-arrow-merge">
+                <span>↘</span>
+                <span style="margin: 0 50px;"></span>
+                <span>↙</span>
+            </div>
+            <div class="flow-row">
+                <div class="flow-node judgment">🔍 Orchestrator Judgment</div>
+            </div>
+            <div class="flow-decision">
+                <div class="flow-path">
+                    <span class="label">Compatible ✓</span>
+                    <span>↓</span>
+                </div>
+                <div class="flow-path replan">
+                    <span class="label">Issues ✗</span>
+                    <span>→ 🔄 Replanning → ↑ (Retry)</span>
+                </div>
+            </div>
+            <div class="flow-row">
+                <div class="flow-node save">💾 Save Context</div>
+            </div>
+            <div class="flow-arrow-down">↓</div>
+            <div class="flow-row">
+                <div class="flow-node deliver">📦 Deliver</div>
+            </div>
+            <div class="flow-arrow-down">↓</div>
+            <div class="flow-row">
+                <div class="flow-node complete">🎉 완료</div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Slide 7: 폴더 구조 -->
+    <section class="slide" data-page="7">
+        <h1>3. 폴더 구조 및 파일 역할</h1>
+        <div class="folder-tree"><span class="folder">daacs/</span>
+            ├── <span class="file">daacs_api_server.py</span> <span class="comment"># 🧠 REST API 서버 (메인 진입점)
+                763줄</span>
+            ├── <span class="file">config_loader.py</span> <span class="comment"># ⚙️ YAML 설정 로더 222줄</span>
+            ├── <span class="file">llm_source_provider.py</span> <span class="comment"># 🔌 LLM 소스 팩토리 382줄</span>
+            │
+            ├── <span class="folder">graph/</span> <span class="comment"># 🔀 LangGraph 워크플로우</span>
+            │ ├── <span class="file">daacs_workflow.py</span> <span class="comment"># 메인 워크플로우 221줄</span>
+            │ ├── <span class="file">orchestrator_nodes.py</span> <span class="comment"># Planning, Judgment, Replanning
+                457줄</span>
+            │ ├── <span class="file">backend_subgraph.py</span> <span class="comment"># Backend Coder→Verifier
+                491줄</span>
+            │ ├── <span class="file">frontend_subgraph.py</span> <span class="comment"># Frontend Coder→Verifier
+                393줄</span>
+            │ ├── <span class="file">verification.py</span> <span class="comment"># 검증 템플릿 542줄</span>
+            │ └── <span class="file">replanning.py</span> <span class="comment"># 재계획 전략 298줄</span>
+            │
+            ├── <span class="folder">llm/</span> <span class="comment"># ✋ CLI 실행 계층</span>
+            │ └── <span class="file">cli_executor.py</span> <span class="comment"># Codex/Claude/Gemini 호출 179줄</span>
+            │
+            └── <span class="folder">models/</span> <span class="comment"># 📊 상태 정의</span>
+            └── <span class="file">daacs_state.py</span> <span class="comment"># LangGraph State + Reducer 268줄</span>
+        </div>
+        <div class="info-box" style="margin-top: 20px;">
+            📊 <strong>총 코드량:</strong> 약 3,500줄 (핵심 파일만) | <strong>파일 수:</strong> 11개 핵심 모듈
+        </div>
+    </section>
+
+
+    <!-- Slide 8: daacs_api_server.py -->
+    <section class="slide" data-page="8">
+        <h1>4. 핵심 파일 상세 코드 분석</h1>
+        <h2>4.1 daacs_api_server.py (763줄)</h2>
+        <p><span class="badge badge-cyan">daacs/daacs_api_server.py</span> | REST API 서버 (메인 진입점)</p>
+        <h3>워크플로우 실행 함수 (라인 127-306)</h3>
+        <pre><code class="language-python">def run_daacs_workflow(project_id: str, goal: str, project_config: Optional[Dict] = None):
+    """별도 스레드에서 DAACS 워크플로우 실행"""
+    
+    # 1. DAACS 설정 로드
+    from daacs.config_loader import DAACSConfig
+    config = DAACSConfig("daacs_config.yaml")
+    
+    # 2. Provider → CLI 타입 매핑 (모델명에서 추론)
+    provider_to_cli = {
+        "openai": "codex",        # GPT 모델 → Codex CLI
+        "anthropic": "claude_code",  # Claude 모델 → Claude CLI
+        "google": "gemini",       # Gemini 모델 → Gemini CLI
+    }
+    
+    # 3. 역할별 CLI 타입 설정
+    if project_config.get("backend_model"):
+        model = project_config["backend_model"]
+        provider = config._parse_model_provider(model)  # "gpt-4o" → "openai"
+        config.role_cli_types["backend"] = provider_to_cli.get(provider, "claude_code")
+    
+    # 4. 워크플로우 컴파일 및 실행
+    workflow = get_compiled_daacs_workflow(config)
+    for event in workflow.stream(initial_state):
+        # 노드별 이벤트 처리 및 로그 전송
+        ...</code></pre>
+    </section>
+
+
+    <!-- Slide 9: llm_source_provider.py -->
+    <section class="slide" data-page="9">
+        <h2>4.2 llm_source_provider.py (382줄)</h2>
+        <p><span class="badge badge-cyan">daacs/llm_source_provider.py</span> | LLM 소스 추상화 계층</p>
+        <h3>클래스 계층 구조</h3>
+        <pre><code class="language-python">class LLMSource(ABC):
+    """LLM 소스 베이스 클래스 (추상)"""
+    @abstractmethod
+    def invoke(self, prompt: str) -> str: pass
+    @abstractmethod
+    def invoke_structured(self, prompt: str) -> Dict: pass
+
+class CLIAssistantLLMSource(LLMSource):
+    """CLI Assistant의 내장 LLM 사용 (Claude Code → Claude LLM, Codex → GPT LLM)"""
+    def invoke(self, prompt: str) -> str:
+        result = self.client.execute(prompt)  # cli_executor.py 호출
+        if result.startswith("Error:"):
+            if self.fallback_config:
+                # Fallback: Plugin LLM으로 전환
+                fallback_source = PluginLLMSource(...)
+                return fallback_source.invoke(prompt)
+
+class PluginLLMSource(LLMSource):
+    """플러그인 LLM 사용 (OpenAI, Anthropic, Google API 직접 호출)"""
+    def invoke(self, prompt: str) -> str:
+        if self.provider == "openai":
+            return self.llm.chat.completions.create(...).choices[0].message.content
+        elif self.provider == "anthropic":
+            return self.llm.messages.create(...).content[0].text
+
+class MockLLMSource(LLMSource):
+    """테스트용 Mock LLM (실제 API 호출 없이 더미 응답)"""</code></pre>
+    </section>
+
+
+    <!-- Slide 10: verification.py -->
+    <section class="slide" data-page="10">
+        <h2>4.3 verification.py (542줄)</h2>
+        <p><span class="badge badge-cyan">daacs/graph/verification.py</span> | 검증 템플릿</p>
+        <h3>검증 템플릿 종류</h3>
+        <table>
+            <tr>
+                <th>템플릿</th>
+                <th>역할</th>
+                <th>검증 방법</th>
+            </tr>
+            <tr>
+                <td><code class="inline-code">files_exist</code></td>
+                <td>파일 존재 확인</td>
+                <td>os.path.exists()</td>
+            </tr>
+            <tr>
+                <td><code class="inline-code">files_not_empty</code></td>
+                <td>빈 파일 확인</td>
+                <td>os.path.getsize() > 0</td>
+            </tr>
+            <tr>
+                <td><code class="inline-code">python_syntax_valid</code></td>
+                <td>Python 구문 검사</td>
+                <td>py_compile.compile()</td>
+            </tr>
+            <tr>
+                <td><code class="inline-code">javascript_syntax_valid</code></td>
+                <td>JS 구문 검사</td>
+                <td>괄호/중괄호 매칭</td>
+            </tr>
+            <tr>
+                <td><code class="inline-code">api_spec_compliance</code></td>
+                <td>API 스펙 준수</td>
+                <td>엔드포인트 패턴 검색</td>
+            </tr>
+            <tr>
+                <td><code class="inline-code">backend_server_test</code></td>
+                <td>서버 시작 테스트</td>
+                <td>uvicorn 실행 + 헬스체크</td>
+            </tr>
+            <tr>
+                <td><code class="inline-code">frontend_build_test</code></td>
+                <td>프론트 빌드 테스트</td>
+                <td>npm install 실행</td>
+            </tr>
+        </table>
+        <h3>액션 타입별 템플릿 매핑</h3>
+        <pre><code class="language-python">TYPE_TO_TEMPLATES = {
+    "backend": ["files_exist", "files_not_empty", "python_syntax_valid", 
+                "python_import_test", "api_spec_compliance"],
+    "frontend": ["files_exist", "files_not_empty", "javascript_syntax_valid", 
+                 "frontend_build_test"],
+}</code></pre>
+    </section>
+
+
+    <!-- Slide 11: replanning.py -->
+    <section class="slide" data-page="11">
+        <h2>4.4 replanning.py (298줄)</h2>
+        <p><span class="badge badge-cyan">daacs/graph/replanning.py</span> | 재계획 전략</p>
+        <h3>실패 유형별 전략 매핑</h3>
+        <pre><code class="language-python">STRATEGIES = {
+    "permission_denied": {
+        "stop": True,  # 즉시 중단 (수동 개입 필요)
+        "reason": "Permission error - requires manual intervention",
+        "severity": "critical"
+    },
+    "tests_fail": {
+        "stop": False,  # 재시도
+        "reason": "Tests failed - retrying with verbose mode",
+        "next_actions": [
+            {"type": "test", "cmd": "pytest -v --tb=short"},
+        ]
+    },
+    "build_fail": {
+        "stop": False,
+        "reason": "Build failed - checking dependencies",
+        "next_actions": [
+            {"type": "shell", "cmd": "pip install -r requirements.txt"},
+        ]
+    },
+    "codegen_fail": {
+        "stop": False,
+        "reason": "Code generation incomplete - regenerating",
+    }
+}</code></pre>
+        <div class="info-box">💡 <strong>핵심:</strong> 실패 유형(permission, tests, build 등)에 따라 자동으로 복구 전략 선택</div>
+    </section>
+
+
+    <!-- Slide 12: CLI 실행 프로세스 ⭐ -->
+    <section class="slide" data-page="12">
+        <h1>5. CLI 실행 프로세스 ⭐</h1>
+        <h2>cli_executor.py - CLI 실행 흐름</h2>
+        <h3>CLI 타입별 명령어 분기 (라인 58-83)</h3>
+        <pre><code class="language-python">def execute(self, prompt: str) -> str:
+    """CLI를 비대화형 모드(exec)로 실행하여 결과를 받아옵니다."""
+    
+    if self.cli_type == "claude_code":
+        # Claude CLI: --dangerously-skip-permissions로 자동 승인
+        cmd = ["claude.cmd", "--dangerously-skip-permissions"]
+        input_str = prompt  # 프롬프트는 stdin으로 전달
+    
+    elif self.cli_type == "gemini":
+        # Gemini CLI: -s (silent mode)로 확인 프롬프트 스킵
+        cmd = ["gemini.cmd", "-s"]
+        input_str = prompt
+    
+    else:  # Codex (기본값)
+        # Codex CLI: exec 모드 + sandbox 권한 부여
+        permissions = f'sandbox_permissions={json.dumps(["disk-full-access"])}'
+        cmd = ["npx", "@openai/codex", "exec", "--sandbox", "danger-full-access", "-c", permissions]
+        input_str = prompt
+    
+    # subprocess.run으로 실행
+    result = subprocess.run(cmd, input=input_str, cwd=self.cwd, ...)</code></pre>
+    </section>
+
+
+    <!-- Slide 13: CLI 실행 프로세스 한글 번역 -->
+    <section class="slide" data-page="13">
+        <h2>5.1 에이전틱 모드 CLI 옵션 (한글 번역)</h2>
+        <table class="prompt-table">
+            <tr>
+                <th>CLI</th>
+                <th>옵션</th>
+                <th>한글 설명</th>
+                <th>효과</th>
+            </tr>
+            <tr>
+                <td>Claude</td>
+                <td><code class="inline-code">--dangerously-skip-permissions</code></td>
+                <td>위험하게 권한 확인 건너뛰기</td>
+                <td>파일 생성/수정 시 사용자 확인 없이 자동 실행</td>
+            </tr>
+            <tr>
+                <td>Codex</td>
+                <td><code class="inline-code">exec --sandbox danger-full-access</code></td>
+                <td>실행 모드 + 샌드박스 전체 접근</td>
+                <td>비대화형 실행 + 디스크 전체 읽기/쓰기 권한</td>
+            </tr>
+            <tr>
+                <td>Gemini</td>
+                <td><code class="inline-code">-s</code></td>
+                <td>무음 모드 (Silent)</td>
+                <td>확인 프롬프트 표시 없이 자동 실행</td>
+            </tr>
+        </table>
+
+        <h3>Rate Limiter (Gemini 무료 티어용)</h3>
+        <pre><code class="language-python">class GeminiRateLimiter:
+    """Gemini 무료 티어 (분당 2회) 제한을 위한 Rate Limiter"""
+    _last_request_time = 0
+    _min_interval = 30.0  # 30초 대기 (여유 있게 설정)
+
+    @classmethod
+    def wait_for_slot(cls):
+        elapsed = time.time() - cls._last_request_time
+        if elapsed < cls._min_interval:
+            wait_time = cls._min_interval - elapsed
+            time.sleep(wait_time)  # 다음 슬롯까지 대기
+        cls._last_request_time = time.time()</code></pre>
+    </section>
+
+
+    <!-- Slide 14: LangGraph 워크플로우 상세 ⭐ -->
+    <section class="slide" data-page="14">
+        <h1>6. LangGraph 워크플로우 상세 ⭐</h1>
+        <h2>StateGraph 기본 구조</h2>
+        <div class="grid-2">
+            <div>
+                <h4>daacs_workflow.py (핵심 221줄)</h4>
+                <pre><code class="language-python"># LangGraph의 StateGraph 생성
+workflow = StateGraph(DAACSState)
+
+# 노드 추가 (각 처리 단계)
+workflow.add_node("orchestrator_planning", ...)
+workflow.add_node("backend_subgraph", ...)
+workflow.add_node("frontend_subgraph", ...)
+workflow.add_node("orchestrator_judgment", ...)
+
+# 시작점 설정
+workflow.set_entry_point("orchestrator_planning")
+
+# 조건부 분기 (동적 라우팅)
+workflow.add_conditional_edges(
+    "orchestrator_planning",
+    decide_after_planning,  # 분기 함수
+    {
+        "parallel_execution": "start_parallel",
+        "deliver": "deliver"
+    }
+)</code></pre>
+            </div>
+            <div>
+                <h4>LangGraph 핵심 개념</h4>
+                <table>
+                    <tr>
+                        <th>개념</th>
+                        <th>역할</th>
+                    </tr>
+                    <tr>
+                        <td><code class="inline-code">StateGraph</code></td>
+                        <td>상태 기반 워크플로우 그래프</td>
+                    </tr>
+                    <tr>
+                        <td><code class="inline-code">add_node</code></td>
+                        <td>처리 노드 추가</td>
+                    </tr>
+                    <tr>
+                        <td><code class="inline-code">add_edge</code></td>
+                        <td>노드 간 연결</td>
+                    </tr>
+                    <tr>
+                        <td><code class="inline-code">add_conditional_edges</code></td>
+                        <td>조건부 분기</td>
+                    </tr>
+                    <tr>
+                        <td><code class="inline-code">set_entry_point</code></td>
+                        <td>시작 노드 지정</td>
+                    </tr>
+                    <tr>
+                        <td><code class="inline-code">compile()</code></td>
+                        <td>실행 가능 그래프로 컴파일</td>
+                    </tr>
+                </table>
+                <div class="info-box" style="margin-top: 15px;">
+                    💡 <strong>핵심:</strong> 각 노드는 <code class="inline-code">DAACSState</code>를 받아 처리 후 상태 업데이트를 반환
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Slide 15: 조건부 분기 상세 -->
+    <section class="slide" data-page="15">
+        <h2>6.1 조건부 분기 로직 (실제 코드)</h2>
+        <h3>Planning 후 분기 (라인 87-104)</h3>
+        <pre><code class="language-python">def decide_after_planning(state: DAACSState) -> str:
+    """Backend/Frontend 필요 여부에 따라 분기"""
+    needs_backend = state.get("needs_backend", False)   # Orchestrator가 설정한 값
+    needs_frontend = state.get("needs_frontend", False)
+
+    if needs_backend or needs_frontend:
+        return "parallel_execution"  # → start_parallel → Backend/Frontend 병렬 실행
+    else:
+        return "deliver"             # → 바로 완료 (코드 생성 불필요)</code></pre>
+
+        <h3>Judgment 후 분기 (라인 121-144)</h3>
+        <pre><code class="language-python">def decide_after_judgment(state: DAACSState) -> str:
+    """재작업 필요 여부 및 iteration 상한 확인"""
+    needs_rework = state.get("needs_rework", False)
+    iteration_count = state.get("iteration_count", 0)
+    max_iterations = state.get("max_iterations", 10)
+
+    # 1. 최대 반복 횟수 도달 → 강제 완료
+    if iteration_count >= max_iterations:
+        return "save_context"
+
+    # 2. 재작업 필요 → Replanning으로
+    if needs_rework:
+        return "replan"
+
+    # 3. 정상 완료
+    return "save_context"</code></pre>
+        <div class="warning-box">⚠️ <strong>무한 루프 방지:</strong> max_iterations(10)과 max_failures(5) 두 가지 상한으로 강제 종료</div>
+    </section>
+
+
+    <!-- Slide 16: 병렬 실행 메커니즘 -->
+    <section class="slide" data-page="16">
+        <h2>6.2 병렬 실행 메커니즘</h2>
+        <h3>병렬 vs 순차 실행 (라인 107-114)</h3>
+        <pre><code class="language-python"># config에서 parallel_execution 설정 확인
+if config.get_execution_config().get("parallel_execution", False):
+    # 병렬 실행 모드: start_parallel에서 두 SubGraph로 동시 분기
+    workflow.add_edge("start_parallel", "backend_subgraph")   # ← 동시!
+    workflow.add_edge("start_parallel", "frontend_subgraph")  # ← 동시!
+else:
+    # 순차 실행 모드 (v5.0 호환)
+    workflow.add_edge("start_parallel", "backend_subgraph")
+    workflow.add_edge("backend_subgraph", "frontend_subgraph")  # Backend 완료 후 Frontend</code></pre>
+
+        <div class="grid-2" style="margin-top: 30px;">
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <div class="card-title">병렬 실행 (parallel_execution: true)</div>
+                <div class="card-desc">Backend와 Frontend가 동시에 실행<br>시간 단축 but 상태 충돌 가능성<br>→ Reducer 함수로 해결</div>
+            </div>
+            <div class="card">
+                <div class="card-icon">📝</div>
+                <div class="card-title">순차 실행 (parallel_execution: false)</div>
+                <div class="card-desc">Backend 완료 후 Frontend 실행<br>안정적 but 시간 오래 걸림<br>→ v5.0 호환 모드</div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Slide 17: 파일 간 유기적 연결 ⭐ -->
+    <section class="slide" data-page="17">
+        <h1>7. 파일 간 유기적 연결 ⭐</h1>
+        <h2>호출 흐름도</h2>
+        <div class="folder-tree"><span class="folder">👤 User Request</span>
+            │
+            ▼
+            <span class="file">daacs_api_server.py</span> <span class="comment"># REST API 진입점 (POST
+                /api/projects)</span>
+            │
+            ├── <span class="file">config_loader.py</span> <span class="comment"># YAML 설정 로드</span>
+            │ └── <span class="file">llm_source_provider.py</span> <span class="comment"># LLM 소스 팩토리</span>
+            │ └── <span class="file">cli_executor.py</span> <span class="comment"># Codex/Claude/Gemini 클라이언트</span>
+            │
+            └── <span class="file">daacs_workflow.py</span> <span class="comment"># LangGraph 워크플로우 (21줄)</span>
+            │
+            ├── <span class="file">orchestrator_nodes.py</span> <span class="comment"># Planning, Judgment, Replanning
+                (457줄)</span>
+            │ └── <span class="file">replanning.py</span> <span class="comment"># 실패 유형별 재계획 전략</span>
+            │
+            ├── <span class="file">backend_subgraph.py</span> <span class="comment"># Backend Coder → Verifier 루프
+                (491줄)</span>
+            │ └── <span class="file">verification.py</span> <span class="comment"># Python 구문/API 스펙 검증 (542줄)</span>
+            │
+            └── <span class="file">frontend_subgraph.py</span> <span class="comment"># Frontend Coder → Verifier 루프
+                (393줄)</span>
+            └── <span class="file">verification.py</span> <span class="comment"># JS 구문/빌드 검증</span>
+        </div>
+    </section>
+
+
+    <!-- Slide 18: 데이터 흐름 -->
+    <section class="slide" data-page="18">
+        <h2>7.1 데이터 흐름 (DAACSState)</h2>
+        <div class="grid-2">
+            <div>
+                <h4>상태 전파 흐름</h4>
+                <pre><code class="language-python"># 1. API Server에서 초기화
+initial_state = create_initial_daacs_state(
+    goal="TODO 앱 만들어줘",
+    session_id=project_id
+)
+
+# 2. Orchestrator Planning이 설정
+return {
+    "needs_backend": True,
+    "needs_frontend": True,
+    "api_spec": {...},  # ← Backend가 참조
+    "frontend_spec": {...}  # ← Frontend가 참조
+}
+
+# 3. Backend Coder가 업데이트
+return {
+    "backend_files": {"main.py": "...", ...},
+    "backend_status": "working"
+}
+
+# 4. Judgment에서 최종 판단
+return {
+    "compatibility_verified": True,
+    "needs_rework": False
+}</code></pre>
+            </div>
+            <div>
+                <h4>주요 상태 필드</h4>
+                <table>
+                    <tr>
+                        <th>필드</th>
+                        <th>설정 주체</th>
+                        <th>사용처</th>
+                    </tr>
+                    <tr>
+                        <td><code class="inline-code">current_goal</code></td>
+                        <td>User</td>
+                        <td>모든 노드</td>
+                    </tr>
+                    <tr>
+                        <td><code class="inline-code">api_spec</code></td>
+                        <td>Orchestrator</td>
+                        <td>Backend, Judgment</td>
+                    </tr>
+                    <tr>
+                        <td><code class="inline-code">backend_files</code></td>
+                        <td>Backend</td>
+                        <td>Judgment, Deliver</td>
+                    </tr>
+                    <tr>
+                        <td><code class="inline-code">frontend_files</code></td>
+                        <td>Frontend</td>
+                        <td>Judgment, Deliver</td>
+                    </tr>
+                    <tr>
+                        <td><code class="inline-code">failure_summary</code></td>
+                        <td>Verifier</td>
+                        <td>Coder (재시도)</td>
+                    </tr>
+                    <tr>
+                        <td><code class="inline-code">needs_rework</code></td>
+                        <td>Judgment</td>
+                        <td>Workflow 분기</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Slide 19: Backend Coder 프롬프트 -->
+    <section class="slide" data-page="19">
+        <h1>8. 프롬프트 엔지니어링</h1>
+        <h2>8.1 Backend Coder 프롬프트 (한글 번역)</h2>
+        <table class="prompt-table">
+            <tr>
+                <th style="width: 50%;">영어 (원문)</th>
+                <th>한글 번역</th>
+            </tr>
+            <tr>
+                <td>You are a senior backend developer with Tech Lead mindset.</td>
+                <td>당신은 기술 리드 마인드를 가진 시니어 백엔드 개발자입니다.</td>
+            </tr>
+            <tr>
+                <td>STRICT ROLE SEPARATION</td>
+                <td>엄격한 역할 분리</td>
+            </tr>
+            <tr>
+                <td>You are the BACKEND developer ONLY.</td>
+                <td>당신은 오직 백엔드 개발자입니다.</td>
+            </tr>
+            <tr>
+                <td>Do NOT generate any frontend files (React, HTML, CSS, JS)</td>
+                <td>프론트엔드 파일은 절대 생성하지 마세요</td>
+            </tr>
+            <tr>
+                <td>CREATE ALL FILES IN THIS EXACT DIRECTORY: {backend_dir}</td>
+                <td>반드시 이 정확한 디렉토리에 파일을 생성하세요</td>
+            </tr>
+            <tr>
+                <td>Target Python 3.12 (NOT 3.14+)</td>
+                <td>Python 3.12 대상 (3.14+ 아님)</td>
+            </tr>
+            <tr>
+                <td>Use Pydantic V2 with from_attributes=True</td>
+                <td>Pydantic V2에서 from_attributes=True 사용</td>
+            </tr>
+            <tr>
+                <td>NO MARKDOWN FILES - code only!</td>
+                <td>.md 파일 생성 금지 - 코드만!</td>
+            </tr>
+            <tr>
+                <td>ENGLISH ONLY: Write ALL code in English only</td>
+                <td>영어만: 모든 코드는 영어로만 작성</td>
+            </tr>
+        </table>
+    </section>
+
+
+    <!-- Slide 20: 에이전틱 모드 프롬프트 -->
+    <section class="slide" data-page="20">
+        <h2>8.2 에이전틱 모드 프롬프트 (한글 번역)</h2>
+        <h3>Claude 전용</h3>
+        <table class="prompt-table">
+            <tr>
+                <th style="width: 50%;">영어 (원문)</th>
+                <th>한글 번역</th>
+            </tr>
+            <tr>
+                <td>AGENTIC MODE (CLAUDE)</td>
+                <td>에이전틱 모드 (클로드)</td>
+            </tr>
+            <tr>
+                <td>You have FULL file creation permissions.</td>
+                <td>파일 생성에 대한 전체 권한이 있습니다.</td>
+            </tr>
+            <tr>
+                <td>CREATE all files in the WORKING DIRECTORY (cwd).</td>
+                <td>작업 디렉토리(cwd)에 모든 파일을 생성하세요.</td>
+            </tr>
+            <tr>
+                <td>Do NOT ask for confirmation - just create the files.</td>
+                <td>확인을 요청하지 마세요 - 그냥 파일을 생성하세요.</td>
+            </tr>
+            <tr>
+                <td>Do NOT create .md files - code only!</td>
+                <td>.md 파일 생성 금지 - 코드만!</td>
+            </tr>
+        </table>
+        <h3>Codex 전용</h3>
+        <table class="prompt-table">
+            <tr>
+                <th style="width: 50%;">영어 (원문)</th>
+                <th>한글 번역</th>
+            </tr>
+            <tr>
+                <td>AGENTIC MODE (CODEX)</td>
+                <td>에이전틱 모드 (코덱스)</td>
+            </tr>
+            <tr>
+                <td>Create all files in the WORKING DIRECTORY (cwd).</td>
+                <td>작업 디렉토리(cwd)에 모든 파일을 생성하세요.</td>
+            </tr>
+            <tr>
+                <td>Use your file creation tools.</td>
+                <td>파일 생성 도구를 사용하세요.</td>
+            </tr>
+            <tr>
+                <td>You decide the best file structure for this project.</td>
+                <td>이 프로젝트에 가장 적합한 파일 구조를 결정하세요.</td>
+            </tr>
+        </table>
+        <div class="info-box" style="margin-top: 15px;">
+            💡 <strong>에이전틱 모드 핵심:</strong> LLM이 텍스트 응답 대신 <strong>직접 파일을 생성</strong>하도록 지시. 확인 요청 없이 자율적으로 실행.
+        </div>
+    </section>
+
+
+    <!-- Slide 21: Self-Healing 프롬프트 -->
+    <section class="slide" data-page="21">
+        <h2>8.3 Self-Healing 프롬프트 (한글 번역)</h2>
+        <h3>실패 피드백 루프 (backend_subgraph.py 라인 182-193)</h3>
+        <pre><code class="language-python"># 이전 실패 사유 (재작업 시 피드백 루프)
+failure_summary = state.get('failure_summary', [])
+if failure_summary:
+    failure_reasons = "\n".join(f"- {reason}" for reason in failure_summary)
+    failure_context = f"""
+=== ⚠️ PREVIOUS FAILURE REASONS (FIX THESE!) ===
+The previous code generation failed verification. You MUST fix these issues:
+{failure_reasons}
+
+Please carefully address each issue above in your new code.
+"""</code></pre>
+        <table class="prompt-table" style="margin-top: 20px;">
+            <tr>
+                <th style="width: 50%;">영어 (원문)</th>
+                <th>한글 번역</th>
+            </tr>
+            <tr>
+                <td>PREVIOUS FAILURE REASONS (FIX THESE!)</td>
+                <td>이전 실패 원인 (이것들을 수정하세요!)</td>
+            </tr>
+            <tr>
+                <td>The previous code generation failed verification.</td>
+                <td>이전 코드 생성이 검증에 실패했습니다.</td>
+            </tr>
+            <tr>
+                <td>You MUST fix these issues:</td>
+                <td>반드시 이 문제들을 수정해야 합니다:</td>
+            </tr>
+            <tr>
+                <td>Please carefully address each issue above in your new code.</td>
+                <td>새 코드에서 위의 각 문제를 주의 깊게 해결하세요.</td>
+            </tr>
+        </table>
+        <div class="warning-box">⚠️ <strong>Self-Healing 핵심:</strong> 이전 검증 실패 원인을 프롬프트에 명시적으로 포함하여 동일 실수 방지</div>
+    </section>
+
+
+    <!-- Slide 22: Orchestrator Judgment 프롬프트 -->
+    <section class="slide" data-page="22">
+        <h2>8.4 Orchestrator Judgment 프롬프트 (한글 번역)</h2>
+        <table class="prompt-table">
+            <tr>
+                <th style="width: 50%;">영어 (원문)</th>
+                <th>한글 번역</th>
+            </tr>
+            <tr>
+                <td>You are a senior technical reviewer and integration specialist.</td>
+                <td>당신은 시니어 기술 리뷰어이자 통합 전문가입니다.</td>
+            </tr>
+            <tr>
+                <td>Perform a DEEP COMPATIBILITY ANALYSIS between backend and frontend code.</td>
+                <td>백엔드와 프론트엔드 코드 간 심층 호환성 분석을 수행하세요.</td>
+            </tr>
+            <tr>
+                <td>API ENDPOINT MATCHING</td>
+                <td>API 엔드포인트 매칭</td>
+            </tr>
+            <tr>
+                <td>Does backend implement ALL endpoints from the API spec?</td>
+                <td>백엔드가 API 스펙의 모든 엔드포인트를 구현했나요?</td>
+            </tr>
+            <tr>
+                <td>Does frontend call ALL endpoints from the API spec?</td>
+                <td>프론트엔드가 API 스펙의 모든 엔드포인트를 호출하나요?</td>
+            </tr>
+            <tr>
+                <td>REQUEST/RESPONSE FORMAT</td>
+                <td>요청/응답 형식</td>
+            </tr>
+            <tr>
+                <td>Are field names and types consistent?</td>
+                <td>필드 이름과 타입이 일치하나요?</td>
+            </tr>
+            <tr>
+                <td>BASE URL CONFIGURATION</td>
+                <td>기본 URL 설정</td>
+            </tr>
+            <tr>
+                <td>Is frontend configured with correct backend URL?</td>
+                <td>프론트엔드에 올바른 백엔드 URL이 설정되어 있나요?</td>
+            </tr>
+            <tr>
+                <td>Is CORS properly configured in backend?</td>
+                <td>백엔드에 CORS가 올바르게 설정되어 있나요?</td>
+            </tr>
+        </table>
+    </section>
+
+
+    <!-- Slide 23: daacs_config.yaml -->
+    <section class="slide" data-page="23">
+        <h1>9. 설정 파일 상세</h1>
+        <h2>daacs_config.yaml</h2>
+        <pre><code class="language-yaml"># DAACS v6.0 Configuration
+
+# ==================== CLI Assistant 설정 ====================
+cli_assistant:
+  type: "claude_code"  # codex, claude_code, gemini
+  timeout: 600         # 10분 (Backend 코드 생성에 충분한 시간)
+
+# ==================== 역할별 LLM 선택 ====================
+roles:
+  orchestrator:
+    source: "cli_assistant"  # CLI 내장 LLM 사용
+    temperature: 0.3         # 낮춰서 일관된 계획
+  
+  backend:
+    source: "cli_assistant"
+    temperature: 0.7         # 창의적 코드 생성
+    fallback:
+      provider: "openai"     # CLI 실패 시 Fallback
+      model: "gpt-4o"
+
+# ==================== 실행 설정 ====================
+execution:
+  mode: "prod"                    # test (Mock), prod (실제)
+  max_iterations: 10              # 전체 워크플로우 최대 반복
+  max_subgraph_iterations: 2      # SubGraph 내부 재시도 제한
+  parallel_execution: true        # Backend/Frontend 병렬 실행</code></pre>
+    </section>
+
+
+    <!-- Slide 24: 결론 -->
+    <section class="slide slide-title" data-page="24"
+        style="background: radial-gradient(ellipse at center, #1a1a2e 0%, var(--bg-primary) 70%);">
+        <h1 style="font-size: 2.8em;">10. 결론</h1>
+        <h2 style="border: none; text-align: center; margin: 30px 0;">DAACS의 핵심 가치</h2>
+        <div class="grid-4" style="margin: 40px 0;">
+            <div class="card">
+                <div class="card-icon">🤖</div>
+                <div class="card-title">자동화</div>
+                <div class="card-desc">기획→구현→검증<br>전 과정 자동화</div>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔄</div>
+                <div class="card-title">자가 치유</div>
+                <div class="card-desc">에러 분석 &<br>자동 수정</div>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎛️</div>
+                <div class="card-title">유연성</div>
+                <div class="card-desc">다양한 LLM &<br>CLI 조합</div>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <div class="card-title">병렬 처리</div>
+                <div class="card-desc">Backend/Frontend<br>동시 실행</div>
+            </div>
+        </div>
+        <div style="margin-top: 50px;">
+            <span class="badge badge-cyan">Python 3.12</span>
+            <span class="badge badge-green">LangGraph</span>
+            <span class="badge badge-purple">FastAPI</span>
+            <span class="badge badge-cyan">Codex CLI</span>
+            <span class="badge badge-green">Claude Code</span>
+            <span class="badge badge-purple">React + Vite</span>
+        </div>
+        <p style="margin-top: 60px; font-size: 1.8em; color: var(--accent-cyan);">감사합니다! 🎉</p>
+    </section>
+
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+        hljs.highlightAll();
+    </script>
+</body>
+
+</html>

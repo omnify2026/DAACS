@@ -1,0 +1,18 @@
+graph LR
+    subgraph "Planning Phase"
+        Goal[User Goal]
+        Embedding[Sentence Transformer]
+        VectorSearch[ChromaDB Vector Search]
+        Memory[(Past Experiences)]
+        Context[Context Builder]
+        LLM[Gemini LLM]
+    end
+
+    Goal --> Embedding
+    Embedding --> VectorSearch
+    VectorSearch --> Memory
+    Memory --> Context
+    Context --> LLM
+    LLM --> Plan[Execution Plan]
+
+    Plan -.->|Success| Memory

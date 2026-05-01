@@ -1,0 +1,72 @@
+{
+  "status": "ready_to_plan",
+  "refined_goal": "LoL 드래프트 중 팀 조합 기반 챔피언 추천 웹사이트 MVP",
+  "summary": "드래프트 진행 중 포지션별 추천 5개와 근거를 보여주는 공개 웹 MVP",
+  "question_level": "l0",
+  "missing_topics": [],
+  "questions": [],
+  "assumptions": [
+    "MVP는 웹 브라우저에서 사용하는 반응형 공개 서비스입니다.",
+    "추천 로직은 룰/가중치 기반으로 시작하며 모델 학습은 MVP 범위에서 제외합니다.",
+    "챔피언/태그 보강 데이터는 서비스 내부에서 수동 관리합니다.",
+    "로그인, 개인 전적, 최근 기록 저장, 실시간 Riot 인증 연동은 MVP에서 제외합니다.",
+    "추천 대상은 사용자가 먼저 고른 1개 포지션 내 챔피언으로 제한합니다."
+  ],
+  "execution_contract": {
+    "request_type": "mvp_product_build",
+    "artifact_type": "public_web_app",
+    "delivery_tier": "mvp",
+    "user_language": "ko",
+    "primary_goal": "드래프트 도중 아군/상대 조합과 선호를 반영해 최적 챔피언 5개를 추천한다",
+    "input_requirements": [
+      "사용자 포지션 선택",
+      "블루/레드 진영 선택",
+      "현재까지 확정된 아군 픽",
+      "현재까지 확정된 상대 픽",
+      "밴된 챔피언 목록",
+      "선호 챔피언 다중 선택과 우선순위",
+      "Data Dragon 챔피언 기본 데이터",
+      "내부 수동 보강 태그 데이터"
+    ],
+    "output_requirements": [
+      "현재 드래프트 상태 기준 추천 챔피언 5개",
+      "각 추천의 한줄 이유 요약",
+      "사거리, AP/AD 밸런스, 하드 CC, 역할군, 조합 유형 기준별 평가 근거",
+      "시너지/카운터 대응 우선 설명",
+      "선호 챔피언 반영 여부 배지",
+      "드래프트 변경 시 즉시 재계산",
+      "밴 챔피언 자동 제외"
+    ],
+    "success_criteria": [
+      "드래프트 중간 단계에서도 추천이 동작한다",
+      "현재 조합과 상대 조합을 함께 반영한다",
+      "추천 5개와 근거가 빠르게 표시된다",
+      "사용자 선호는 보조 신호로 반영된다",
+      "포지션 외 챔피언은 추천하지 않는다"
+    ],
+    "constraints": [
+      "MVP는 공개 웹서비스로 시작한다",
+      "로그인과 저장 기능은 제외한다",
+      "실시간 개인 전적 연동은 제외한다",
+      "추천 근거는 설명 가능해야 한다",
+      "추천 데이터 일부는 수동 운영을 전제로 한다"
+    ],
+    "role_hints": [
+      "PM",
+      "Frontend engineer",
+      "Backend engineer",
+      "Game systems designer",
+      "Data curator",
+      "UI designer"
+    ],
+    "domain_signals": [
+      "LoL draft pick flow",
+      "team composition scoring",
+      "counter and synergy reasoning",
+      "position-scoped recommendation",
+      "rule-based recommendation engine",
+      "champion metadata enrichment"
+    ]
+  },
+  "ready_to_plan": true
+}

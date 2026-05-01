@@ -1,0 +1,23 @@
+## 히스토리 공유 테스트
+
+1. DAACS CLI 실행:
+   cd C:\Users\Admin\Desktop\DAACS\CLI\daacs-cli
+   ./target/release/daacs.exe
+
+2. 첫 번째 프롬프트:
+   > 가계부 어플을 만들고 싶어
+
+3. 페르소나 변경:
+   > /agent backend
+
+4. 두 번째 프롬프트 (이전 대화를 기억해야 함):
+   > 내가 만들고 싶은 게 뭐라고?
+
+## 기대 결과:
+- "가계부 어플"이라고 답변해야 함
+- 이전 대화 내용이 포함된 프롬프트가 전달됨
+
+## 기술 구현:
+- cli_client.rs 수정: 히스토리를 프롬프트에 포함
+- 최근 6개 메시지만 포함 (토큰 제한)
+- 형식: ## Previous Conversation + ## Current Request

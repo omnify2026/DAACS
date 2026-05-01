@@ -1,0 +1,85 @@
+{
+  "status": "needs_clarification",
+  "refined_goal": "LoL 드래프트에서 팀 조합·취향 기반 챔피언 추천 웹사이트",
+  "summary": "LoL 밴픽 중 최적 픽 추천 웹 MVP 요청",
+  "question_level": "l2",
+  "missing_topics": [
+    "constraints",
+    "integrations",
+    "acceptance_criteria"
+  ],
+  "questions": [
+    {
+      "id": "q1_role_scope",
+      "topic": "constraints",
+      "question": "추천은 내가 가는 포지션(탑/정글/미드/원딜/서폿) 기준으로 하나요, 아니면 전 포지션을 다 추천해야 하나요?",
+      "reason": "포지션 범위가 추천 로직과 화면 구성을 크게 바꿉니다.",
+      "required": true
+    },
+    {
+      "id": "q2_input_method",
+      "topic": "integrations",
+      "question": "밴/픽 현황과 선호 챔피언은 사용자가 직접 넣나요, 아니면 라이엇 정보와 자동 연동까지 원하나요?",
+      "reason": "수동 입력인지 외부 연동인지에 따라 MVP 범위와 개발 난도가 달라집니다.",
+      "required": true
+    },
+    {
+      "id": "q3_recommendation_priority",
+      "topic": "acceptance_criteria",
+      "question": "추천 순위에서 가장 중요한 1순위는 무엇인가요: 상성/승률, 팀 조합 균형, 내가 좋아하는 챔피언 중 어떤 쪽인가요?",
+      "reason": "무엇을 우선할지 정해야 추천 결과를 일관되게 정렬할 수 있습니다.",
+      "required": true
+    }
+  ],
+  "assumptions": [
+    "초기 버전은 웹 MVP로 가정",
+    "답변이 없으면 밴/픽과 선호 챔피언은 수동 입력으로 가정",
+    "답변이 없으면 로그인 없이 바로 사용하는 형태로 가정"
+  ],
+  "execution_contract": {
+    "request_type": "new_product_rfi",
+    "artifact_type": "pm_handoff_brief",
+    "delivery_tier": "mvp",
+    "user_language": "ko",
+    "primary_goal": "LoL 드래프트 중 상대/아군 조합과 개인 취향을 반영해 챔피언을 추천한다",
+    "input_requirements": [
+      "드래프트 현재 상태(밴/픽 현황)",
+      "사용자 포지션 또는 추천 범위",
+      "선호 챔피언 또는 플레이 취향",
+      "추천 우선순위 기준"
+    ],
+    "output_requirements": [
+      "핵심 사용자 흐름",
+      "MVP 기능 범위",
+      "추천 점수화/정렬 로직 개요",
+      "필수 데이터 및 외부 연동 범위",
+      "명확한 수용 기준"
+    ],
+    "success_criteria": [
+      "현재 아군/상대 조합을 반영한 추천 후보를 제시한다",
+      "추천 이유를 짧고 이해하기 쉽게 보여준다",
+      "PM이 추가 추측 없이 범위와 우선순위를 정할 수 있다"
+    ],
+    "constraints": [
+      "웹사이트 형태",
+      "LoL 드래프트 픽 문맥 유지",
+      "비기술 사용자도 이해 가능한 요구사항 정리"
+    ],
+    "role_hints": [
+      "PM",
+      "frontend",
+      "backend",
+      "recommendation_logic"
+    ],
+    "domain_signals": [
+      "LoL Draft Pick",
+      "팀 조합",
+      "선호 챔피언",
+      "사거리",
+      "AP/AD 밸런스",
+      "하드 CC",
+      "포킹/받아치기/돌진 조합"
+    ]
+  },
+  "ready_to_plan": false
+}

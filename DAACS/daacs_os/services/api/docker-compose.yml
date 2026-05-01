@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: daacs-postgres
+    environment:
+      POSTGRES_DB: daacs
+      POSTGRES_USER: daacs
+      POSTGRES_PASSWORD: daacs
+    ports:
+      - "15432:5432"
+    volumes:
+      - daacs_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U daacs -d daacs"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:8-alpine
+    container_name: daacs-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "16379:6379"
+    volumes:
+      - daacs_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  daacs_postgres_data:
+  daacs_redis_data:

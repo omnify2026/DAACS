@@ -1,0 +1,139 @@
+# ===== DAACS OS — Development Docker Compose =====
+# docker compose up -d
+
+services:
+  # ----- API Gateway (FastAPI) -----
+  api:
+    build:
+      context: ./services/api
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./services/api:/app
+      - ./daacs_config.yaml:/app/daacs_config.yaml:ro
+      - workspace_data:/app/workspace
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-daacs}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-daacs}
+      - REDIS_URL=redis://redis:6379/0
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-daacs}
+      - POSTGRES_USER=${POSTGRES_USER:-daacs}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CHROMADB_HOST=chromadb
+      - CHROMADB_PORT=8000
+      - API_PORT=8001
+      - DAACS_JWT_SECRET=${DAACS_JWT_SECRET}
+      - DAACS_FERNET_SECRET=${DAACS_FERNET_SECRET}
+      - DAACS_CODEX_ONLY=${DAACS_CODEX_ONLY:-false}
+      - DAACS_CLI_ONLY_PROVIDER=${DAACS_CLI_ONLY_PROVIDER:-gemini}
+      - GEMINI_SANDBOX=${GEMINI_SANDBOX:-false}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      chromadb:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - daacs-net
+
+  # ----- Celery Worker -----
+  worker:
+    build:
+      context: .
+      dockerfile: services/worker/Dockerfile
+    volumes:
+      - ./services/api:/app/api
+      - ./services/worker:/app/worker
+      - ./daacs_config.yaml:/app/daacs_config.yaml:ro
+      - workspace_data:/app/workspace
+      - /var/run/docker.sock:/var/run/docker.sock  # Docker-in-Docker for sandbox
+    environment:
+      - PYTHONPATH=/app/api:/app
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=${POSTGRES_DB:-daacs}
+      - POSTGRES_USER=${POSTGRES_USER:-daacs}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - DAACS_CODEX_ONLY=${DAACS_CODEX_ONLY:-false}
+      - DAACS_CLI_ONLY_PROVIDER=${DAACS_CLI_ONLY_PROVIDER:-gemini}
+      - GEMINI_SANDBOX=${GEMINI_SANDBOX:-false}
+    depends_on:
+      - api
+      - redis
+    restart: unless-stopped
+    networks:
+      - daacs-net
+
+  # ----- PostgreSQL (State Store) -----
+  postgres:
+    image: postgres:17-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-daacs}
+      - POSTGRES_USER=${POSTGRES_USER:-daacs}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-daacs}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - daacs-net
+
+  # ----- Redis (Message Broker + Cache) -----
+  redis:
+    image: redis:8-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      - ./infra/docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - daacs-net
+
+  # ----- ChromaDB (Vector Memory) -----
+  chromadb:
+    image: chromadb/chroma:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    environment:
+      - ANONYMIZED_TELEMETRY=false
+    restart: unless-stopped
+    networks:
+      - daacs-net
+
+volumes:
+  postgres_data:
+  redis_data:
+  chroma_data:
+  workspace_data:
+
+networks:
+  daacs-net:
+    driver: bridge

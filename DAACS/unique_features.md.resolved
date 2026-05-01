@@ -1,0 +1,101 @@
+# DAACS 프로젝트 특장점
+
+이 문서는 DAACS가 다른 AI 코드 생성 시스템과 차별화되는 핵심 기능들입니다.
+
+---
+
+## 1. 🎯 자동 스펙 분류
+
+**파일**: [daacs/orchestrator/spec_builder.py](file:///Users/david/Desktop/python/github/transformers7-project/daacs/orchestrator/spec_builder.py)
+
+사용자가 **목표(Goal)만 입력**하면:
+- 키워드 분석으로 도메인 자동 분류 (주식앱, 채팅앱, 인증앱, CRUD앱 등)
+- 해당 도메인에 맞는 **기본 템플릿 자동 적용** (엔티티, 기능, UI 섹션)
+
+> 예: "주식 추적 앱 만들어줘" → 자동으로 ticker, portfolio, watchlist 엔티티 추천
+
+---
+
+## 2. 📋 구조화된 요구사항 (RFI)
+
+**파일**: [daacs/rfi_schema.py](file:///Users/david/Desktop/python/github/transformers7-project/daacs/rfi_schema.py)
+
+| 필드 | 설명 |
+|------|------|
+| `rationale` | 왜 이 기술을 선택했는지 (근거 추적) |
+| [sources](file:///Users/david/Desktop/python/github/transformers7-project/daacs/server_projects.py#290-304) | 참고한 URL 링크 |
+| `related_constraints` | 관련 제약조건 ID |
+| `blueprint` | Mermaid.js 아키텍처 다이어그램 |
+
+> **차별점**: "그냥 코드 생성"이 아니라, **설계 결정의 근거를 추적**할 수 있음
+
+---
+
+## 3. 🧠 장기 메모리 시스템
+
+**파일**: [daacs/memory/vector_store.py](file:///Users/david/Desktop/python/github/transformers7-project/daacs/memory/vector_store.py)
+
+- ChromaDB + SentenceTransformers 기반 **벡터 저장소**
+- 과거 성공/실패 경험을 저장하고, 유사한 문제에 **자동 재활용**
+- 계획(Planning) 단계에서 관련 경험 검색 → 프롬프트에 포함
+
+---
+
+## 4. 🔄 폴백 액션 (우아한 오류 복구)
+
+**파일**: [daacs/orchestrator/fallback_actions.py](file:///Users/david/Desktop/python/github/transformers7-project/daacs/orchestrator/fallback_actions.py)
+
+- LLM이 실패하거나 응답이 없을 때 → **사전 정의된 액션으로 대체**
+- 최소한 기본 스캐폴드라도 생성되도록 보장
+
+---
+
+## 5. 🚦 릴리스 게이트 (출시 전 품질 검사)
+
+**파일**: [daacs/release_gate.py](file:///Users/david/Desktop/python/github/transformers7-project/daacs/release_gate.py)
+
+빌드 완료 후 **자동 품질 검사**:
+- ✅ 백엔드/프론트엔드 서버 기동 여부
+- ✅ E2E 테스트 통과 여부
+- ✅ 안정성/회귀 테스트
+
+실패 시 **자동 재시도** (최대 3회)
+
+---
+
+## 6. 📑 계약 우선 API 설계
+
+- 오케스트레이터가 **API 명세(api_spec)를 먼저 정의**
+- 백엔드/프론트엔드가 동일한 명세를 기준으로 **동시 개발**
+- 통합 시 불일치 최소화
+
+---
+
+## 7. 🔀 일관성 실패 즉시 재계획
+
+**파일**: [daacs/graph/daacs_workflow.py](file:///Users/david/Desktop/python/github/transformers7-project/daacs/graph/daacs_workflow.py)
+
+- 프론트-백엔드 API 일관성 검사 후 **실패 시 즉시 재계획 트리거**
+- Judgment 노드를 거치지 않고 바로 수정 진행
+
+---
+
+## 8. ⚡ 병렬 서브그래프 실행
+
+- `ThreadPoolExecutor`로 백엔드/프론트엔드 **진정한 동시 처리**
+- 설정으로 순차/병렬 전환 가능
+
+---
+
+## 요약 비교
+
+| 기능 | 일반 AI 코드생성 | DAACS |
+|------|-----------------|-------|
+| 도메인 자동 분류 | ❌ | ✅ |
+| 설계 근거 추적 | ❌ | ✅ |
+| 과거 경험 재활용 | ❌ | ✅ |
+| LLM 실패 폴백 | ❌ | ✅ |
+| 출시 전 자동 검증 | ❌ | ✅ |
+| API 명세 우선 설계 | △ | ✅ |
+| 일관성 즉시 재계획 | ❌ | ✅ |
+| 병렬 실행 | ❌ | ✅ |

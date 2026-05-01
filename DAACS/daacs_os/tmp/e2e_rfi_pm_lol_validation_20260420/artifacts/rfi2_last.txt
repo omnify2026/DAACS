@@ -1,0 +1,89 @@
+{
+  "status": "needs_clarification",
+  "refined_goal": "LoL 드래프트 중 조합·선호 기반 챔피언 추천 웹사이트",
+  "summary": "실시간 드래프트 상태에서 추천 5개와 이유를 보여주는 공개 웹서비스",
+  "question_level": "l1",
+  "missing_topics": [
+    "ui",
+    "constraints",
+    "acceptance_criteria"
+  ],
+  "questions": [
+    {
+      "id": "q5_preference_input",
+      "topic": "ui",
+      "question": "내가 좋아하는 챔피언은 어떻게 넣으면 될까요? 직접 여러 개 선택, 우선순위 지정, 최근 선택 불러오기 중 어떤 방식이 좋나요?",
+      "reason": "추천 결과에 사용자 선호를 반영하는 입력 방식이 필요합니다.",
+      "required": true
+    },
+    {
+      "id": "q6_position_scope",
+      "topic": "constraints",
+      "question": "추천은 모든 포지션 통합으로 할까요, 아니면 탑/정글/미드/원딜/서폿 중 내가 맡는 포지션만 기준으로 할까요?",
+      "reason": "추천 후보 범위와 평가 기준이 크게 달라집니다.",
+      "required": true
+    },
+    {
+      "id": "q7_result_priority",
+      "topic": "acceptance_criteria",
+      "question": "추천 이유에서 무엇을 가장 앞에 보여주면 좋을까요? 예: 조합 시너지, 카운터 대응, 내가 좋아하는 챔피언 우선",
+      "reason": "결과 화면의 핵심 설명과 우선순위 로직을 정해야 합니다.",
+      "required": true
+    }
+  ],
+  "assumptions": [
+    "MVP는 한국어 중심 웹사이트입니다.",
+    "로그인 없이 누구나 드래프트 상태를 직접 입력해 사용합니다.",
+    "추천은 밴 제외, 현재 픽 반영, 즉시 재계산이 기본입니다.",
+    "Riot 실시간 계정 연동 없이 서비스 내부 보강 데이터로 추천합니다."
+  ],
+  "execution_contract": {
+    "request_type": "new_product_mvp",
+    "artifact_type": "public_web_app",
+    "delivery_tier": "mvp",
+    "user_language": "ko",
+    "primary_goal": "드래프트 진행 중 아군·상대 조합과 사용자 선호를 반영해 최적 챔피언 5개를 추천한다.",
+    "input_requirements": [
+      "블루/레드 진영 선택",
+      "현재까지 확정된 아군 픽 입력",
+      "현재까지 확정된 상대 픽 입력",
+      "밴된 챔피언 입력",
+      "사용자 선호 챔피언 정보 입력 방식 정의",
+      "포지션 범위 정의"
+    ],
+    "output_requirements": [
+      "추천 챔피언 5개 표시",
+      "각 추천별 이유 요약 표시",
+      "사거리, AP/AD, 하드 CC, 역할군, 조합 유형 기준별 근거 표시",
+      "사용자 선호 반영 여부 표시",
+      "드래프트 상태 변경 시 재계산"
+    ],
+    "success_criteria": [
+      "드래프트 중간 단계에서도 추천이 즉시 갱신된다.",
+      "밴된 챔피언은 추천에서 제외된다.",
+      "추천 결과에 조합 근거와 선호 반영 여부가 함께 보인다.",
+      "사용자가 현재 상황에서 왜 추천됐는지 빠르게 이해할 수 있다."
+    ],
+    "constraints": [
+      "MVP는 Riot Data Dragon + 내부 수동 보강 데이터 기반으로 운영한다.",
+      "로그인, 저장, 소환사 인증, 실시간 전적 연동은 제외한다.",
+      "실시간 게임 클라이언트 연동 없이 수동 입력 기반으로 시작한다.",
+      "드래프트 전체 완료 전에도 사용 가능해야 한다."
+    ],
+    "role_hints": [
+      "PM",
+      "UX/UI",
+      "frontend",
+      "backend",
+      "game_data"
+    ],
+    "domain_signals": [
+      "LoL draft pick",
+      "champion recommendation",
+      "team composition reasoning",
+      "synergy and counter logic",
+      "preference-aware ranking"
+    ]
+  },
+  "ready_to_plan": false
+}

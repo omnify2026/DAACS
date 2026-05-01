@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "daacs-cli"
+version = "1.0.0"
+description = "DAACS - Digital Autonomous Agent Coding System (CLI)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Kyujeong Lee", email = "dlrbrud0410@gmail.com"}
+]
+keywords = ["ai", "coding", "agent", "llm", "cli"]
+
+dependencies = [
+    "rich>=13.0.0",
+    "prompt_toolkit>=3.0.0",
+    "typer>=0.9.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+]
+
+[project.scripts]
+daacs = "daacs_cli.main:app"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["daacs*", "daacs_cli*"]

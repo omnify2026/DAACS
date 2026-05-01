@@ -1,0 +1,79 @@
+{
+  "domain_templates": {
+    "stock_dashboard": {
+      "features": [
+        "watchlist management (add/remove items)",
+        "price change indicators",
+        "time range selector",
+        "conditional streaming for short range only",
+        "local persistence for watchlist"
+      ],
+      "entities": ["Stock", "WatchlistItem", "PricePoint"],
+      "ui_sections": ["summary", "watchlist", "chart", "details", "filters"]
+    },
+    "analytics_dashboard": {
+      "features": [
+        "kpi summary cards",
+        "filterable data table",
+        "primary trend chart",
+        "time range controls",
+        "empty/loading/error states"
+      ],
+      "entities": ["Metric", "KpiCard", "TrendPoint"],
+      "ui_sections": ["summary", "filters", "chart", "table", "details"]
+    },
+    "crud_app": {
+      "features": [
+        "list/create/edit/delete items",
+        "form validation",
+        "search or filter",
+        "empty/loading/error states"
+      ],
+      "entities": ["Item", "FormState"],
+      "ui_sections": ["toolbar", "list", "form", "details"]
+    },
+    "chat_app": {
+      "features": [
+        "conversation list",
+        "message composer",
+        "streaming updates",
+        "presence/typing indicators"
+      ],
+      "entities": ["Conversation", "Message", "Participant"],
+      "ui_sections": ["sidebar", "thread", "composer"]
+    },
+    "auth_app": {
+      "features": [
+        "login/register forms",
+        "session persistence",
+        "protected routes",
+        "error handling"
+      ],
+      "entities": ["User", "Session"],
+      "ui_sections": ["auth_form", "status", "profile"]
+    },
+    "default": {
+      "features": [
+        "primary list view",
+        "detail view",
+        "search or filter",
+        "empty/loading/error states"
+      ],
+      "entities": ["Item", "Detail"],
+      "ui_sections": ["header", "list", "details"]
+    }
+  },
+  "default_assumptions": {
+    "frontend_framework": "nextjs",
+    "frontend_language": "typescript",
+    "ui_style": "tailwind_or_css",
+    "backend_framework": "fastapi"
+  },
+  "required_files": ["app/page.tsx", "app/layout.tsx", "app/globals.css"],
+  "ui_states": ["loading", "empty", "error"],
+  "constraints": [
+    "Ensure entrypoint files exist before rendering UI",
+    "Prefer complete UI scaffold before wiring logic",
+    "Do not ship placeholder-only output"
+  ]
+}

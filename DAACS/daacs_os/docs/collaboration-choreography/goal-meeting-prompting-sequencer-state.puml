@@ -1,0 +1,19 @@
+@startuml as
+title Prompting Sequencer State (GoalMeetingPanel)
+
+[*] --> Idle
+Idle --> Preparing : run()
+Preparing --> Planning : registry + prompts ready
+Planning --> BuildQueue : plan parsed
+BuildQueue --> StepExecuting : workQueue exists
+StepExecuting --> StepExecuting : next step
+StepExecuting --> CascadeExecuting : after steps
+CascadeExecuting --> Completed : all ok
+StepExecuting --> Failed : step non-zero / hard error
+CascadeExecuting --> Failed : cascade failed or overflow
+Planning --> Failed : planning failed
+Preparing --> Failed : environment/setup failed
+Completed --> Idle
+Failed --> Idle
+
+@enduml

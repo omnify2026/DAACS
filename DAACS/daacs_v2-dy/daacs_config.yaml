@@ -1,0 +1,100 @@
+# DAACS Configuration (v7.2.0)
+# This file controls DAACS behavior.
+# Priority: kwargs > daacs_config.yaml > Environment Variables > Defaults
+
+# CLI Configuration (Default LLM)
+cli:
+  # Available providers: codex, gemini, claude
+  type: codex
+  timeout: 600
+
+# Execution Parameters
+execution:
+  # Enable parallel execution of backend and frontend
+  parallel_execution: true
+  
+  # Maximum iterations for the main orchestrator cycle
+  max_iterations: 10
+  
+  # Maximum allowed consecutive failures before stopping
+  max_failures: 10
+  
+  # Maximum iterations for subgraphs (backend/frontend)
+  max_subgraph_iterations: 3
+  
+  # Number of cycles with no code changes before stopping
+  max_no_progress: 2
+  
+  # Minimum score (0-10) required to pass code review
+  code_review_min_score: 9
+  
+  # Allow delivery even if quality gates fail (not recommended)
+  allow_low_quality_delivery: false
+  
+  # Max retries when quality plateau is detected
+  plateau_max_retries: 3
+  
+  # Verification depth: "fast" (skip heavy checks) or "full"
+  verification_lane: full
+  
+  # Enable advanced quality gates
+  enable_quality_gates: true
+  
+  # Enable release gate (post-build checks)
+  enable_release_gate: false
+
+# Role-based CLI Assignment (Cycle 7 Feature)
+# Assign different CLI types to different roles for optimal cost/performance
+roles:
+  # Planner & Judge (needs high reasoning)
+  orchestrator: gemini
+  
+  # Code Generator (needs good coding skills)
+  backend: codex
+  frontend: codex
+  
+  # Reviewer (needs critical analysis)
+  code_review: claude
+
+# Project Constraints (Enforced by Reviewer & CodePatcher)
+constraints:
+  port: 8000
+  api_prefix: "/api/v1"
+  allowed_extensions:
+    - ".py"
+    - ".js"
+    - ".jsx"
+    - ".ts"
+    - ".tsx"
+    - ".html"
+    - ".css"
+    - ".scss"
+    - ".json"
+    - ".yaml"
+    - ".yml"
+    - ".toml"
+    - ".ini"
+    - ".xml"
+    - ".csv"
+    - ".sql"
+    - ".md"
+    - ".txt"
+    - ".rst"
+    - ".sh"
+    - ".conf"
+    - ".dockerignore"
+    - ".gitignore"
+
+# Quality Guidelines (Injected into CoderAgent Prompt)
+guidelines:
+  common:
+    - "Include docstrings for all functions and classes."
+    - "Use meaningful variable names."
+    - "Handle likely errors with try-except or try-catch."
+  frontend:
+    - "Use semantic HTML tags."
+    - "Ensure responsive design."
+    - "Use clear and modular CSS/JS structure."
+  backend:
+    - "Use type hints where possible."
+    - "Follow PEP 8 style guide."

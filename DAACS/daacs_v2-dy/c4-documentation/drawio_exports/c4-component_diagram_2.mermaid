@@ -1,0 +1,26 @@
+classDiagram
+    class LLMSource {
+        <<interface>>
+        +invoke(prompt) str
+        +invoke_structured(prompt, schema) dict
+    }
+
+    class CLIAssistantLLMSource {
+        -cli_type: str
+        -client: SessionBasedCLIClient
+        +invoke(prompt) str
+    }
+
+    class PluginLLMSource {
+        -provider: str
+        -api_client: Any
+        +invoke(prompt) str
+    }
+
+    class LLMSourceFactory {
+        +create_llm_source(role, config) LLMSource
+    }
+
+    LLMSource <|-- CLIAssistantLLMSource
+    LLMSource <|-- PluginLLMSource
+    LLMSourceFactory --> LLMSource

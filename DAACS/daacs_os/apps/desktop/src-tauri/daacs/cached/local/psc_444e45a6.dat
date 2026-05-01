@@ -1,0 +1,109 @@
+{
+  "main_task_name": "공학계산기앱만들어줘\nOK",
+  "project_name": "local",
+  "channel_id": "444e45a6",
+  "items": [
+    {
+      "number": 16,
+      "title": "pm: Analyze requirements for the scienti...",
+      "description": "pm -> Analyze requirements for the scientific calculator",
+      "status": "done"
+    },
+    {
+      "number": 17,
+      "title": "pm: Generate project specification and t...",
+      "description": "pm -> Generate project specification and task breakdown in Plan.md",
+      "status": "done"
+    },
+    {
+      "number": 1,
+      "title": "pm: Define core requirements and success...",
+      "description": "pm -> Define core requirements and success criteria for the Calculator App",
+      "status": "done"
+    },
+    {
+      "number": 2,
+      "title": "pm: Create actionable task breakdown for...",
+      "description": "pm -> Create actionable task breakdown for Frontend and Backend developers",
+      "status": "done"
+    },
+    {
+      "number": 3,
+      "title": "pm: Define product requirements and succ...",
+      "description": "pm -> Define product requirements and success criteria for the calculator app",
+      "status": "done"
+    },
+    {
+      "number": 4,
+      "title": "pm: Create actionable task breakdown for...",
+      "description": "pm -> Create actionable task breakdown for the frontend developer",
+      "status": "done"
+    },
+    {
+      "number": 5,
+      "title": "pm: Create actionable task breakdown for...",
+      "description": "pm -> Create actionable task breakdown for the backend developer",
+      "status": "done"
+    },
+    {
+      "number": 6,
+      "title": "pm: Requirement analysis and workspace s...",
+      "description": "pm -> Requirement analysis and workspace scan",
+      "status": "done"
+    },
+    {
+      "number": 7,
+      "title": "pm: Feature specification and UI/UX desi...",
+      "description": "pm -> Feature specification and UI/UX design",
+      "status": "done"
+    },
+    {
+      "number": 8,
+      "title": "pm: Agent task breakdown and assignment",
+      "description": "pm -> Agent task breakdown and assignment",
+      "status": "done"
+    },
+    {
+      "number": 9,
+      "title": "pm: Define Product Requirements and Arch...",
+      "description": "pm -> Define Product Requirements and Architecture",
+      "status": "done"
+    },
+    {
+      "number": 10,
+      "title": "pm: Setup Project Repository and Initial...",
+      "description": "pm -> Setup Project Repository and Initial Environment",
+      "status": "done"
+    },
+    {
+      "number": 11,
+      "title": "pm: Implement Backend API and Database M...",
+      "description": "pm -> Implement Backend API and Database Models",
+      "status": "done"
+    },
+    {
+      "number": 12,
+      "title": "pm: Implement Frontend Authentication an...",
+      "description": "pm -> Implement Frontend Authentication and UI Shell",
+      "status": "done"
+    },
+    {
+      "number": 13,
+      "title": "pm: Implement Draft and Recommendation E...",
+      "description": "pm -> Implement Draft and Recommendation Engine",
+      "status": "done"
+    },
+    {
+      "number": 14,
+      "title": "pm: Integrate Frontend and Backend (Ban/...",
+      "description": "pm -> Integrate Frontend and Backend (Ban/Pick UI)",
+      "status": "done"
+    },
+    {
+      "number": 15,
+      "title": "pm: Final Review and End-to-End Testing",
+      "description": "pm -> Final Review and End-to-End Testing",
+      "status": "done"
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+# ===== DAACS OS Configuration =====
+# Main configuration file for the DAACS Operating System
+
+version: "1.0.0"
+name: "DAACS OS"
+description: "One Man, One Enterprise — AI-Powered Virtual Enterprise OS"
+
+# ----- Agent Roles -----
+# 8 agents mapped 1:1 with GUI Prototype (store.ts AGENT_META)
+roles:
+  ceo:
+    cli: gemini           # Strategic reasoning
+    display_name: "대표님"
+    color: "#8B5CF6"      # purple
+    tier: high
+  pm:
+    cli: gemini           # Planning & coordination
+    display_name: "기획자"
+    color: "#6366F1"      # indigo
+    tier: standard
+  developer:
+    cli: codex            # Code generation
+    display_name: "개발자"
+    color: "#3B82F6"      # blue
+    tier: standard
+  reviewer:
+    cli: claude           # Critical analysis
+    display_name: "리뷰어"
+    color: "#EF4444"      # red
+    tier: high
+  devops:
+    cli: codex            # Infrastructure code
+    display_name: "운영자"
+    color: "#10B981"      # emerald
+    tier: standard
+  marketer:
+    cli: gemini           # Creative writing
+    display_name: "마케터"
+    color: "#EC4899"      # pink
+    tier: flash
+  designer:
+    cli: claude           # Visual analysis
+    display_name: "디자이너"
+    color: "#F97316"      # orange
+    tier: standard
+  cfo:
+    cli: gemini           # Data analysis
+    display_name: "재무관"
+    color: "#EAB308"      # yellow
+    tier: flash
+
+# ----- Execution Parameters -----
+execution:
+  parallel_execution: true
+  max_iterations: 10
+  max_failures: 10
+  max_subgraph_iterations: 3
+  max_no_progress: 2
+  code_review_min_score: 9
+  allow_low_quality_delivery: false
+  plateau_max_retries: 3
+  verification_lane: full
+  enable_quality_gates: true
+  enable_release_gate: false
+  enable_human_in_loop: true
+
+# ----- Smart Model Router -----
+router:
+  enabled: true
+  default_tier: standard
+  budget_threshold_usd: 0.10  # Switch to cheapest when remaining < this
+  tiers:
+    flash:    ["gemini-2.0-flash", "gpt-4o-mini"]
+    standard: ["gemini-2.0-pro", "gpt-4o"]
+    high:     ["claude-sonnet-4-5", "gpt-5.3-codex"]
+    max:      ["claude-opus-4-6", "o3"]
+  complexity_rules:
+    simple:   flash
+    standard: standard
+    complex:  high
+    critical: max
+    planning: standard
+
+# ----- Safety Circuit Breakers -----
+safety:
+  daily_spend_cap_usd: 1.00
+  max_turn_limit: 10
+  anomaly_detection:
+    enabled: true
+    max_repeated_errors: 5
+    max_api_calls_per_task: 100
+
+# ----- Docker Sandbox -----
+sandbox:
+  enabled: true
+  cpu_limit: "0.5"
+  memory_limit: "512m"
+  network_mode: "none"        # No network by default
+  timeout_seconds: 300
+  read_only_root: true
+  egress_whitelist: []        # Empty = no outbound allowed
+
+# ----- Shared Worktree -----
+worktree:
+  lock_timeout_seconds: 30
+  conflict_resolution: "auto"  # auto | escalate | last-write-wins
+  max_concurrent_agents: 8
+
+# ----- Workflows -----
+workflows:
+  feature_development:
+    name: "신규 기능 개발"
+    steps:
+      - { from: pm, to: designer, task: "UI 디자인 요청" }
+      - { from: designer, to: developer, task: "디자인 → 개발 전달" }
+      - { from: developer, to: reviewer, task: "코드 리뷰 요청" }
+      - { from: reviewer, to: devops, task: "배포 요청" }
+  bug_fix:
+    name: "버그 수정"
+    steps:
+      - { from: reviewer, to: developer, task: "버그 수정 요청" }
+      - { from: developer, to: reviewer, task: "수정 코드 리뷰" }
+      - { from: reviewer, to: devops, task: "핫픽스 배포" }
+  marketing_campaign:
+    name: "마케팅 캠페인"
+    steps:
+      - { from: ceo, to: marketer, task: "캠페인 기획 지시" }
+      - { from: marketer, to: designer, task: "디자인 에셋 요청" }
+      - { from: designer, to: cfo, task: "비용 검토 요청" }
+
+# ----- Project Constraints -----
+project:
+  default_port: 8000
+  api_prefix: "/api/v1"
+  allowed_extensions:
+    - .py
+    - .js
+    - .jsx
+    - .ts
+    - .tsx
+    - .html
+    - .css
+    - .scss
+    - .json
+    - .yaml
+    - .yml
+    - .toml
+    - .sql
+    - .md
+    - .txt
+    - .sh
+    - .dockerfile
+    - .gitignore
+
+# ----- Quality Guidelines -----
+quality:
+  common:
+    - "Write docstrings for public functions"
+    - "Use meaningful variable names"
+    - "Include proper error handling"
+  frontend:
+    - "Use semantic HTML"
+    - "Ensure responsive design"
+    - "Modular CSS/JS"
+  backend:
+    - "Type hints for all function signatures"
+    - "PEP 8 compliance"
+    - "Async where possible"

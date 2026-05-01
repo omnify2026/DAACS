@@ -1,0 +1,41 @@
+{
+  "rfi": {
+    "round1_status": "needs_clarification",
+    "round1_level": "l2",
+    "round1_questions": 3,
+    "round3_status": "ready_to_plan",
+    "round3_level": "l0",
+    "round3_questions": 0
+  },
+  "pm1": {
+    "counts": {
+      "frontend": 5,
+      "backend": 6,
+      "reviewer": 3,
+      "verifier": 4
+    },
+    "score": 14,
+    "score_max": 16,
+    "notable_gap": [
+      "covers_pick_order_context",
+      "covers_api_contract_detail"
+    ]
+  },
+  "pm2": {
+    "counts": {
+      "frontend": 6,
+      "backend": 7,
+      "reviewer": 4,
+      "verifier": 5
+    },
+    "score": 16,
+    "score_max": 16,
+    "notable_gap": []
+  },
+  "notes": [
+    "RFI needed 3 rounds to reach ready_to_plan.",
+    "PM draft 1 already produced structured frontend/backend/reviewer/verifier outputs.",
+    "PM draft 2 improved explicit pick-order awareness and response-contract detail.",
+    "PM revision stream briefly emitted meta/tool text before final structured output, but the final PM sections remained parseable by OmniAICore::parse_pm_task_lists."
+  ]
+}

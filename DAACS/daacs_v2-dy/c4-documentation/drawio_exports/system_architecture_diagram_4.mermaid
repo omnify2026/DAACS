@@ -1,0 +1,26 @@
+stateDiagram-v2
+    [*] --> Planning
+
+    Planning --> ParallelExecution: Plan approved
+    Planning --> Stopped: User cancels
+
+    ParallelExecution --> BackendSubgraph
+    ParallelExecution --> FrontendSubgraph
+
+    BackendSubgraph --> Verification: Backend complete
+    FrontendSubgraph --> Verification: Frontend complete
+
+    Verification --> Judgment: Tests pass
+    Verification --> Stopped: Critical failure
+
+    Judgment --> Deliver: Quality gates pass
+    Judgment --> Replanning: Needs improvement
+    Judgment --> WaitingForHuman: Ambiguous decision
+
+    Replanning --> ParallelExecution: New plan created
+
+    WaitingForHuman --> ParallelExecution: User approves
+    WaitingForHuman --> Stopped: User rejects
+
+    Deliver --> [*]: Success
+    Stopped --> [*]: Terminated

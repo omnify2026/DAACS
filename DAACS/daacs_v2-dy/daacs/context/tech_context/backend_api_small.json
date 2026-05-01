@@ -1,0 +1,16 @@
+{
+    "version": "bootstrap-1",
+    "scope": "backend_api_small",
+    "updated_at": "2025-Q1",
+    "description": "소형 API 서버용 백엔드 기술 스택 가이드",
+    "facts": [
+        "Python 생태계에서 FastAPI는 간단한 API 서버에 널리 사용됨",
+        "Django는 풀스택 웹 앱, Flask는 마이크로서비스에 적합",
+        "MVP 단계에서는 ORM 복잡도보다 개발 속도를 우선한다",
+        "간단한 CRUD는 SQLite + SQLAlchemy로 충분하다",
+        "인증이 필요하면 JWT 기반으로 시작한다"
+    ],
+    "sources": [
+        "curated-knowledge-2025-Q1"
+    ]
+}

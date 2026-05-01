@@ -1,0 +1,26 @@
+graph LR
+    subgraph "Agent System (Message Bus)"
+        Planner[Planner Agent<br/>planner-01]
+        Coder[Coder Agent<br/>coder-01]
+        Reviewer[Reviewer Agent<br/>reviewer-01]
+
+        Bus[Message Bus<br/>Async Queue]
+    end
+
+    Planner -->|TASK| Bus
+    Bus -->|TASK| Coder
+
+    Coder -->|REQUEST| Bus
+    Bus -->|REQUEST| Reviewer
+
+    Reviewer -->|DONE/REJECT| Bus
+    Bus -->|DONE/REJECT| Planner
+
+    Planner -.->|retrieve_experience| Memory[(Memory Store)]
+    Planner -.->|save_experience| Memory
+
+    Coder -.->|execute_prompt| LLM[LLM Layer]
+    Planner -.->|execute_prompt| LLM
+
+    Reviewer -.->|score_code| QualityScorer[Quality Scorer]
+    Reviewer -.->|patch_code| CodePatcher[Code Patcher]

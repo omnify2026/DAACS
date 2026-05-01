@@ -1,0 +1,28 @@
+C4Container
+    title DAACS Container Diagram
+
+    Person(user, "Developer")
+
+    Container(frontend, "Frontend UI", "React + Vite + TypeScript", "Web-based dashboard for project management")
+    Container(api, "Backend API", "FastAPI + Python", "RESTful API and WebSocket server")
+    Container(orchestrator, "Orchestrator Engine", "Python + LangGraph", "Workflow coordination and state management")
+    Container(agents, "Agent System", "Python Multi-Agent", "Specialized AI agents (Planner, Coder, Reviewer)")
+    Container(llm_layer, "LLM Abstraction", "Python Provider Pattern", "Multi-provider LLM client")
+    Container(memory, "Memory Store", "ChromaDB + Vector Store", "Long-term experience storage")
+    ContainerDb(workspace, "Project Workspace", "File System", "Generated project files")
+
+    Rel(user, frontend, "Uses", "HTTPS")
+    Rel(frontend, api, "API calls", "REST/WebSocket")
+    Rel(api, orchestrator, "Triggers workflow", "Function calls")
+    Rel(orchestrator, agents, "Dispatches tasks", "Message passing")
+    Rel(agents, llm_layer, "LLM queries", "Provider API")
+    Rel(agents, memory, "Store/retrieve experiences", "Vector search")
+    Rel(agents, workspace, "Read/write code", "File I/O")
+
+    System_Ext(codex, "Codex API")
+    System_Ext(claude, "Claude API")
+    System_Ext(gemini, "Gemini API")
+
+    Rel(llm_layer, codex, "Code generation", "REST")
+    Rel(llm_layer, claude, "Code review", "REST")
+    Rel(llm_layer, gemini, "Planning", "REST")

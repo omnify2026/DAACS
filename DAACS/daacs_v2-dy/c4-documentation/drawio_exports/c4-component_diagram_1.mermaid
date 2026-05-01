@@ -1,0 +1,15 @@
+graph TB
+    subgraph "Orchestrator Component"
+        Core[Core Orchestrator]
+        Planner[Planner Module]
+        Executor[Executor Module]
+        Verifier[Verifier Module]
+        Context[Context Manager]
+    end
+
+    Core --> Planner
+    Core --> Executor
+    Core --> Verifier
+    Planner --> Context
+    Executor --> AgentSystem[Agent System Component]
+    Verifier --> QualityScorer[Quality Scorer]

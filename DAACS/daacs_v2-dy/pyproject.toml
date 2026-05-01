@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "daacs"
+version = "0.1.0"
+description = "DAACS - AI Based Development Orchestration System"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "pydantic",
+    "requests",
+    "pyyaml",
+]
+
+[tool.setuptools.packages.find]
+include = ["daacs*"]

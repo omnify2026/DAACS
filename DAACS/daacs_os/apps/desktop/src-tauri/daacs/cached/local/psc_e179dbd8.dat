@@ -1,0 +1,37 @@
+{
+  "main_task_name": "Implement the Frontend Tasks specified in Plan.md: 1. Initia...",
+  "project_name": "local",
+  "channel_id": "e179dbd8",
+  "items": [
+    {
+      "number": 1,
+      "title": "frontend_developer: Initialize UI Layout",
+      "description": "frontend_developer -> Initialize UI Layout",
+      "status": "pending"
+    },
+    {
+      "number": 2,
+      "title": "frontend_developer: Implement Basic Keyp...",
+      "description": "frontend_developer -> Implement Basic Keypad",
+      "status": "pending"
+    },
+    {
+      "number": 3,
+      "title": "frontend_developer: Implement Scientific...",
+      "description": "frontend_developer -> Implement Scientific Keypad",
+      "status": "pending"
+    },
+    {
+      "number": 4,
+      "title": "frontend_developer: Implement State Mana...",
+      "description": "frontend_developer -> Implement State Management",
+      "status": "pending"
+    },
+    {
+      "number": 5,
+      "title": "frontend_developer: API Integration",
+      "description": "frontend_developer -> API Integration",
+      "status": "pending"
+    }
+  ]
+}

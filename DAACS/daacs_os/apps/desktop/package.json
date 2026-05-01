@@ -1,0 +1,13 @@
+{
+    "name": "daacs-desktop",
+    "private": true,
+    "version": "0.1.0",
+    "scripts": {
+        "dev": "tauri dev",
+        "build": "node scripts/build.js",
+        "smoke:window": "node scripts/verify-window.js"
+    },
+    "devDependencies": {
+        "@tauri-apps/cli": "^2.10.1"
+    }
+}

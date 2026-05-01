@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DAACS OS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="root">
+    <header class="header">
+      <h1>DAACS OS</h1>
+    </header>
+    <main id="main">
+      <section id="auth-section" class="auth-section">
+        <div class="tabs">
+          <button type="button" id="tab-login" class="tab active">로그인</button>
+          <button type="button" id="tab-register" class="tab">회원가입</button>
+        </div>
+        <form id="login-form" class="form">
+          <input type="text" id="login-email" placeholder="이메일" required autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false">
+          <input type="password" id="login-password" placeholder="비밀번호 (8자 이상)" required minlength="8" autocomplete="current-password">
+          <button type="submit">로그인</button>
+        </form>
+        <form id="register-form" class="form hidden">
+          <input type="text" id="register-email" placeholder="이메일" required autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false">
+          <input type="password" id="register-password" placeholder="비밀번호 (8자 이상)" required minlength="8" autocomplete="new-password">
+          <input type="text" id="register-project" placeholder="프로젝트 이름 (선택)" value="Default Project">
+          <button type="submit">회원가입</button>
+        </form>
+        <p id="auth-error" class="error hidden"></p>
+      </section>
+      <section id="me-section" class="me-section hidden">
+        <p class="user-email" id="me-email"></p>
+        <div class="command-area">
+          <p class="cli-hint" id="cli-hint"></p>
+          <textarea id="command-input" placeholder="명령을 입력하세요 (Codex CLI 또는 Gemini CLI로 실행됩니다)" rows="3"></textarea>
+          <button type="button" id="command-run">실행</button>
+          <pre id="command-output" class="command-output"></pre>
+        </div>
+        <button type="button" id="logout-btn">로그아웃</button>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

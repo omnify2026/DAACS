@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant Orchestrator
+    participant PlannerAgent
+    participant CoderAgent
+    participant ReviewerAgent
+    participant LLM
+    participant Workspace
+
+    Orchestrator->>PlannerAgent: Start workflow
+    PlannerAgent->>CoderAgent: TASK message (file + instruction)
+
+    CoderAgent->>LLM: Generate code (Codex)
+    LLM-->>CoderAgent: Generated code
+    CoderAgent->>CoderAgent: Clean markdown formatting
+    CoderAgent->>ReviewerAgent: REQUEST message (file + code)
+
+    ReviewerAgent->>ReviewerAgent: Syntax check
+    ReviewerAgent->>ReviewerAgent: Quality scoring
+    ReviewerAgent->>ReviewerAgent: Constraint validation
+
+    alt Quality >= 8.0
+        ReviewerAgent->>Workspace: Write code to file
+        ReviewerAgent->>PlannerAgent: DONE message
+    else Quality < 8.0
+        ReviewerAgent->>PlannerAgent: REJECT message (feedback)
+        PlannerAgent->>CoderAgent: TASK message (fix instruction)
+    end

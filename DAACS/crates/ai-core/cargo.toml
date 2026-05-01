@@ -1,0 +1,11 @@
+[package]
+name = "ai_core"
+version = "0.1.0"
+edition = "2021"
+description = "AI orchestration and core logic for DAACS"
+
+[dependencies]
+infra_error = { path = "../infra-error" }
+infra_logger = { path = "../infra-logger" }
+tracing = "0.1"
+tokio = { version = "1", features = ["full"] }

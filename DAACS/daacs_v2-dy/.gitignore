@@ -1,0 +1,64 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+.eggs/
+dist/
+build/
+
+# Virtual Environments
+envs/
+.venv/
+venv/
+ENV/
+.conda_pkgs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Linting & Type Checking
+.mypy_cache/
+.ruff_cache/
+.dmypy.json
+
+# Logs & Runtime
+logs/
+*.log
+api.log
+
+# Build & Cache
+.vite/
+node_modules/
+.git_backup/
+
+# Project-specific
+workspace/
+test_workspace/
+.codex_rollouts/
+
+# Temp files
+*.tmp
+*.bak
+*.orig
+
+# Test Results
+frontend/playwright-report/
+frontend/test-results/

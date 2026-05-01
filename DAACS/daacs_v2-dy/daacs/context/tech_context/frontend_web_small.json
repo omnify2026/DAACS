@@ -1,0 +1,17 @@
+{
+    "version": "bootstrap-1",
+    "scope": "frontend_web_small",
+    "updated_at": "2025-Q1",
+    "description": "소형 웹 프로젝트용 프론트엔드 기술 스택 가이드",
+    "facts": [
+        "빠른 MVP/소형 웹앱 기본 스택으로 React + Vite를 우선 고려한다",
+        "UI는 Tailwind 기반으로 초기 속도를 확보한다",
+        "Next.js는 SEO/SSR 요구가 있을 때만 선택한다",
+        "상태 관리는 MVP에서 useState/useReducer로 충분하다",
+        "불필요한 복잡도(Redux 등)는 MVP 단계에서 지양한다"
+    ],
+    "sources": [
+        "curated-knowledge-2025-Q1",
+        "npm-trends-2024-H2"
+    ]
+}

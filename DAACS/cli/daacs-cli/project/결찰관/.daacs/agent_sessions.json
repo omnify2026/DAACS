@@ -1,0 +1,8 @@
+{
+  "sessions": {
+    "backend": true,
+    "frontend": true,
+    "architect": true,
+    "devops": true
+  }
+}

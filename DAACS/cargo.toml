@@ -1,0 +1,9 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/infra-error",
+    "crates/infra-logger",
+    "crates/ai-core",
+    "daacs_os/apps/desktop/src-tauri",
+    "DAACS_OS/backend",
+]

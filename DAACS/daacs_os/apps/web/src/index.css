@@ -1,0 +1,337 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* ========================================
+   DAACS Gamified Office — Design Tokens
+   ======================================== */
+
+@theme {
+  /* --- Colors: Deep Dark OLED --- */
+  --color-bg-deep: #0F0F23;
+  --color-bg-surface: #1A1A2E;
+  --color-bg-elevated: #16213E;
+  --color-border: #2A2A4A;
+  --color-border-light: #3A3A5A;
+
+  /* --- Colors: Brand --- */
+  --color-primary: #7C3AED;
+  --color-primary-light: #A78BFA;
+  --color-secondary: #6366F1;
+  --color-cta: #F43F5E;
+
+  /* --- Colors: Neon --- */
+  --color-neon-blue: #00F3FF;
+  --color-neon-purple: #BC13FE;
+  --color-neon-green: #39FF14;
+  --color-neon-pink: #FF6EC7;
+
+  /* --- Colors: Semantic --- */
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+
+  /* --- Colors: Text --- */
+  --color-text: #E2E8F0;
+  --color-text-muted: #64748B;
+  --color-text-dim: #475569;
+
+  /* --- Colors: Agent Roles --- */
+  --color-agent-ceo: #7C3AED;
+  --color-agent-pm: #6366F1;
+  --color-agent-developer: #3B82F6;
+  --color-agent-reviewer: #EF4444;
+  --color-agent-verifier: #14B8A6;
+  --color-agent-devops: #10B981;
+  --color-agent-marketer: #EC4899;
+  --color-agent-designer: #F97316;
+  --color-agent-cfo: #EAB308;
+
+  /* --- Colors: Office Zones --- */
+  --color-zone-ceo: #7C3AED;
+  --color-zone-meeting: #6366F1;
+  --color-zone-factory: #F97316;
+  --color-zone-marketing: #EC4899;
+  --color-zone-rnd: #3B82F6;
+  --color-zone-finance: #EAB308;
+  --color-zone-server: #10B981;
+  --color-zone-lobby: #64748B;
+
+  /* --- Office Environment --- */
+  --color-office-floor: #e2e8f0;
+  --color-office-wall: #cbd5e1;
+
+  /* --- Font Families --- */
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-terminal: 'VT323', monospace;
+  --font-ui: 'Inter', sans-serif;
+
+  /* --- Custom Animations --- */
+  --animate-bounce-slow: bounce 3s infinite;
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+  --animate-blink: blink 1s step-end infinite;
+  --animate-typing: typing 3.5s steps(40, end);
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-scanline: scanline 8s linear infinite;
+}
+
+/* ========================================
+   Keyframes
+   ======================================== */
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    filter: brightness(1.3);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes walk-left {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes walk-right {
+
+  0%,
+  100% {
+    transform: translateY(-2px);
+  }
+
+  50% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes keyboard-fire {
+
+  0%,
+  100% {
+    box-shadow: 0 0 4px rgba(251, 146, 60, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 12px rgba(251, 146, 60, 0.8);
+  }
+}
+
+@keyframes monitor-flicker {
+
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ========================================
+   Global Styles
+   ======================================== */
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background-color: var(--color-bg-deep);
+  color: var(--color-text);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  image-rendering: pixelated;
+}
+
+/* ========================================
+   Utility Classes
+   ======================================== */
+
+/* Neon Glow Text */
+.neon-glow-blue {
+  text-shadow: 0 0 7px var(--color-neon-blue), 0 0 20px var(--color-neon-blue), 0 0 42px var(--color-neon-blue);
+}
+
+.neon-glow-purple {
+  text-shadow: 0 0 7px var(--color-neon-purple), 0 0 20px var(--color-neon-purple), 0 0 42px var(--color-neon-purple);
+}
+
+.neon-glow-green {
+  text-shadow: 0 0 7px var(--color-neon-green), 0 0 20px var(--color-neon-green);
+}
+
+/* Glass Panel */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-strong {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Pixel Text */
+.pixel-text {
+  font-family: var(--font-pixel);
+  image-rendering: pixelated;
+}
+
+.terminal-text {
+  font-family: var(--font-terminal);
+}
+
+/* Scanline Overlay */
+.scanline-overlay {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 2px,
+      rgba(0, 0, 0, 0.03) 4px);
+}
+
+/* CRT Effect */
+.crt-effect {
+  animation: monitor-flicker 0.1s infinite;
+  box-shadow:
+    inset 0 0 60px rgba(0, 243, 255, 0.05),
+    0 0 20px rgba(0, 243, 255, 0.1);
+}
+
+/* Grid Floor Pattern */
+.grid-floor {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Zone Background Glow */
+.zone-glow {
+  position: relative;
+}
+
+.zone-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0.05;
+  transition: opacity 0.3s ease;
+}
+
+.zone-glow:hover::before {
+  opacity: 0.1;
+}
+
+/* Status Indicator Dot */
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.status-dot-active {
+  background-color: var(--color-success);
+  box-shadow: 0 0 6px var(--color-success);
+}
+
+.status-dot-error {
+  background-color: var(--color-error);
+  box-shadow: 0 0 6px var(--color-error);
+  animation: pulse-glow 1s ease-in-out infinite;
+}
+
+.status-dot-warning {
+  background-color: var(--color-warning);
+  box-shadow: 0 0 6px var(--color-warning);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-light);
+}

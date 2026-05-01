@@ -1,0 +1,25 @@
+FROM python:3.12-slim AS runtime
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH="/app/api:/app"
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl docker.io && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN addgroup --system daacs && adduser --system --ingroup daacs daacs
+
+# Build context is repository root via docker-compose.prod.yml.
+COPY services/api/requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+
+COPY services/api /app/api
+COPY services/worker /app/worker
+RUN chown -R daacs:daacs /app
+
+USER daacs
+
+CMD ["celery", "-A", "worker.tasks.celery_app", "worker", "--loglevel=info", "--concurrency=2", "--pool=prefork"]

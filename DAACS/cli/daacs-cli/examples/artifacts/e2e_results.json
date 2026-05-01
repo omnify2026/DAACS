@@ -1,0 +1,4 @@
+[
+  { "scenario_id": "E2E-001", "success": true },
+  { "scenario_id": "E2E-002", "success": false }
+]

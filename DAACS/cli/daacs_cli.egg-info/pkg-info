@@ -1,0 +1,56 @@
+Metadata-Version: 2.4
+Name: daacs-cli
+Version: 1.0.0
+Summary: DAACS - Digital Autonomous Agent Coding System (CLI)
+Author-email: Kyujeong Lee <dlrbrud0410@gmail.com>
+License: MIT
+Keywords: ai,coding,agent,llm,cli
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: rich>=13.0.0
+Requires-Dist: prompt_toolkit>=3.0.0
+Requires-Dist: typer>=0.9.0
+Requires-Dist: pyyaml>=6.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+
+# DAACS CLI
+
+🐝 **Digital Autonomous Agent Coding System** - Claude Code 스타일의 대화형 CLI
+
+## 설치
+
+```bash
+pip install -e .
+```
+
+## 사용법
+
+```bash
+# 기본 실행
+daacs
+
+# 프로젝트 디렉토리 지정
+daacs --project ./my-project
+
+# 목표 직접 입력
+daacs "투두 리스트 앱 만들어줘"
+```
+
+## 기능
+
+- 🐝 **Swarm Execution**: 자율 코딩 루프 (Dev → Test → QA → Fix)
+- 🧠 **Thinking Mode**: 코딩 전 심층 분석
+- ✨ **Auto Refactoring**: GLM 기반 코드 정리
+- 📝 **Auto Documentation**: DeepSeek 기반 문서 생성
+- 💾 **Long-term Memory**: 에러 패턴 학습
+
+## CLI 명령어
+
+| 명령어 | 설명 |
+|--------|------|
+| `/help` | 도움말 |
+| `/init` | 프로젝트 초기화 |
+| `/model` | 모델 선택 |
+| `/clear` | 화면 정리 |
+| `/exit` | 종료 |

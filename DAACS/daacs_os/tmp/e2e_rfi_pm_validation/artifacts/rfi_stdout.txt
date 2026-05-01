@@ -1,0 +1,81 @@
+{
+  "status": "needs_clarification",
+  "refined_goal": "팀 조합과 취향 기반 롤 챔피언 추천 웹사이트",
+  "summary": "상대/아군 조합과 선호를 반영해 최적 챔피언을 추천하는 웹앱",
+  "question_level": "l2",
+  "missing_topics": [
+    "integrations",
+    "users",
+    "acceptance_criteria"
+  ],
+  "questions": [
+    {
+      "id": "q1_data_source",
+      "topic": "integrations",
+      "question": "챔피언 정보와 상성 데이터는 직접 입력해서 만들까요, 아니면 Riot 같은 외부 데이터를 연결할까요?",
+      "reason": "추천 로직의 정확도와 구현 범위가 크게 달라집니다.",
+      "required": true
+    },
+    {
+      "id": "q2_target_user",
+      "topic": "users",
+      "question": "이 사이트는 본인만 쓰는 용도인가요, 아니면 누구나 접속해서 쓰는 공개 서비스인가요?",
+      "reason": "로그인, 저장 기능, 운영 범위를 정해야 합니다.",
+      "required": true
+    },
+    {
+      "id": "q3_mvp_output",
+      "topic": "acceptance_criteria",
+      "question": "처음 버전에서는 무엇만 되면 성공인가요: 추천 3개 보여주기, 이유 설명, 선호 챔피언 반영 중 꼭 필요한 걸 골라주세요.",
+      "reason": "초기 범위를 줄여서 바로 설계 가능한 수준으로 고정해야 합니다.",
+      "required": true
+    }
+  ],
+  "assumptions": [
+    "플랫폼은 웹사이트입니다.",
+    "추천 입력에는 아군 조합, 상대 조합, 사용자의 선호 챔피언이 포함됩니다.",
+    "초기 버전은 롤 픽창 의사결정을 돕는 MVP를 목표로 합니다."
+  ],
+  "execution_contract": {
+    "request_type": "product_build",
+    "artifact_type": "web_app_mvp",
+    "delivery_tier": "mvp",
+    "user_language": "ko",
+    "primary_goal": "상대/아군 조합과 개인 선호를 반영해 최적 챔피언을 추천한다.",
+    "input_requirements": [
+      "아군 챔피언 조합",
+      "상대 챔피언 조합",
+      "사용자 선호 챔피언 또는 플레이 성향",
+      "조합 평가 기준: 사거리, AP/AD 밸런스, 하드 CC, 역할군, 조합 유형"
+    ],
+    "output_requirements": [
+      "추천 챔피언 목록",
+      "추천 이유 요약",
+      "조합 기준별 평가 근거",
+      "사용자 선호 반영 여부"
+    ],
+    "success_criteria": [
+      "픽창 상황 입력 후 추천 결과를 즉시 볼 수 있다.",
+      "추천 결과에 조합 기반 이유가 포함된다.",
+      "사용자 선호가 추천 결과에 반영된다."
+    ],
+    "constraints": [
+      "초기 범위는 웹 MVP로 제한한다.",
+      "추천 품질은 데이터 출처와 규칙 정의에 의존한다.",
+      "외부 게임 데이터 연동 여부가 구현 방식에 직접 영향을 준다."
+    ],
+    "role_hints": [
+      "PM",
+      "frontend",
+      "backend",
+      "data_logic"
+    ],
+    "domain_signals": [
+      "league_of_legends",
+      "draft_assistant",
+      "team_comp_recommendation",
+      "preference_aware_ranking"
+    ]
+  },
+  "ready_to_plan": false
+}

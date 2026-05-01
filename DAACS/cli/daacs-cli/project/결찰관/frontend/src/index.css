@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #3B82F6;    /* Night Patrol - Primary */
+  --color-secondary: #64748B;  /* Night Patrol - Secondary */
+  --color-background: #000000; /* Night Patrol - Background */
+  --color-surface: #1E293B;    /* Night Patrol - Surface */
+  --color-text: #F8FAFC;       /* Night Patrol - Text */
+  --color-accent: #EF4444;     /* Night Patrol - Accent */
+
+  --font-sans: Inter, sans-serif;
+
+  --radius: 0.5rem;   /* DEFAULT */
+  --radius-lg: 0.75rem;
+
+  /* Re-declaring standard breakpoints if needed, but defaults usually suffice. */
+  /* --breakpoint-sm: 640px; */
+  /* --breakpoint-md: 768px; */
+  /* --breakpoint-lg: 1024px; */
+  /* --breakpoint-xl: 1280px; */
+}
+
+@layer base {
+  html {
+    @apply text-sm; /* Default font size */
+  }
+  body {
+    @apply font-sans bg-background text-text; /* Apply Inter font, background, and text color */
+  }
+}

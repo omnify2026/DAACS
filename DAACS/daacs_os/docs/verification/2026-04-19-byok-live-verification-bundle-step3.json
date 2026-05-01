@@ -1,0 +1,175 @@
+{
+  "bundle_type": "byok_live_verification_step3",
+  "generated_at_utc": "2026-04-19T03:25:00Z",
+  "status": "not_proven",
+  "summary": "The Step 3 verification bundle has been reconciled against the current workspace state and the recorded host-execution artifacts. No successful direct-backend BYOK rerun against http://127.0.0.1:8001 is traceable from the persisted evidence. The six transcript files under the Step 3 evidence root still contain only curl transport failures, the dedicated post-save /api/auth/me proof file is still absent, and the only recorded host execution in the backend Step 2 artifact stopped at a shell-glob cleanup error before the live probes were run.",
+  "probe_target": {
+    "required_origin": "http://127.0.0.1:8001",
+    "direct_backend_only": true,
+    "required_surface": [
+      "GET /health",
+      "POST /api/auth/register",
+      "GET /api/auth/byok",
+      "POST /api/auth/byok",
+      "GET /api/auth/me"
+    ]
+  },
+  "expected_evidence_root": "docs/verification/evidence/2026-04-19-byok-step3",
+  "expected_transcripts": [
+    {
+      "path": "docs/verification/evidence/2026-04-19-byok-step3/health_probe.txt",
+      "endpoint": "GET /health",
+      "required_http_proof": "HTTP 200 with {\"status\":\"ok\",\"service\":\"daacs-os\"}",
+      "exists": true,
+      "passed": false,
+      "observed_result": "curl: (7) Failed to connect to 127.0.0.1 port 8001 after 0 ms: Couldn't connect to server"
+    },
+    {
+      "path": "docs/verification/evidence/2026-04-19-byok-step3/register_fresh_user.txt",
+      "endpoint": "POST /api/auth/register",
+      "required_http_proof": "HTTP 200 with access_token and normalized user.billing_track == \"byok\"",
+      "exists": true,
+      "passed": false,
+      "observed_result": "curl: (7) Failed to connect to 127.0.0.1 port 8001 after 0 ms: Couldn't connect to server"
+    },
+    {
+      "path": "docs/verification/evidence/2026-04-19-byok-step3/unauthenticated_get_byok.txt",
+      "endpoint": "GET /api/auth/byok",
+      "required_http_proof": "HTTP 401 unauthenticated rejection",
+      "exists": true,
+      "passed": false,
+      "observed_result": "curl: (7) Failed to connect to 127.0.0.1 port 8001 after 0 ms: Couldn't connect to server"
+    },
+    {
+      "path": "docs/verification/evidence/2026-04-19-byok-step3/blank_payload_post_byok.txt",
+      "endpoint": "POST /api/auth/byok",
+      "required_http_proof": "HTTP 400 authenticated rejection for blank payload",
+      "exists": true,
+      "passed": false,
+      "observed_result": "curl: (7) Failed to connect to 127.0.0.1 port 8001 after 0 ms: Couldn't connect to server"
+    },
+    {
+      "path": "docs/verification/evidence/2026-04-19-byok-step3/successful_authenticated_post_byok.txt",
+      "endpoint": "POST /api/auth/byok",
+      "required_http_proof": "HTTP 200 authenticated save for both provider keys",
+      "exists": true,
+      "passed": false,
+      "observed_result": "curl: (7) Failed to connect to 127.0.0.1 port 8001 after 0 ms: Couldn't connect to server"
+    },
+    {
+      "path": "docs/verification/evidence/2026-04-19-byok-step3/authenticated_get_byok.txt",
+      "endpoint": "GET /api/auth/byok",
+      "required_http_proof": "HTTP 200 authenticated retrieval after save",
+      "exists": true,
+      "passed": false,
+      "observed_result": "curl: (7) Failed to connect to 127.0.0.1 port 8001 after 0 ms: Couldn't connect to server"
+    },
+    {
+      "path": "docs/verification/evidence/2026-04-19-byok-step3/authenticated_get_me_after_byok.txt",
+      "endpoint": "GET /api/auth/me",
+      "required_http_proof": "HTTP 200 after save with normalized billing_track == \"byok\" and both BYOK presence flags true",
+      "exists": false,
+      "passed": false,
+      "observed_result": "missing required transcript"
+    }
+  ],
+  "consistency_pass": {
+    "workspace_transcript_count": 6,
+    "expected_transcript_count": 7,
+    "workspace_transcripts": [
+      "authenticated_get_byok.txt",
+      "blank_payload_post_byok.txt",
+      "health_probe.txt",
+      "register_fresh_user.txt",
+      "successful_authenticated_post_byok.txt",
+      "unauthenticated_get_byok.txt"
+    ],
+    "missing_transcripts": [
+      "authenticated_get_me_after_byok.txt"
+    ],
+    "unexpected_transcripts": [],
+    "duplicate_path_report": "A naive rg --files invocation echoed duplicate lines because both the directory and parent path were searched together. The filesystem itself currently contains six unique transcript files.",
+    "path_alignment_passed": true,
+    "evidence_alignment_passed": false,
+    "reasons": [
+      "The verification bundle now points only at paths that exist or are explicitly marked missing.",
+      "No persisted transcript contains an HTTP status line proving a successful live request.",
+      "The required dedicated authenticated_get_me_after_byok.txt proof is absent."
+    ]
+  },
+  "traceability_checks": {
+    "bundle_to_evidence_root_passed": true,
+    "bundle_to_expected_transcripts_passed": true,
+    "evidence_root_to_transcript_contents_passed": true,
+    "host_execution_trace_found": true,
+    "host_execution_trace_complete": false,
+    "post_save_me_trace_found": false,
+    "checks": [
+      {
+        "name": "bundle paths point at the declared evidence root",
+        "passed": true,
+        "details": "All expected transcript paths resolve under docs/verification/evidence/2026-04-19-byok-step3."
+      },
+      {
+        "name": "persisted transcript count matches declared expectation",
+        "passed": false,
+        "details": "The workspace contains 6 unique transcript files, while the bundle requires 7 including authenticated_get_me_after_byok.txt."
+      },
+      {
+        "name": "persisted transcript contents prove live HTTP responses",
+        "passed": false,
+        "details": "Each persisted transcript still contains curl: (7) Failed to connect to 127.0.0.1 port 8001 rather than HTTP status lines and JSON bodies."
+      },
+      {
+        "name": "recorded host execution reached the live probe sequence",
+        "passed": false,
+        "details": "tmp/verification/developer_back-backend-step2-20260419115724688.json records only the initial cleanup command, which failed with zsh glob expansion before startup or curl probes executed."
+      },
+      {
+        "name": "recorded follow-up commands were persisted with raw results",
+        "passed": false,
+        "details": "The backend Step 2 artifact includes follow-up commands, but no raw stdout/stderr/exit captures exist for startup, register, BYOK save, authenticated retrieval, or /api/auth/me."
+      },
+      {
+        "name": "dedicated post-save /api/auth/me proof is present and linked",
+        "passed": false,
+        "details": "docs/verification/evidence/2026-04-19-byok-step3/authenticated_get_me_after_byok.txt is missing, so the end-to-end BYOK normalization proof cannot be traced."
+      }
+    ]
+  },
+  "supporting_artifacts": {
+    "backend_step2_host_artifact": "tmp/verification/developer_back-backend-step2-20260419115724688.json",
+    "backend_step2_host_result": {
+      "ok": false,
+      "executed_command_count": 1,
+      "last_executed_command": "mkdir -p tmp/verification/2026-04-19-byok-step3 docs/verification/evidence/2026-04-19-byok-step3 && rm -f tmp/verification/2026-04-19-byok-step3/*",
+      "last_exit_code": 1,
+      "last_stderr": "zsh:1: no matches found: tmp/verification/2026-04-19-byok-step3/*",
+      "recorded_followup_commands": [
+        "mkdir -p tmp/verification/2026-04-19-byok-step3 docs/verification/evidence/2026-04-19-byok-step3",
+        "find tmp/verification/2026-04-19-byok-step3 -mindepth 1 -maxdepth 1 -exec rm -rf {} +"
+      ]
+    },
+    "backend_step4_host_artifact": "tmp/verification/developer_back-backend-step4-20260419115948875.json",
+    "backend_step4_host_result": {
+      "ok": false,
+      "executed_command_count": 1,
+      "last_executed_command": "chmod +x backend/scripts/run-local-auth.sh",
+      "last_exit_code": 0,
+      "last_feedback": "ABORT: chmod succeeded, but I do not have enough context about the original task to determine whether any follow-up shell command is needed."
+    },
+    "startup_attempt_artifact": "tmp/verification/developer_back-backend-step3-20260419114359653.json",
+    "startup_attempt_result": {
+      "ok": false,
+      "failing_command": "cd /Users/david/Desktop/python/github/omnify/DAACS/DAACS_OS/backend && ./scripts/run-local-auth.sh",
+      "exit_code": 126,
+      "stderr": "zsh:1: permission denied: ./scripts/run-local-auth.sh",
+      "recorded_followup_command": "cd /Users/david/Desktop/python/github/omnify/DAACS/DAACS_OS/backend && bash ./scripts/run-local-auth.sh"
+    }
+  },
+  "final_assessment": {
+    "live_surface_proven": false,
+    "blocking_reason": "The current workspace evidence still reflects the pre-rerun failure state, and the recorded backend host-execution artifacts do not show a completed live verification sequence that produced traceable raw HTTP outputs.",
+    "next_required_action": "Execute the recorded Step 3 live verification command set against the Rust backend on 127.0.0.1:8001, persist raw stdout/stderr/exit evidence for startup and all seven probes including authenticated_get_me_after_byok.txt, then rerun Step 4 completeness validation."
+  }
+}

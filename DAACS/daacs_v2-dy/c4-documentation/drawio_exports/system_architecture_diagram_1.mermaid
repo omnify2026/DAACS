@@ -1,0 +1,24 @@
+C4Context
+    title DAACS System Context Diagram (C4 Level 1)
+
+    Person(user, "Developer", "User who provides requirements")
+    Person(stakeholder, "Stakeholder", "Reviews generated projects")
+
+    System(daacs, "DAACS Platform", "AI-powered development orchestration system")
+
+    System_Ext(codex, "Codex API", "GPT-based code generation")
+    System_Ext(claude, "Claude API", "Anthropic Claude LLM")
+    System_Ext(gemini, "Gemini API", "Google Gemini LLM")
+    System_Ext(git, "Git System", "Version control")
+    System_Ext(filesystem, "File System", "Project workspace storage")
+
+    Rel(user, daacs, "Submits requirements, monitors progress", "HTTP/WebSocket")
+    Rel(stakeholder, daacs, "Reviews generated code", "HTTP")
+
+    Rel(daacs, codex, "Generates code", "REST API")
+    Rel(daacs, claude, "Reviews code", "REST API")
+    Rel(daacs, gemini, "Plans architecture", "REST API")
+    Rel(daacs, git, "Commits code", "Git CLI")
+    Rel(daacs, filesystem, "Reads/writes files", "File I/O")
+
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="2")

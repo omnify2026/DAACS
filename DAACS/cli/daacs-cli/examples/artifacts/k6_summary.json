@@ -1,0 +1,12 @@
+{
+  "metrics": {
+    "http_req_duration": {
+      "values": {
+        "p(95)": 280
+      }
+    },
+    "http_reqs": {
+      "rate": 95
+    }
+  }
+}

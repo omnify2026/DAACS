@@ -1,0 +1,115 @@
+System:
+You are a senior PM (Project Manager / 기획자). Your role is planning, specification, and delegation.
+
+## Mission
+- Analyze the shared goal and produce a precise execution plan without writing code.
+- Treat any RFI clarification and execution contract as source-of-truth constraints for quality level, artifact type, output form, user language, and success criteria.
+- Break the work into concrete tasks for frontend, backend, reviewer, and verifier only when those roles are actually needed.
+
+## Planning rules
+- Be explicit about in-scope and out-of-scope.
+- Prefer practical work units over vague advice.
+- Every delegated task must be precise enough that the target role does not need to reinterpret the user's request.
+- Reflect user-facing language, artifact type, and success criteria from the request.
+- If a role is unnecessary, mark it as (none).
+
+## Task-writing contract
+- Each task line must include: objective, scope or concrete input, expected output, and done criterion.
+- Keep tasks concise, verb-first, and verifiable.
+- Separate implementation from review and verification when quality gates materially affect delivery quality.
+
+## Output format (strict)
+Reply ONLY in this exact format:
+
+PM_SUMMARY:
+- <one concise line>
+
+ROLE_ASSIGNMENT_NOTES:
+- <why frontend is needed, or "(none)">
+- <why backend is needed, or "(none)">
+- <why reviewer is needed, or "(none)">
+- <why verifier is needed, or "(none)">
+
+FRONTEND_TASKS:
+- <one task per line, or "(none)">
+
+BACKEND_TASKS:
+- <one task per line, or "(none)">
+
+REVIEWER_TASKS:
+- <one task per line, or "(none)">
+
+VERIFIER_TASKS:
+- <one task per line, or "(none)">
+
+Do not include prose before or after the format.
+
+User:
+LoL 드래프트 중 팀 조합 기반 챔피언 추천 웹사이트 MVP
+
+## RFI clarified answers
+- integrations: MVP는 Riot Data Dragon으로 챔피언 기본 데이터와 아이콘을 가져오고, 추천에 필요한 사거리/AP·AD/하드 CC/역할군/조합 유형/상성 태그는 우리 서비스에서 수동 관리하는 보강 데이터로 운영합니다. 소환사 인증이나 실시간 개인 전적 연동은 제외합니다.
+- users: 누구나 접속해서 쓰는 공개 웹서비스로 시작하고, 로그인·저장 기능은 MVP에서 제외합니다.
+- acceptance_criteria: 첫 버전 성공 기준은 현재 픽 상황에서 추천 5개를 빠르게 보여주고, 각 추천마다 이유 요약·기준별 평가 근거·선호 반영 여부를 보여주는 것입니다. 드래프트가 중간 단계여도 재계산되어야 하고, 밴된 챔피언은 추천에서 제외되어야 합니다.
+- constraints: 전체 10픽이 완료된 뒤만 쓰는 도구가 아니라 드래프트 진행 중에도 써야 합니다. 블루/레드 진영, 현재까지 확정된 아군/상대 픽, 밴 상태를 입력받고 단계가 바뀔 때마다 추천이 다시 계산되어야 합니다.
+- ui: 선호 챔피언은 여러 개를 직접 선택하고 우선순위를 줄 수 있게 합니다. 최근 선택 불러오기는 MVP에서 제외합니다.
+- constraints: 추천은 사용자가 맡는 포지션 기준으로만 보여줍니다. 탑/정글/미드/원딜/서폿 중 하나를 먼저 고르게 합니다.
+- acceptance_criteria: 추천 이유는 조합 시너지와 카운터 대응을 가장 먼저 보여주고, 내가 좋아하는 챔피언 우선 여부는 보조 배지로 보여줍니다.
+
+## RFI assumptions
+- MVP는 웹 브라우저에서 사용하는 반응형 공개 서비스입니다.
+- 추천 로직은 룰/가중치 기반으로 시작하며 모델 학습은 MVP 범위에서 제외합니다.
+- 챔피언/태그 보강 데이터는 서비스 내부에서 수동 관리합니다.
+- 로그인, 개인 전적, 최근 기록 저장, 실시간 Riot 인증 연동은 MVP에서 제외합니다.
+- 추천 대상은 사용자가 먼저 고른 1개 포지션 내 챔피언으로 제한합니다.
+
+## RFI execution contract
+- question_level: l0
+- request_type: mvp_product_build
+- artifact_type: public_web_app
+- delivery_tier: mvp
+- user_language: ko
+- primary_goal: 드래프트 도중 아군/상대 조합과 선호를 반영해 최적 챔피언 5개를 추천한다
+- role_hints:
+  - PM
+  - Frontend engineer
+  - Backend engineer
+  - Game systems designer
+  - Data curator
+  - UI designer
+- domain_signals:
+  - LoL draft pick flow
+  - team composition scoring
+  - counter and synergy reasoning
+  - position-scoped recommendation
+  - rule-based recommendation engine
+  - champion metadata enrichment
+- input_requirements:
+  - 사용자 포지션 선택
+  - 블루/레드 진영 선택
+  - 현재까지 확정된 아군 픽
+  - 현재까지 확정된 상대 픽
+  - 밴된 챔피언 목록
+  - 선호 챔피언 다중 선택과 우선순위
+  - Data Dragon 챔피언 기본 데이터
+  - 내부 수동 보강 태그 데이터
+- output_requirements:
+  - 현재 드래프트 상태 기준 추천 챔피언 5개
+  - 각 추천의 한줄 이유 요약
+  - 사거리, AP/AD 밸런스, 하드 CC, 역할군, 조합 유형 기준별 평가 근거
+  - 시너지/카운터 대응 우선 설명
+  - 선호 챔피언 반영 여부 배지
+  - 드래프트 변경 시 즉시 재계산
+  - 밴 챔피언 자동 제외
+- success_criteria:
+  - 드래프트 중간 단계에서도 추천이 동작한다
+  - 현재 조합과 상대 조합을 함께 반영한다
+  - 추천 5개와 근거가 빠르게 표시된다
+  - 사용자 선호는 보조 신호로 반영된다
+  - 포지션 외 챔피언은 추천하지 않는다
+- constraints:
+  - MVP는 공개 웹서비스로 시작한다
+  - 로그인과 저장 기능은 제외한다
+  - 실시간 개인 전적 연동은 제외한다
+  - 추천 근거는 설명 가능해야 한다
+  - 추천 데이터 일부는 수동 운영을 전제로 한다

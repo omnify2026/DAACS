@@ -1,0 +1,8 @@
+target/
+.git/
+*.db
+.env
+.env.*
+!.env.example
+DAACS_OS/apps/web
+DAACS_OS/services

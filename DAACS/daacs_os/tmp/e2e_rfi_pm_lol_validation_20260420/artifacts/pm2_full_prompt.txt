@@ -1,0 +1,160 @@
+System:
+You are a senior PM (Project Manager / 기획자). Your role is planning, specification, and delegation.
+
+## Mission
+- Analyze the shared goal and produce a precise execution plan without writing code.
+- Treat any RFI clarification and execution contract as source-of-truth constraints for quality level, artifact type, output form, user language, and success criteria.
+- Break the work into concrete tasks for frontend, backend, reviewer, and verifier only when those roles are actually needed.
+
+## Planning rules
+- Be explicit about in-scope and out-of-scope.
+- Prefer practical work units over vague advice.
+- Every delegated task must be precise enough that the target role does not need to reinterpret the user's request.
+- Reflect user-facing language, artifact type, and success criteria from the request.
+- If a role is unnecessary, mark it as (none).
+
+## Task-writing contract
+- Each task line must include: objective, scope or concrete input, expected output, and done criterion.
+- Keep tasks concise, verb-first, and verifiable.
+- Separate implementation from review and verification when quality gates materially affect delivery quality.
+
+## Output format (strict)
+Reply ONLY in this exact format:
+
+PM_SUMMARY:
+- <one concise line>
+
+ROLE_ASSIGNMENT_NOTES:
+- <why frontend is needed, or "(none)">
+- <why backend is needed, or "(none)">
+- <why reviewer is needed, or "(none)">
+- <why verifier is needed, or "(none)">
+
+FRONTEND_TASKS:
+- <one task per line, or "(none)">
+
+BACKEND_TASKS:
+- <one task per line, or "(none)">
+
+REVIEWER_TASKS:
+- <one task per line, or "(none)">
+
+VERIFIER_TASKS:
+- <one task per line, or "(none)">
+
+Do not include prose before or after the format.
+
+User:
+LoL 드래프트 중 팀 조합 기반 챔피언 추천 웹사이트 MVP
+
+## RFI clarified answers
+- integrations: MVP는 Riot Data Dragon으로 챔피언 기본 데이터와 아이콘을 가져오고, 추천에 필요한 사거리/AP·AD/하드 CC/역할군/조합 유형/상성 태그는 우리 서비스에서 수동 관리하는 보강 데이터로 운영합니다. 소환사 인증이나 실시간 개인 전적 연동은 제외합니다.
+- users: 누구나 접속해서 쓰는 공개 웹서비스로 시작하고, 로그인·저장 기능은 MVP에서 제외합니다.
+- acceptance_criteria: 첫 버전 성공 기준은 현재 픽 상황에서 추천 5개를 빠르게 보여주고, 각 추천마다 이유 요약·기준별 평가 근거·선호 반영 여부를 보여주는 것입니다. 드래프트가 중간 단계여도 재계산되어야 하고, 밴된 챔피언은 추천에서 제외되어야 합니다.
+- constraints: 전체 10픽이 완료된 뒤만 쓰는 도구가 아니라 드래프트 진행 중에도 써야 합니다. 블루/레드 진영, 현재까지 확정된 아군/상대 픽, 밴 상태를 입력받고 단계가 바뀔 때마다 추천이 다시 계산되어야 합니다.
+- ui: 선호 챔피언은 여러 개를 직접 선택하고 우선순위를 줄 수 있게 합니다. 최근 선택 불러오기는 MVP에서 제외합니다.
+- constraints: 추천은 사용자가 맡는 포지션 기준으로만 보여줍니다. 탑/정글/미드/원딜/서폿 중 하나를 먼저 고르게 합니다.
+- acceptance_criteria: 추천 이유는 조합 시너지와 카운터 대응을 가장 먼저 보여주고, 내가 좋아하는 챔피언 우선 여부는 보조 배지로 보여줍니다.
+
+## RFI assumptions
+- MVP는 웹 브라우저에서 사용하는 반응형 공개 서비스입니다.
+- 추천 로직은 룰/가중치 기반으로 시작하며 모델 학습은 MVP 범위에서 제외합니다.
+- 챔피언/태그 보강 데이터는 서비스 내부에서 수동 관리합니다.
+- 로그인, 개인 전적, 최근 기록 저장, 실시간 Riot 인증 연동은 MVP에서 제외합니다.
+- 추천 대상은 사용자가 먼저 고른 1개 포지션 내 챔피언으로 제한합니다.
+
+## RFI execution contract
+- question_level: l0
+- request_type: mvp_product_build
+- artifact_type: public_web_app
+- delivery_tier: mvp
+- user_language: ko
+- primary_goal: 드래프트 도중 아군/상대 조합과 선호를 반영해 최적 챔피언 5개를 추천한다
+- role_hints:
+  - PM
+  - Frontend engineer
+  - Backend engineer
+  - Game systems designer
+  - Data curator
+  - UI designer
+- domain_signals:
+  - LoL draft pick flow
+  - team composition scoring
+  - counter and synergy reasoning
+  - position-scoped recommendation
+  - rule-based recommendation engine
+  - champion metadata enrichment
+- input_requirements:
+  - 사용자 포지션 선택
+  - 블루/레드 진영 선택
+  - 현재까지 확정된 아군 픽
+  - 현재까지 확정된 상대 픽
+  - 밴된 챔피언 목록
+  - 선호 챔피언 다중 선택과 우선순위
+  - Data Dragon 챔피언 기본 데이터
+  - 내부 수동 보강 태그 데이터
+- output_requirements:
+  - 현재 드래프트 상태 기준 추천 챔피언 5개
+  - 각 추천의 한줄 이유 요약
+  - 사거리, AP/AD 밸런스, 하드 CC, 역할군, 조합 유형 기준별 평가 근거
+  - 시너지/카운터 대응 우선 설명
+  - 선호 챔피언 반영 여부 배지
+  - 드래프트 변경 시 즉시 재계산
+  - 밴 챔피언 자동 제외
+- success_criteria:
+  - 드래프트 중간 단계에서도 추천이 동작한다
+  - 현재 조합과 상대 조합을 함께 반영한다
+  - 추천 5개와 근거가 빠르게 표시된다
+  - 사용자 선호는 보조 신호로 반영된다
+  - 포지션 외 챔피언은 추천하지 않는다
+- constraints:
+  - MVP는 공개 웹서비스로 시작한다
+  - 로그인과 저장 기능은 제외한다
+  - 실시간 개인 전적 연동은 제외한다
+  - 추천 근거는 설명 가능해야 한다
+  - 추천 데이터 일부는 수동 운영을 전제로 한다
+
+## Current PM draft
+PM_SUMMARY:
+- 드래프트 진행 중 입력 상태를 기준으로 포지션 한정 추천 5개와 설명 가능한 근거를 즉시 재계산해 보여주는 공개 반응형 웹 MVP를 구축한다.
+
+ROLE_ASSIGNMENT_NOTES:
+- 프론트엔드는 드래프트 입력 플로우, 포지션/진영 선택, 픽·밴 관리, 선호 챔피언 우선순위 입력, 추천 결과와 근거 표시를 담당하므로 필요합니다.
+- 백엔드는 Data Dragon 기본 데이터 수집, 내부 보강 태그 데이터 관리, 룰·가중치 기반 추천 계산, 밴 제외 및 드래프트 변경 시 재계산 API를 담당하므로 필요합니다.
+- 리뷰어는 추천 설명 가능성, MVP 범위 준수, 포지션 제한·밴 제외·시너지/카운터 우선 표기 같은 핵심 요구 충족 여부를 독립 점검해야 하므로 필요합니다.
+- 검증자는 실제 드래프트 중간 단계 시나리오에서 입력 변경마다 추천 5개와 근거가 빠르게 갱신되는지 확인해야 하므로 필요합니다.
+
+FRONTEND_TASKS:
+- 설계하라: MVP 사용자 플로우와 화면 구조를 포지션 선택→진영 선택→아군/상대 픽 입력→밴 입력→선호 챔피언 우선순위 입력→추천 확인 흐름으로 정의하고, scope는 반응형 단일 웹앱 화면 세트, output은 화면 맵·상태 전이·핵심 컴포넌트 목록, done criterion은 모든 input_requirements와 output_requirements가 화면 단에서 누락 없이 매핑된다.
+- 구현하라: 드래프트 입력 UI를 블루/레드 선택, 현재까지 확정된 아군/상대 픽, 밴 목록, 사용자 포지션 선택 중심으로 구성하고, scope는 챔피언 검색/선택/해제와 중복 방지까지 포함, output은 상호작용 가능한 입력 화면, done criterion은 사용자가 드래프트 중간 단계에서도 필요한 상태를 모두 입력·수정할 수 있다.
+- 구현하라: 선호 챔피언 다중 선택과 우선순위 조정 UI를 만들고, scope는 포지션 내 후보 기준 선택과 순위 변경 인터랙션, output은 선호 리스트 상태와 우선순위 값이 반영된 입력 모듈, done criterion은 여러 챔피언을 선택하고 우선순위를 명확히 조정할 수 있다.
+- 구현하라: 추천 결과 영역을 추천 5개 카드 형식으로 만들고, scope는 챔피언 아이콘·이름·한줄 이유·시너지/카운터 우선 설명·기준별 평가 근거·선호 반영 배지 표시, output은 결과 카드 UI, done criterion은 acceptance_criteria의 설명 순서와 표시 항목이 카드마다 모두 보인다.
+- 연결하라: 드래프트 상태 변경 시 추천을 즉시 재조회하는 프론트 상태 관리와 요청 흐름을 구성하고, scope는 픽·밴·포지션·선호 변경 이벤트 전부 포함, output은 재계산 트리거 로직과 로딩/에러 처리, done criterion은 사용자가 입력을 바꿀 때마다 최신 추천 결과가 자동 갱신된다.
+
+BACKEND_TASKS:
+- 정의하라: 추천 엔진 입력/출력 계약과 데이터 모델을 정리하고, scope는 Data Dragon 기본 챔피언 데이터, 내부 보강 태그 데이터, 드래프트 상태, 추천 결과 설명 필드까지 포함, output은 API 스펙과 데이터 스키마 문서, done criterion은 프론트가 필요한 모든 입력·출력 필드를 해석 없이 사용할 수 있다.
+- 구축하라: 챔피언 기본 데이터 수집 계층을 Riot Data Dragon 기반으로 준비하고, scope는 챔피언명/아이콘/기본 식별자 제공과 갱신 전략, output은 서비스에서 사용 가능한 정규화된 챔피언 기본 데이터 소스, done criterion은 MVP 대상 챔피언 목록과 아이콘을 안정적으로 조회할 수 있다.
+- 구축하라: 추천용 수동 보강 데이터 저장 구조를 만들고, scope는 사거리, AP/AD, 하드 CC, 역할군, 조합 유형, 상성 태그, 포지션 적합성 관리까지 포함, output은 내부 운영 가능한 보강 데이터 포맷과 초기 데이터셋, done criterion은 추천 계산에 필요한 태그가 각 챔피언별로 누락 기준 없이 채워진다.
+- 구현하라: 룰·가중치 기반 추천 엔진을 만들고, scope는 사용자 포지션 한정 필터링, 밴 자동 제외, 아군 조합 시너지, 상대 조합 카운터 대응, AP/AD 밸런스, 하드 CC, 역할군, 조합 유형 평가와 선호 챔피언 보조 가점 포함, output은 점수 계산 로직과 설명 생성 로직, done criterion은 현재 드래프트 상태 기준 상위 5개 추천과 각 항목의 설명 가능한 평가 근거를 반환한다.
+- 제공하라: 추천 API를 드래프트 중간 단계에서도 호출 가능하게 노출하고, scope는 부분 입력 허용, 빠른 재계산 응답, 추천 5개와 설명 필드 반환, output은 공개 웹서비스용 추천 엔드포인트, done criterion은 전체 10픽 완료 전 상태에서도 유효한 추천 결과를 정상 응답한다.
+- 운영하라: 보강 데이터 수동 관리 절차와 초기 운영 규칙을 정리하고, scope는 태그 수정 방식, 버전 관리, 품질 체크 항목 포함, output은 데이터 큐레이션 가이드와 샘플 운영 문서, done criterion은 데이터 큐레이터가 추천 품질에 필요한 태그를 일관되게 추가·수정할 수 있다.
+
+REVIEWER_TASKS:
+- 검토하라: 제품 범위와 구현 결과가 MVP 계약에 맞는지 점검하고, scope는 로그인/저장/개인 전적/실시간 인증 제외 여부와 공개 웹서비스 범위 확인, output은 범위 준수 리뷰 코멘트, done criterion은 제외 기능이 침범되지 않았고 필수 기능이 모두 남아 있다.
+- 검토하라: 추천 품질과 설명 구조를 점검하고, scope는 시너지/카운터 우선 설명, 포지션 외 챔피언 미노출, 밴 제외, 선호 배지의 보조 신호 처리 여부 확인, output은 규칙 적합성 리뷰 결과, done criterion은 acceptance_criteria 위반 항목이 없거나 수정 요청이 명확히 정리된다.
+- 검토하라: UI/UX의 이해 가능성과 입력 누락 가능성을 점검하고, scope는 드래프트 중간 단계 입력 편의성, 선호 우선순위 조작성, 추천 카드 정보 밀도와 가독성 확인, output은 UX 개선 피드백 목록, done criterion은 초사용자가 설명 없이 핵심 흐름을 수행할 수 있는 수준으로 정리된다.
+
+VERIFIER_TASKS:
+- 검증하라: 핵심 사용자 시나리오를 기준으로 동작을 확인하고, scope는 포지션 선택 후 일부 픽만 있는 상태, 밴 존재 상태, 상대 조합 변경 상태, 선호 우선순위 변경 상태 포함, output은 시나리오별 검증 결과표, done criterion은 각 시나리오에서 추천 5개와 근거가 정상 갱신된다.
+- 검증하라: 추천 제약 조건을 확인하고, scope는 밴 챔피언 제외, 포지션 외 챔피언 제외, 부분 드래프트 허용, 선호는 보조 신호 처리 여부 포함, output은 제약 검증 체크리스트, done criterion은 제약 위반 케이스가 0건이다.
+- 검증하라: 성능과 응답 체감을 확인하고, scope는 드래프트 상태 변경 시 재계산 지연과 결과 표시 속도 측정, output은 MVP 수준 응답성 확인 보고서, done criterion은 사용자가 드래프트 도중 끊김 없이 추천이 빠르게 갱신된다고 판단할 수 있는 수준이다.
+- 검증하라: 설명 가능성을 확인하고, scope는 각 추천 카드의 한줄 이유, 시너지/카운터 우선 설명, 기준별 평가 근거, 선호 반영 배지 표시 여부 포함, output은 설명 완전성 점검 결과, done criterion은 추천 5개 모두에서 required explanation 필드가 누락 없이 노출된다.
+
+## Improvement feedback
+- 교차 선택 순서가 충분히 반영되지 않았습니다. 블루 1픽, 레드 2/3픽, 블루 4/5픽, 레드 6/7픽, 블루 8/9픽, 레드 10픽 같은 현재 픽 순서/단계 정보를 제품 설계와 API 입력에 명시해 주세요.
+- 추천 엔진이 현재 차례의 의미를 다루도록 더 구체화해 주세요. 예를 들어 blind pick 성격인지, 카운터픽 가치가 큰 마지막 픽 구간인지에 따라 추천 우선순위가 달라질 수 있다는 점을 태스크에 반영해 주세요.
+- 추천 API/응답 계약을 한 단계 더 구체화해 주세요. 각 추천 항목에 최소한 챔피언 식별자, 순위, 한줄 이유, 기준별 점수/근거, 선호 반영 여부, 현재 픽 단계 맥락이 포함되도록 유도해 주세요.
+- 검증 태스크에도 픽 순서별 차이를 확인하는 시나리오를 추가해 주세요. 예: 같은 조합이라도 블루 1픽 상황과 레드 마지막 픽 상황에서 추천이 달라질 수 있는지 확인.
+- 프론트 태스크에도 현재 픽 단계/차례를 입력 또는 표시하는 UX를 명시해 주세요.
+
+Revise the PM draft to address every feedback item while keeping the same strict output format. Make it more concrete and execution-ready. Do not write code.

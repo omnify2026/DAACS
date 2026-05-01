@@ -1,0 +1,26 @@
+{
+  "cli": {
+    "errorEmptyInstruction": "Instruction is empty",
+    "errorNoProvider": "Neither gemini nor codex CLI found. Install one or set DAACS_GEMINI_CLI_PATH / DAACS_CODEX_CLI_PATH.",
+    "errorInvalidPath": "Invalid path",
+    "errorNoProviderAll": "No available CLI provider found. Install codex, gemini, or ollama CLI, or set the DAACS_*_CLI_PATH environment variables.",
+    "errorClaudeProviderRequiresOllama": "Claude provider requires an Ollama executable. Set DAACS_LOCAL_LLM_CLI_PATH to the full Ollama path.",
+    "workspaceCommandTimedOut": "Workspace command timed out after 120 seconds. The command may be interactive or long-running.",
+    "localLlmTimedOut": "Local LLM timed out after {seconds} seconds. The model may be too large or stuck.",
+    "geminiTimedOut": "Gemini CLI timed out after {seconds} seconds.",
+    "codexTimedOut": "Codex CLI timed out after {seconds} seconds.",
+    "claudeTimedOut": "Ollama/Claude CLI timed out after {seconds} seconds."
+  },
+  "lobby": {
+    "starting": "Starting...",
+    "clockIn": "Clock in"
+  },
+  "goal": {
+    "sequencerTitle": "PromptingSequencer TODOs",
+    "loading": "Loading...",
+    "refresh": "Refresh",
+    "sequencerDone": "Done",
+    "sequencerMarkDone": "Mark done",
+    "sequencerEmpty": "No saved TODO list yet."
+  }
+}

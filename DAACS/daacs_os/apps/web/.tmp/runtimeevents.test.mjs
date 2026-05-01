@@ -1,0 +1,342 @@
+// src/lib/runtimeEvents.ts
+function asPayload(value) {
+  return typeof value === "object" && value !== null ? value : {};
+}
+function asTimestampMs(timestamp) {
+  if (typeof timestamp === "number" && Number.isFinite(timestamp)) {
+    return timestamp > 1e12 ? timestamp : Math.round(timestamp * 1e3);
+  }
+  if (typeof timestamp !== "string") {
+    return Date.now();
+  }
+  const parsed = Date.parse(timestamp);
+  return Number.isFinite(parsed) ? parsed : Date.now();
+}
+function asString(value) {
+  return typeof value === "string" && value.trim().length > 0 ? value : void 0;
+}
+function asPositiveMs(value) {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0 ? Math.round(value) : void 0;
+}
+function stepStatusToAgentStatus(status) {
+  switch (status) {
+    case "in_progress":
+      return "running";
+    case "awaiting_approval":
+      return "running";
+    case "failed":
+      return "failed";
+    case "completed":
+    case "approved":
+      return "completed";
+    case "pending":
+    case "blocked":
+      return "queued";
+    default:
+      return void 0;
+  }
+}
+function runtimeStatusToAgentStatus(status) {
+  switch (status) {
+    case "planning":
+    case "working":
+    case "waiting_approval":
+      return "running";
+    case "completed":
+      return "completed";
+    case "failed":
+      return "failed";
+    case "idle":
+      return "idle";
+    default:
+      return void 0;
+  }
+}
+function runtimeEventToAgentEvents(event) {
+  const payload = asPayload(event.payload);
+  const timestamp = asTimestampMs(event.timestamp);
+  const role = asString(payload.role_label);
+  const instanceId = asString(payload.assigned_to) ?? asString(payload.instance_id);
+  const stepId = asString(payload.step_id);
+  const stepLabel = asString(payload.label) ?? asString(payload.step_label) ?? "";
+  const status = asString(payload.status);
+  switch (event.event_type) {
+    case "step_status_changed": {
+      if (!role) return [];
+      const events = [];
+      const bridgedStatus = stepStatusToAgentStatus(status);
+      if (bridgedStatus) {
+        events.push({
+          type: "AGENT_STATUS_UPDATED",
+          agent_role: role,
+          timestamp,
+          data: {
+            status: bridgedStatus,
+            current_task: stepLabel,
+            message: stepLabel,
+            instance_id: instanceId,
+            task_id: stepId
+          }
+        });
+      }
+      if (status === "completed" || status === "approved") {
+        events.push({
+          type: "AGENT_TASK_COMPLETED",
+          agent_role: role,
+          timestamp,
+          data: {
+            task_id: stepId,
+            instruction: stepLabel,
+            instance_id: instanceId,
+            result_summary: asString(payload.summary) ?? stepLabel,
+            result: payload.output
+          }
+        });
+      }
+      if (status === "failed") {
+        events.push({
+          type: "AGENT_TASK_FAILED",
+          agent_role: role,
+          timestamp,
+          data: {
+            task_id: stepId,
+            instruction: stepLabel,
+            instance_id: instanceId,
+            error: asString(payload.error) ?? "Step failed"
+          }
+        });
+      }
+      if (status === "awaiting_approval") {
+        const approvalRole = asString(payload.approval_role_label) ?? role;
+        events.push({
+          type: "APPROVAL_REQUESTED",
+          agent_role: approvalRole,
+          timestamp,
+          data: {
+            step_id: stepId,
+            step_label: stepLabel,
+            requested_by_role: role,
+            requested_by_instance_id: instanceId,
+            approval_required_by: asString(payload.approval_required_by),
+            approval_role_label: approvalRole
+          }
+        });
+      }
+      return events;
+    }
+    case "approval_requested": {
+      const approvalRole = asString(payload.approval_role_label) ?? role;
+      if (!approvalRole) return [];
+      return [
+        {
+          type: "APPROVAL_REQUESTED",
+          agent_role: approvalRole,
+          timestamp,
+          data: {
+            step_id: stepId,
+            step_label: stepLabel,
+            requested_by_role: role,
+            requested_by_instance_id: instanceId,
+            approval_required_by: asString(payload.approval_required_by),
+            approval_role_label: approvalRole
+          }
+        }
+      ];
+    }
+    case "approval_granted": {
+      if (!role) return [];
+      return [
+        {
+          type: "APPROVAL_GRANTED",
+          agent_role: role,
+          timestamp,
+          data: {
+            step_id: stepId,
+            step_label: stepLabel,
+            approved_by_role: asString(payload.approved_by_role_label),
+            approved_by_user_id: asString(payload.approved_by_user_id)
+          }
+        }
+      ];
+    }
+    case "agent_status_changed": {
+      if (!role) return [];
+      return [
+        {
+          type: "AGENT_STATUS_UPDATED",
+          agent_role: role,
+          timestamp,
+          data: {
+            status: runtimeStatusToAgentStatus(asString(payload.status)) ?? "idle",
+            current_task: asString(payload.current_task),
+            message: asString(payload.message),
+            instance_id: instanceId
+          }
+        }
+      ];
+    }
+    // ── 에이전트 활동 전용 이벤트 (Step 3-4) ──
+    case "agent_working": {
+      if (!role) return [];
+      return [
+        {
+          type: "AGENT_STATUS_UPDATED",
+          agent_role: role,
+          timestamp,
+          data: {
+            status: "running",
+            current_task: asString(payload.step_label),
+            message: asString(payload.step_label),
+            instance_id: instanceId
+          }
+        }
+      ];
+    }
+    case "agent_idle": {
+      if (!role) return [];
+      return [
+        {
+          type: "AGENT_STATUS_UPDATED",
+          agent_role: role,
+          timestamp,
+          data: {
+            status: "idle",
+            current_task: void 0,
+            message: "Waiting for next task",
+            instance_id: instanceId
+          }
+        }
+      ];
+    }
+    case "agent_handoff": {
+      const fromRole = asString(payload.from_role);
+      const toRole = asString(payload.to_role);
+      const summary = asString(payload.summary) ?? asString(payload.content) ?? [asString(payload.from_step_label), asString(payload.to_step_label)].filter((value) => typeof value === "string").join(" -> ");
+      const speechDurationMs = asPositiveMs(payload.speech_duration_ms);
+      const arrivalBufferMs = asPositiveMs(payload.arrival_buffer_ms);
+      const events = [];
+      if (fromRole) {
+        events.push({
+          type: "AGENT_MESSAGE_SENT",
+          agent_role: fromRole,
+          timestamp,
+          data: {
+            from: fromRole,
+            to: toRole,
+            content: summary,
+            to_role: toRole,
+            from_instance_id: instanceId,
+            to_instance_id: asString(payload.to_instance_id),
+            from_step_id: asString(payload.from_step_id),
+            from_step_label: asString(payload.from_step_label),
+            to_step_id: asString(payload.to_step_id),
+            to_step_label: asString(payload.to_step_label),
+            handoff_type: asString(payload.handoff_type) ?? "task_complete",
+            speech_duration_ms: speechDurationMs,
+            arrival_buffer_ms: arrivalBufferMs,
+            instance_id: instanceId
+          }
+        });
+      }
+      if (toRole) {
+        events.push({
+          type: "AGENT_MESSAGE_RECEIVED",
+          agent_role: toRole,
+          timestamp,
+          data: {
+            from: fromRole,
+            to: toRole,
+            content: summary,
+            from_role: fromRole,
+            from_instance_id: instanceId,
+            from_step_id: asString(payload.from_step_id),
+            from_step_label: asString(payload.from_step_label),
+            to_step_id: asString(payload.to_step_id),
+            to_step_label: asString(payload.to_step_label),
+            handoff_type: asString(payload.handoff_type) ?? "task_complete",
+            speech_duration_ms: speechDurationMs,
+            arrival_buffer_ms: arrivalBufferMs,
+            instance_id: asString(payload.to_instance_id)
+          }
+        });
+      }
+      return events;
+    }
+    case "agent_reviewing": {
+      if (!role) return [];
+      const events = [
+        {
+          type: "AGENT_STATUS_UPDATED",
+          agent_role: role,
+          timestamp,
+          data: {
+            status: "reviewing",
+            current_task: asString(payload.step_label),
+            message: `Reviewing: ${asString(payload.step_label) ?? ""}`,
+            instance_id: instanceId
+          }
+        }
+      ];
+      const requestedByRole = asString(payload.requested_by_role);
+      if (requestedByRole) {
+        events.push({
+          type: "APPROVAL_REQUESTED",
+          agent_role: role,
+          timestamp,
+          data: {
+            step_id: asString(payload.step_id),
+            step_label: asString(payload.step_label),
+            requested_by_role: requestedByRole,
+            requested_by_instance_id: asString(payload.requested_by)
+          }
+        });
+      }
+      return events;
+    }
+    default:
+      return [];
+  }
+}
+
+// src/lib/runtimeEvents.test.ts
+function assert(condition, message) {
+  if (!condition) {
+    throw new Error(message);
+  }
+}
+var handoffEvent = {
+  event_id: "evt-1",
+  event_type: "agent_handoff",
+  project_id: "project-1",
+  runtime_id: "runtime-1",
+  timestamp: 171e10,
+  payload: {
+    from_role: "developer_front",
+    to_role: "reviewer",
+    instance_id: "agent-dev-1",
+    to_instance_id: "agent-review-1",
+    from_step_id: "step-dev",
+    from_step_label: "Implement feature",
+    to_step_id: "step-review",
+    to_step_label: "Review change",
+    summary: "Implement feature -> Review change",
+    handoff_type: "task_complete",
+    speech_duration_ms: 1600,
+    arrival_buffer_ms: 200
+  }
+};
+var bridged = runtimeEventToAgentEvents(handoffEvent);
+assert(bridged.length === 2, "agent_handoff should bridge into sent and received agent events");
+var sent = bridged.find((event) => event.type === "AGENT_MESSAGE_SENT");
+var received = bridged.find((event) => event.type === "AGENT_MESSAGE_RECEIVED");
+assert(sent, "agent_handoff should emit AGENT_MESSAGE_SENT");
+assert(received, "agent_handoff should emit AGENT_MESSAGE_RECEIVED");
+assert(sent.agent_role === "developer_front", "sent message should target the source agent role");
+assert(received.agent_role === "reviewer", "received message should target the destination agent role");
+assert(sent.data.content === "Implement feature -> Review change", "sent message should include handoff summary");
+assert(sent.data.from === "developer_front", "sent message should include sender role");
+assert(sent.data.to === "reviewer", "sent message should include recipient role");
+assert(sent.data.speech_duration_ms === 1600, "sent message should forward speech duration");
+assert(sent.data.arrival_buffer_ms === 200, "sent message should forward arrival buffer");
+assert(received.data.content === "Implement feature -> Review change", "received message should include handoff summary");
+console.log("runtimeEvents tests passed");

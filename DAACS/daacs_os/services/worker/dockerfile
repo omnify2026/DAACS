@@ -1,0 +1,22 @@
+# ===== DAACS OS Celery Worker Dockerfile =====
+FROM python:3.12-slim AS base
+
+WORKDIR /app
+
+# System deps (docker CLI for sandbox)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl docker.io && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Python deps used by worker tasks (celery + daacs runtime deps).
+# Build context is repository root (set in docker-compose.yml).
+COPY services/api/requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+
+COPY services/worker /app/worker
+
+# PYTHONPATH: /app/api contains the daacs package (mounted via docker-compose)
+ENV PYTHONPATH="/app/api:/app:${PYTHONPATH}"
+
+# Run Celery worker
+CMD ["celery", "-A", "worker.tasks.celery_app", "worker", "--loglevel=info", "--concurrency=2", "--pool=prefork"]

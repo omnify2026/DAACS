@@ -1,0 +1,595 @@
+# ===== DAACS OS — Project State Tracker =====
+# 매 세션에서 이 파일을 읽고, 작업 완료 시 업데이트합니다.
+# status: pending | in_progress | done | blocked
+# updated_at: 마지막 업데이트 시간
+
+project:
+  name: "DAACS OS"
+  version: "0.1.0"
+  updated_at: "2026-04-20"
+
+# ===== 현재 Phase =====
+current:
+  phase: "E2E Verification & Refinement"
+  sprint: "sprint_7"
+  task: "Multi-agent session refinement"
+  notes: "Prior multi-agent round (2026-04-19) ended incomplete due to RFI agent timeouts (validated via tmp/e2e_rfi_pm_lol_20260420/artifacts/rfi2_stdout.txt). Current focus is on documentation precision and exact path mapping."
+
+# ===== Sprint 진행 상태 =====
+sprints:
+  # ─────────────────────────────────────
+  sprint_1:
+    name: "에이전트 확장 + WebSocket + 워크플로우 API"
+    status: done
+    period: "Week 1-2"
+    tasks:
+      # 1.1 에이전트 역할 확장
+      - id: "1.1.1"
+        name: "base_roles.py — AgentRole Enum + 메타데이터"
+        file: "services/api/daacs/agents/base_roles.py"
+        status: done
+        depends_on: []
+      - id: "1.1.1b"
+        name: "protocol.py — AgentMessage, AgentEvent, MessageType"
+        file: "services/api/daacs/agents/protocol.py"
+        status: done
+        depends_on: []
+      - id: "1.1.1c"
+        name: "base.py — BaseAgent ABC (GUI 이벤트 발행)"
+        file: "services/api/daacs/agents/base.py"
+        status: done
+        depends_on: ["1.1.1", "1.1.1b"]
+      - id: "1.1.2"
+        name: "ceo.py — CEOAgent 구현"
+        file: "services/api/daacs/agents/ceo.py"
+        status: done
+        depends_on: ["1.1.1c"]
+      - id: "1.1.3"
+        name: "pm.py — PMAgent 구현 (planner 계승)"
+        file: "services/api/daacs/agents/pm.py"
+        status: done
+        depends_on: ["1.1.1c"]
+      - id: "1.1.4"
+        name: "developer.py — DeveloperAgent 구현 (coder 계승)"
+        file: "services/api/daacs/agents/developer.py"
+        status: done
+        depends_on: ["1.1.1c"]
+      - id: "1.1.5"
+        name: "reviewer.py — ReviewerAgent 구현 (기존 유지)"
+        file: "services/api/daacs/agents/reviewer.py"
+        status: done
+        depends_on: ["1.1.1c"]
+      - id: "1.1.6"
+        name: "devops.py — DevOpsAgent 구현"
+        file: "services/api/daacs/agents/devops.py"
+        status: done
+        depends_on: ["1.1.1c"]
+      - id: "1.1.7"
+        name: "marketer.py — MarketerAgent 구현"
+        file: "services/api/daacs/agents/marketer.py"
+        status: done
+        depends_on: ["1.1.1c"]
+      - id: "1.1.8"
+        name: "designer.py — DesignerAgent 구현"
+        file: "services/api/daacs/agents/designer.py"
+        status: done
+        depends_on: ["1.1.1c"]
+      - id: "1.1.9"
+        name: "cfo.py — CFOAgent 구현"
+        file: "services/api/daacs/agents/cfo.py"
+        status: done
+        depends_on: ["1.1.1c"]
+      - id: "1.1.10"
+        name: "manager.py — AgentManager (생명주기, 라우팅)"
+        file: "services/api/daacs/agents/manager.py"
+        status: done
+        depends_on: ["1.1.2", "1.1.3", "1.1.4", "1.1.5", "1.1.6", "1.1.7", "1.1.8", "1.1.9"]
+      - id: "1.1.11"
+        name: "daacs_config.yaml — 8종 역할 매핑 업데이트"
+        file: "daacs_config.yaml"
+        status: done
+        depends_on: []
+        notes: "Phase 0에서 이미 완료"
+
+      # 1.2 WebSocket 에이전트 이벤트
+      - id: "1.2.1"
+        name: "agents_ws.py — 에이전트 WebSocket 라우터"
+        file: "services/api/daacs/routes/agents_ws.py"
+        status: done
+        depends_on: ["1.1.1"]
+      - id: "1.2.2"
+        name: "server.py — FastAPI 앱 + 라우터 등록"
+        file: "services/api/daacs/server.py"
+        status: done
+        depends_on: ["1.2.1", "1.3.1"]
+
+      # 1.3 워크플로우 API
+      - id: "1.3.1"
+        name: "workflows.py — 워크플로우 REST API + Agent CRUD"
+        file: "services/api/daacs/routes/workflows.py"
+        status: done
+        depends_on: ["1.1.10"]
+
+      # 1.4 패키지
+      - id: "1.4.1"
+        name: "__init__.py — agents 패키지"
+        file: "services/api/daacs/agents/__init__.py"
+        status: done
+        depends_on: ["1.1.10"]
+      - id: "1.4.2"
+        name: "__init__.py — routes 패키지"
+        file: "services/api/daacs/routes/__init__.py"
+        status: done
+        depends_on: []
+      - id: "1.4.3"
+        name: "__init__.py — daacs 패키지"
+        file: "services/api/daacs/__init__.py"
+        status: done
+        depends_on: []
+
+      # 1.5 에이전트 스킬 시스템
+      - id: "1.5.1"
+        name: "agent_bundles.yaml — 8종 에이전트 스킬 매핑"
+        file: "services/api/daacs/skills/agent_bundles.yaml"
+        status: done
+        depends_on: []
+      - id: "1.5.2"
+        name: "loader.py — SkillLoader + SKILL.md 파서"
+        file: "services/api/daacs/skills/loader.py"
+        status: done
+        depends_on: ["1.5.1"]
+      - id: "1.5.3"
+        name: "base.py — 스킬 로딩/프롬프트 통합"
+        file: "services/api/daacs/agents/base.py"
+        status: done
+        depends_on: ["1.5.2"]
+        notes: "load_skills(), get_skill_prompt(), to_dict()에 skills 필드 추가"
+      - id: "1.5.4"
+        name: "manager.py — clock_in에 스킬 자동 로드"
+        file: "services/api/daacs/agents/manager.py"
+        status: done
+        depends_on: ["1.5.3"]
+      - id: "1.5.5"
+        name: "workflows.py — Skills API 엔드포인트"
+        file: "services/api/daacs/routes/workflows.py"
+        status: done
+        depends_on: ["1.5.2"]
+        notes: "GET /api/skills/bundles, GET /api/skills/{project_id}/{role}"
+
+  # ─────────────────────────────────────
+  sprint_2:
+    name: "Smart Router + 공유 워크트리"
+    status: in_progress
+    period: "Week 3-4"
+    tasks:
+      # 2.1 Smart Router (수익화 단계로 보류)
+      - id: "2.1.1"
+        name: "model_router.py — ModelRouter 클래스"
+        file: "services/api/daacs/llm/model_router.py"
+        status: pending
+        depends_on: []
+        notes: "수익화 단계에서 구현 예정"
+      - id: "2.1.2"
+        name: "cost_tracker.py — CostTracker"
+        file: "services/api/daacs/llm/cost_tracker.py"
+        status: pending
+        depends_on: []
+        notes: "수익화 단계에서 구현 예정"
+      - id: "2.1.3"
+        name: "routing_rules.py — 라우팅 규칙 엔진"
+        file: "services/api/daacs/llm/routing_rules.py"
+        status: pending
+        depends_on: ["2.1.1"]
+        notes: "수익화 단계에서 구현 예정"
+
+      # 2.2 공유 워크트리
+      - id: "2.2.1"
+        name: "shared_workspace.py — SharedWorkspace 통합 퍼사드"
+        file: "services/api/daacs/worktree/shared_workspace.py"
+        status: done
+        depends_on: ["2.2.2", "2.2.3", "2.2.4"]
+      - id: "2.2.2"
+        name: "task_tree.py — TaskTree DAG"
+        file: "services/api/daacs/worktree/task_tree.py"
+        status: done
+        depends_on: []
+      - id: "2.2.3"
+        name: "file_lock.py — FileLock (read/write)"
+        file: "services/api/daacs/worktree/file_lock.py"
+        status: done
+        depends_on: []
+      - id: "2.2.4"
+        name: "conflict_resolver.py — ConflictResolver"
+        file: "services/api/daacs/worktree/conflict_resolver.py"
+        status: done
+        depends_on: ["2.2.3"]
+      - id: "2.2.5"
+        name: "__init__.py — worktree 패키지"
+        file: "services/api/daacs/worktree/__init__.py"
+        status: done
+        depends_on: []
+
+  # ─────────────────────────────────────
+  sprint_3:
+    name: "Docker 인프라 + PostgreSQL"
+    status: done
+    period: "Week 5-6"
+    tasks:
+      - id: "3.1.1"
+        name: "Dockerfile (api)"
+        file: "services/api/Dockerfile"
+        status: done
+      - id: "3.1.2"
+        name: "Dockerfile (worker)"
+        file: "services/worker/Dockerfile"
+        status: done
+      - id: "3.1.3"
+        name: "Dockerfile (web)"
+        file: "apps/web/Dockerfile"
+        status: done
+      - id: "3.1.4"
+        name: "requirements.txt — Python 의존성"
+        file: "services/api/requirements.txt"
+        status: done
+      - id: "3.2.1"
+        name: "db/models.py — SQLAlchemy ORM (8개 테이블)"
+        file: "services/api/daacs/db/models.py"
+        status: done
+      - id: "3.2.2"
+        name: "db/session.py — Async DB Session"
+        file: "services/api/daacs/db/session.py"
+        status: done
+      - id: "3.2.3"
+        name: "Alembic 마이그레이션 설정 (env.py + script.py.mako)"
+        file: "services/api/alembic.ini"
+        status: done
+      - id: "3.2.4"
+        name: "pg_checkpointer.py — LangGraph PostgreSQL"
+        file: "services/api/daacs/graph/pg_checkpointer.py"
+        status: pending
+        notes: "Sprint 4에서 LangGraph 워크플로우 연동 시 구현"
+      - id: "3.2.5"
+        name: "db/__init__.py — 패키지"
+        file: "services/api/daacs/db/__init__.py"
+        status: done
+
+  # ─────────────────────────────────────
+  sprint_4:
+    name: "Sandbox + 안전장치 + Celery"
+    status: done
+    period: "Week 7-8"
+    tasks:
+      - id: "4.1.1"
+        name: "sandbox/manager.py — SandboxManager (Docker 격리 실행)"
+        file: "services/api/daacs/sandbox/manager.py"
+        status: done
+      - id: "4.1.2"
+        name: "sandbox/__init__.py — 패키지"
+        file: "services/api/daacs/sandbox/__init__.py"
+        status: done
+      - id: "4.2.1"
+        name: "safety/spend_cap.py — SpendCapGuard (일일 $1.00)"
+        file: "services/api/daacs/safety/spend_cap.py"
+        status: done
+      - id: "4.2.2"
+        name: "safety/turn_limit.py — TurnLimitGuard + 이상 감지"
+        file: "services/api/daacs/safety/turn_limit.py"
+        status: done
+      - id: "4.2.3"
+        name: "safety/__init__.py — 패키지"
+        file: "services/api/daacs/safety/__init__.py"
+        status: done
+      - id: "4.3.1"
+        name: "tasks/celery_app.py — Celery 3종 태스크 (sandbox, workflow, llm)"
+        file: "services/worker/tasks/celery_app.py"
+        status: done
+      - id: "4.3.2"
+        name: "tasks/__init__.py — 패키지"
+        file: "services/worker/tasks/__init__.py"
+        status: done
+
+  # ─────────────────────────────────────
+  sprint_5:
+    name: "GUI Prototype ↔ Backend 연결"
+    status: done
+    period: "Week 9-10"
+    tasks:
+      - id: "5.0.1"
+        name: "package.json — React 19 + Zustand + Framer Motion"
+        file: "apps/web/package.json"
+        status: done
+      - id: "5.0.2"
+        name: "types/agent.ts — TypeScript 타입 (Backend 1:1 매핑)"
+        file: "apps/web/src/types/agent.ts"
+        status: done
+      - id: "5.1.1"
+        name: "AgentSprite.tsx — 에이전트 캐릭터 + 애니메이션"
+        file: "apps/web/src/components/office/AgentSprite.tsx"
+        status: done
+      - id: "5.1.2"
+        name: "OfficeScene.tsx — 1200x800 3x3 오피스 + 에이전트 레이어"
+        file: "apps/web/src/components/office/OfficeScene.tsx"
+        status: done
+      - id: "5.1.3"
+        name: "HUD.tsx — 상단바 + 팀 목록 + 액션바"
+        file: "apps/web/src/components/office/HUD.tsx"
+        status: done
+      - id: "5.1.4"
+        name: "Furniture.tsx — 8종 가구 컴포넌트"
+        file: "apps/web/src/components/office/Furniture.tsx"
+        status: done
+      - id: "5.1.5"
+        name: "Effects.tsx — 파티클 + ZoneLabel + Toast"
+        file: "apps/web/src/components/office/Effects.tsx"
+        status: done
+      - id: "5.1.6"
+        name: "DashboardModal.tsx — 8종 역할 대시보드 + 커맨드 탭"
+        file: "apps/web/src/components/dashboard/DashboardModal.tsx"
+        status: done
+      - id: "5.2.1"
+        name: "agentApi.ts — REST API 클라이언트 (clock-in/out, 커맨드, 워크플로우, 스킬)"
+        file: "apps/web/src/services/agentApi.ts"
+        status: done
+      - id: "5.2.2"
+        name: "useAgentWebSocket.ts — WS 훅 (자동 재연결, ping, exponential backoff)"
+        file: "apps/web/src/hooks/useAgentWebSocket.ts"
+        status: done
+      - id: "5.2.3"
+        name: "officeStore.ts — Zustand 스토어 (mock→실제 API 전환, 패스파인딩 유지)"
+        file: "apps/web/src/stores/officeStore.ts"
+        status: done
+
+  # ─────────────────────────────────────
+  sprint_6:
+    name: "에이전트 대시보드 + 오피스 시각화 + 프리셋"
+    status: done
+    period: "Week 11-12"
+    tasks:
+      - id: "6.1.1"
+        name: "agent_dashboard.py — 8종 역할별 대시보드 API + 비용/안전 리포트"
+        file: "services/api/daacs/routes/agent_dashboard.py"
+        status: done
+      - id: "6.1.2"
+        name: "server.py — dashboard_router 등록"
+        file: "services/api/daacs/server.py"
+        status: done
+      - id: "6.2.1"
+        name: "App.tsx — Lobby + WS 통합 + OfficeScene 렌더링"
+        file: "apps/web/src/App.tsx"
+        status: done
+      - id: "6.3.1"
+        name: "presets.py — 5종 프로젝트 프리셋 (SaaS, 쇼핑몰, 콘텐츠, 오픈소스, 컨설팅)"
+        file: "services/api/daacs/templates/presets.py"
+        status: done
+      - id: "6.3.2"
+        name: "templates/__init__.py — 패키지"
+        file: "services/api/daacs/templates/__init__.py"
+        status: done
+      - id: "6.3.3"
+        name: "workflows.py — Presets API 엔드포인트 추가"
+        file: "services/api/daacs/routes/workflows.py"
+        status: done
+
+  # ─────────────────────────────────────
+  engine_porting:
+    name: "엔진 포팅 — LLM + Graph + Nodes + Memory + Monitoring"
+    status: done
+    period: "2026-02-13"
+    tasks:
+      # Phase 1: LLM Provider Layer
+      - id: "EP.1.1"
+        name: "llm/__init__.py — 패키지"
+        file: "services/api/daacs/llm/__init__.py"
+        status: done
+      - id: "EP.1.2"
+        name: "llm/providers.py — CLIProvider + PluginProvider + 비용 추정"
+        file: "services/api/daacs/llm/providers.py"
+        status: done
+      - id: "EP.1.3"
+        name: "llm/executor.py — LLMExecutor (role→model, SpendCap, RateLimit)"
+        file: "services/api/daacs/llm/executor.py"
+        status: done
+
+      # Phase 2: Graph Engine
+      - id: "EP.2.1"
+        name: "graph/__init__.py — 패키지"
+        file: "services/api/daacs/graph/__init__.py"
+        status: done
+      - id: "EP.2.2"
+        name: "graph/state.py — WorkflowState TypedDict"
+        file: "services/api/daacs/graph/state.py"
+        status: done
+      - id: "EP.2.3"
+        name: "graph/engine.py — WorkflowEngine (plan→execute→judge→verify)"
+        file: "services/api/daacs/graph/engine.py"
+        status: done
+      - id: "EP.2.4"
+        name: "graph/subgraph.py — 병렬 실행 + 파일 파싱"
+        file: "services/api/daacs/graph/subgraph.py"
+        status: done
+
+      # Phase 3: Orchestrator Nodes
+      - id: "EP.3.1"
+        name: "graph/nodes/__init__.py — 패키지"
+        file: "services/api/daacs/graph/nodes/__init__.py"
+        status: done
+      - id: "EP.3.2"
+        name: "graph/nodes/planning.py — PM 계획 수립 노드"
+        file: "services/api/daacs/graph/nodes/planning.py"
+        status: done
+      - id: "EP.3.3"
+        name: "graph/nodes/execution.py — Developer 코드 생성 노드 (backend + frontend)"
+        file: "services/api/daacs/graph/nodes/execution.py"
+        status: done
+      - id: "EP.3.4"
+        name: "graph/nodes/judgment.py — Reviewer 코드 리뷰 + CEO 판정 노드"
+        file: "services/api/daacs/graph/nodes/judgment.py"
+        status: done
+      - id: "EP.3.5"
+        name: "graph/nodes/replanning.py — 실패 분석 + 재계획 노드"
+        file: "services/api/daacs/graph/nodes/replanning.py"
+        status: done
+
+      # Phase 6: Verification
+      - id: "EP.6.1"
+        name: "graph/nodes/verification.py — 정적 검증 노드 (구문, API 준수, CORS)"
+        file: "services/api/daacs/graph/nodes/verification.py"
+        status: done
+      - id: "EP.6.2"
+        name: "graph/nodes/quality.py — 품질 점수 산정 노드"
+        file: "services/api/daacs/graph/nodes/quality.py"
+        status: done
+
+      # Phase 4: Monitoring & Memory
+      - id: "EP.4.1"
+        name: "monitoring/__init__.py + token_tracker.py — 토큰 사용량 추적"
+        file: "services/api/daacs/monitoring/token_tracker.py"
+        status: done
+      - id: "EP.4.2"
+        name: "memory/__init__.py + vector_store.py — ChromaDB 벡터 스토어"
+        file: "services/api/daacs/memory/vector_store.py"
+        status: done
+
+      # Phase 5: Integration Wiring
+      - id: "EP.5.1"
+        name: "workflows.py — start_workflow stub→WorkflowEngine 연결"
+        file: "services/api/daacs/routes/workflows.py"
+        status: done
+      - id: "EP.5.2"
+        name: "celery_app.py — workflow_run + llm_call 실제 구현"
+        file: "services/worker/tasks/celery_app.py"
+        status: done
+      - id: "EP.5.3"
+        name: "base.py — execute_task() LLM 호출 메서드 추가"
+        file: "services/api/daacs/agents/base.py"
+        status: done
+
+  # ─────────────────────────────────────
+  sprint_7:
+    name: "E2E 테스트 + 성능 최적화"
+    status: pending
+    period: "Week 13-14"
+    tasks:
+      - id: "7.1"
+        name: "E2E 통합 테스트 (Playwright)"
+        status: pending
+      - id: "7.2"
+        name: "영속성 테스트"
+        status: pending
+      - id: "7.3"
+        name: "부하 테스트"
+        status: pending
+      - id: "7.4"
+        name: "보안 감사"
+        status: pending
+
+  # ─────────────────────────────────────
+  sprint_8:
+    name: "SaaS + 출시 준비"
+    status: pending
+    period: "Week 15-16"
+    tasks:
+      - id: "8.1"
+        name: "SaaS Cloud Proxy"
+        status: pending
+      - id: "8.2"
+        name: "도그푸딩 + 출시"
+        status: pending
+
+# ===== 완료된 마일스톤 =====
+completed_milestones:
+  - date: "2026-02-11"
+    milestone: "Production Blueprint 분석 + RICE 스코어링 완료"
+  - date: "2026-02-11"
+    milestone: "EXECUTION_PLAN v2.0 작성 (GUI 통합 반영)"
+  - date: "2026-02-11"
+    milestone: "코드베이스 선택: DAACS_v2-dy (Python) = 메인"
+  - date: "2026-02-11"
+    milestone: "DAACS_OS 프로덕션 디렉토리 구조 생성"
+  - date: "2026-02-11"
+    milestone: "Blueprint 21개 문서 + GUI_IDE_VISION.md 이관"
+  - date: "2026-02-11"
+    milestone: "docker-compose.yml + init.sql + daacs_config.yaml 작성"
+  - date: "2026-02-11"
+    milestone: "Sprint 1 완료 — 8종 에이전트 + manager + WebSocket + Workflow API + server.py (18개 Python 파일)"
+  - date: "2026-02-11"
+    milestone: "Skills 시스템 완료 — 548개 CLI 스킬에서 에이전트별 번들 매핑 + SkillLoader + API"
+  - date: "2026-02-12"
+    milestone: "Sprint 2 공유 워크트리 완료 — FileLock + TaskTree DAG + ConflictResolver + SharedWorkspace (5개 파일)"
+  - date: "2026-02-12"
+    milestone: "Sprint 3 완료 — Dockerfiles 3종 + requirements.txt + SQLAlchemy ORM 8테이블 + Alembic (10개 파일)"
+  - date: "2026-02-12"
+    milestone: "Sprint 4 완료 — SandboxManager + SpendCapGuard + TurnLimitGuard + Celery 3종 태스크 (7개 파일)"
+  - date: "2026-02-12"
+    milestone: "Sprint 5 완료 — GUI Prototype→DAACS_OS 이관. package.json + types + agentApi + WS hook + officeStore + AgentSprite + OfficeScene + HUD + Furniture + Effects + DashboardModal (12개 파일)"
+  - date: "2026-02-12"
+    milestone: "Sprint 6 완료 — Dashboard API 8종 + App.tsx WS 통합 + 5종 프리셋 + Presets API (6개 파일)"
+  - date: "2026-02-13"
+    milestone: "엔진 포팅 완료 — DAACS_v2-dy에서 핵심 엔진 포팅. LLM Provider (CLIProvider + PluginProvider) + WorkflowEngine (plan→execute→judge→verify 루프) + 5개 노드 (planning, execution, judgment, replanning, verification) + TokenTracker + MemoryStore + Integration Wiring. 빈 디렉토리 5개 모두 채움 (21개 파일 신규/수정)"
+
+# ===== 의사결정 로그 =====
+decisions:
+  - id: "D001"
+    decision: "메인 코드베이스 = DAACS_v2-dy (Python)"
+    reason: "per-project lock, LangGraph, FastAPI, WebSocket 이미 구현"
+  - id: "D002"
+    decision: "GUI Prototype을 v1.0에 포함"
+    reason: "에이전트 시각화가 핵심 차별화 요소"
+  - id: "D003"
+    decision: "새 디렉토리 DAACS_OS에서 작업"
+    reason: "프로덕션 구조로 클린 스타트, 기존 코드는 레퍼런스"
+  - id: "D004"
+    decision: "에이전트 8종 (GUI 매핑)"
+    reason: "CEO, PM, Developer, Reviewer, DevOps, Marketer, Designer, CFO"
+  - id: "D005"
+    decision: "WebSocket은 이벤트 스트리밍 전용, 명령은 REST API"
+    reason: "관심사 분리 — WS는 단방향 push, REST는 request/response"
+  - id: "D006"
+    decision: "CLI/.daacs/skills 548개 스킬을 에이전트 번들로 재활용"
+    reason: "기존 자산 최대 활용, core/support 2단계로 로드 우선순위 관리"
+  - id: "D007"
+    decision: "스킬 로드 전략 = core_first (max 12개/에이전트)"
+    reason: "LLM 컨텍스트 윈도우 제한 대응, 핵심 스킬만 우선 로드"
+  - id: "D008"
+    decision: "Smart Router는 수익화 단계로 보류"
+    reason: "daacs_config.yaml에 역할별 모델 이미 정의, 핵심 기능(워크트리) 우선"
+  - id: "D009"
+    decision: "엔진 포팅: Selective Port + Adapt 방식"
+    reason: "DAACS_v2-dy의 14+ 노드를 7개 핵심 노드로 축소. 기존 8-agent 시스템 + WebSocket + Safety Guard 유지하며 LangGraph 패턴 적용"
+  - id: "D010"
+    decision: "WorkflowEngine은 LangGraph 패키지 없이 직접 구현"
+    reason: "langgraph 의존성 최소화. StateGraph 패턴만 차용하여 node→edge 루프 구현. 향후 체크포인팅 필요 시 langgraph 연동"
+
+# ===== 레퍼런스 코드 매핑 =====
+# 새 파일 작성 시 참고할 기존 코드
+reference_map:
+  "services/api/daacs/agents/":
+    source: "DAACS_v2-dy/daacs/agent_system/agents/"
+    notes: "planner.py→pm.py, coder.py→developer.py, reviewer.py→reviewer.py"
+  "services/api/daacs/graph/":
+    source: "DAACS_v2-dy/daacs/graph/"
+    notes: "daacs_workflow.py (14+ 노드), subgraph_builder.py"
+  "services/api/daacs/routes/":
+    source: "DAACS_v2-dy/daacs/routes/"
+    notes: "40+ 엔드포인트, WebSocket 5종, SSE streaming"
+  "services/api/daacs/llm/":
+    source: "DAACS_v2-dy/daacs/llm/"
+    notes: "cli_executor.py, providers.py, rate_limiter.py"
+  "services/api/daacs/worktree/":
+    source: "DAACS_v2-dy/workspace_manager.py"
+    notes: "per-project RLock + 원자적 파일 I/O → 확장"
+  "services/api/daacs/monitoring/":
+    source: "DAACS_v2-dy/daacs/monitoring/token_tracker.py"
+    notes: "TokenTracker → CostTracker로 확장"
+  "apps/web/src/components/office/":
+    source: "DAACS_GUI_Prototype/src/components/game/"
+    notes: "AgentSprite, HUD, Furniture, Effects, DraggableFurniture"
+  "apps/web/src/components/dashboard/":
+    source: "DAACS_GUI_Prototype/src/features/dashboard/"
+    notes: "DashboardModal.tsx (8종 에이전트 대시보드)"
+  "apps/web/src/stores/":
+    source: "DAACS_GUI_Prototype/src/app/store.ts"
+    notes: "Zustand store → officeStore.ts로 리팩토링"
+  "services/cli/":
+    source: "CLI/daacs-cli/"
+    notes: "Rust CLI 전체 — 향후 Remote Executor 통합"

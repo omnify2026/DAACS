@@ -1,0 +1,582 @@
+openapi: 3.1.0
+info:
+  title: DAACS Backend API
+  description: |
+    REST API for DAACS (Development Automation & Agent Coordination System).
+
+    This API provides endpoints for:
+    - Project creation and management
+    - Workflow orchestration control
+    - File operations and code retrieval
+    - Real-time progress monitoring via WebSocket
+
+    ## Authentication
+    Currently, no authentication is required (single-user system).
+    Future versions will implement OAuth2 + JWT.
+
+    ## Rate Limiting
+    No rate limiting implemented. Use responsibly.
+
+    ## Base URL
+    - Development: `http://localhost:8001`
+    - Production: TBD
+  version: 7.2.0
+  contact:
+    name: DAACS Team
+    email: api@daacs.dev
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8001
+    description: Development server
+  - url: http://localhost:8001/api/v1
+    description: Development server (with API prefix)
+
+tags:
+  - name: Projects
+    description: Project CRUD operations
+  - name: Workflow
+    description: Workflow control (start/stop orchestrator)
+  - name: Files
+    description: File operations on generated projects
+  - name: Health
+    description: Health check endpoints
+  - name: WebSocket
+    description: Real-time log streaming
+
+paths:
+  /api/v1/projects:
+    post:
+      tags:
+        - Projects
+      summary: Create a new project
+      description: |
+        Creates a new DAACS project with the given requirements.
+        The project is initialized but not started. Use `/projects/{id}/run` to start generation.
+      operationId: createProject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectRequest'
+            examples:
+              simple:
+                summary: Simple web app
+                value:
+                  name: "Todo App"
+                  goal: "Create a simple todo list application with FastAPI backend and React frontend"
+                  tech_context_type: "frontend_web_small"
+              api:
+                summary: Backend API
+                value:
+                  name: "Blog API"
+                  goal: "RESTful blog API with CRUD operations for posts and comments"
+                  tech_context_type: "backend_api_small"
+      responses:
+        '201':
+          description: Project created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResponse'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      tags:
+        - Projects
+      summary: List all projects
+      description: Returns a list of all projects with their current status
+      operationId: listProjects
+      parameters:
+        - name: status
+          in: query
+          description: Filter by project status
+          required: false
+          schema:
+            type: string
+            enum: [pending, running, completed, failed]
+        - name: limit
+          in: query
+          description: Maximum number of projects to return
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 50
+      responses:
+        '200':
+          description: List of projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectInfo'
+
+  /api/v1/projects/{project_id}:
+    get:
+      tags:
+        - Projects
+      summary: Get project details
+      description: Returns detailed information about a specific project
+      operationId: getProject
+      parameters:
+        - $ref: '#/components/parameters/ProjectId'
+      responses:
+        '200':
+          description: Project details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectDetail'
+        '404':
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/projects/{project_id}/run:
+    post:
+      tags:
+        - Workflow
+      summary: Start project generation
+      description: |
+        Starts the DAACS orchestrator workflow for the project.
+        This triggers the Planning → Execution → Verification → Delivery cycle.
+        Progress can be monitored via WebSocket `/ws/logs`.
+      operationId: runProject
+      parameters:
+        - $ref: '#/components/parameters/ProjectId'
+      responses:
+        '202':
+          description: Workflow started (accepted for processing)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunResponse'
+        '404':
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Project already running
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/projects/{project_id}/stop:
+    post:
+      tags:
+        - Workflow
+      summary: Stop project generation
+      description: Stops the running orchestrator workflow for the project
+      operationId: stopProject
+      parameters:
+        - $ref: '#/components/parameters/ProjectId'
+      responses:
+        '200':
+          description: Workflow stopped successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StopResponse'
+        '404':
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Project not running
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/projects/{project_id}/files:
+    get:
+      tags:
+        - Files
+      summary: List project files
+      description: Returns a tree structure of all files in the project workspace
+      operationId: listProjectFiles
+      parameters:
+        - $ref: '#/components/parameters/ProjectId'
+      responses:
+        '200':
+          description: List of files
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileInfo'
+        '404':
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/projects/{project_id}/files/{file_path}:
+    get:
+      tags:
+        - Files
+      summary: Read file content
+      description: Returns the content of a specific file in the project workspace
+      operationId: readProjectFile
+      parameters:
+        - $ref: '#/components/parameters/ProjectId'
+        - name: file_path
+          in: path
+          description: Relative path to the file (e.g., "backend/app.py")
+          required: true
+          schema:
+            type: string
+            example: "backend/app.py"
+      responses:
+        '200':
+          description: File content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileContent'
+        '404':
+          description: File not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Returns the health status of the API server
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Server is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  version:
+                    type: string
+                    example: "7.2.0"
+                  uptime:
+                    type: number
+                    description: Server uptime in seconds
+                    example: 3600
+
+  /ws/logs:
+    get:
+      tags:
+        - WebSocket
+      summary: WebSocket log streaming
+      description: |
+        WebSocket endpoint for real-time log streaming.
+
+        **Connection:**
+        ```javascript
+        const ws = new WebSocket('ws://localhost:8001/ws/logs');
+        ```
+
+        **Client → Server Messages:**
+        ```json
+        {
+          "type": "subscribe",
+          "project_id": "project_12345"
+        }
+        ```
+
+        **Server → Client Messages:**
+        ```json
+        {
+          "type": "log",
+          "timestamp": "2026-02-05T10:30:00.123Z",
+          "project_id": "project_12345",
+          "agent_id": "planner-01",
+          "level": "INFO",
+          "message": "Plan created with 5 tasks"
+        }
+        ```
+
+        **Message Types:**
+        - `log`: Log message from agents or orchestrator
+        - `status`: Agent status change (IDLE, BUSY, PLANNING)
+        - `progress`: Workflow progress update (0-100%)
+        - `error`: Error message
+
+        **Heartbeat:** Server sends ping every 30s, client should respond with pong
+      responses:
+        '101':
+          description: Switching Protocols (WebSocket handshake)
+
+components:
+  parameters:
+    ProjectId:
+      name: project_id
+      in: path
+      description: Unique project identifier
+      required: true
+      schema:
+        type: string
+        pattern: '^project_[a-zA-Z0-9]+$'
+        example: "project_12345"
+
+  schemas:
+    ProjectRequest:
+      type: object
+      required:
+        - name
+        - goal
+      properties:
+        name:
+          type: string
+          description: Project name (user-friendly)
+          minLength: 3
+          maxLength: 100
+          example: "Todo App"
+        goal:
+          type: string
+          description: Natural language description of what to build
+          minLength: 10
+          maxLength: 5000
+          example: "Create a todo list app with user authentication"
+        tech_context_type:
+          type: string
+          description: Technology context template
+          enum:
+            - backend_api_small
+            - frontend_web_small
+            - mobile_app
+            - desktop_app
+          default: backend_api_small
+        assumptions:
+          type: object
+          description: User design preferences (optional)
+          properties:
+            environment:
+              type: string
+              enum: [development, production]
+              default: development
+            priority:
+              type: string
+              enum: [speed, quality, simplicity]
+              default: quality
+            constraints:
+              type: array
+              items:
+                type: string
+              example: ["No external APIs", "Use SQLite only"]
+
+    ProjectResponse:
+      type: object
+      properties:
+        project_id:
+          type: string
+          example: "project_12345"
+        name:
+          type: string
+          example: "Todo App"
+        status:
+          type: string
+          enum: [pending, running, completed, failed]
+          example: "pending"
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-02-05T10:30:00Z"
+        workspace_path:
+          type: string
+          example: "/workspace/Project_Todo_App_12345"
+
+    ProjectInfo:
+      type: object
+      properties:
+        project_id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+          enum: [pending, running, completed, failed]
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        tech_stack:
+          type: array
+          items:
+            type: string
+          example: ["FastAPI", "React", "SQLite"]
+
+    ProjectDetail:
+      allOf:
+        - $ref: '#/components/schemas/ProjectInfo'
+        - type: object
+          properties:
+            goal:
+              type: string
+            tech_context_type:
+              type: string
+            workspace_path:
+              type: string
+            logs:
+              type: array
+              items:
+                $ref: '#/components/schemas/LogEntry'
+            agents:
+              type: array
+              items:
+                $ref: '#/components/schemas/AgentStatus'
+
+    RunResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Workflow started successfully"
+        project_id:
+          type: string
+        workflow_id:
+          type: string
+          description: Internal workflow execution ID
+
+    StopResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Workflow stopped successfully"
+        project_id:
+          type: string
+
+    FileInfo:
+      type: object
+      properties:
+        path:
+          type: string
+          example: "backend/app.py"
+        type:
+          type: string
+          enum: [file, directory]
+        size:
+          type: integer
+          description: File size in bytes
+          example: 2048
+        modified_at:
+          type: string
+          format: date-time
+
+    FileContent:
+      type: object
+      properties:
+        path:
+          type: string
+        content:
+          type: string
+          description: File content (text or base64 for binary)
+        encoding:
+          type: string
+          enum: [utf-8, base64]
+          default: utf-8
+        language:
+          type: string
+          description: Programming language detected
+          example: "python"
+
+    LogEntry:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        level:
+          type: string
+          enum: [DEBUG, INFO, WARNING, ERROR]
+        logger:
+          type: string
+          example: "PlannerAgent"
+        message:
+          type: string
+        context:
+          type: object
+          additionalProperties: true
+
+    AgentStatus:
+      type: object
+      properties:
+        agent_id:
+          type: string
+          example: "planner-01"
+        role:
+          type: string
+          enum: [planner, coder, reviewer]
+        status:
+          type: string
+          enum: [IDLE, BUSY, PLANNING, ERROR]
+        current_task:
+          type: string
+          nullable: true
+        progress:
+          type: integer
+          minimum: 0
+          maximum: 100
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: "ValidationError"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "Invalid project name"
+        details:
+          type: object
+          additionalProperties: true
+          description: Additional error details
+        timestamp:
+          type: string
+          format: date-time
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        JWT-based authentication (future implementation).
+        Currently not required.
+
+security: []

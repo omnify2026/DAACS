@@ -1,0 +1,26 @@
+/target/
+**/target/
+Cargo.lock
+**/*.rs.bk
+**/*.pdb
+.env
+.env.local
+*.rlib
+*.rmeta
+*.d
+*.so
+*.dylib
+*.dll
+*.a
+*.lib
+debug/
+release/
+*.exp
+*.ilk
+*.obj
+
+# Docker
+docker-compose.override.yml
+docker-compose.override.yaml
+.docker/
+.docker-build/

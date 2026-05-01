@@ -1,0 +1,28 @@
+C4Container
+    title DAACS Container Architecture
+
+    Person(developer, "Developer", "Creates AI-powered projects")
+
+    Container(frontend_web, "Frontend Web App", "React + Vite + TypeScript", "Single-page application for project management")
+    Container(backend_api, "Backend API", "FastAPI + Python 3.10+", "REST API + WebSocket server")
+    ContainerDb(workspace_fs, "Project Workspace", "File System", "Generated project files")
+    ContainerDb(memory_db, "Memory Store", "ChromaDB (Embedded)", "Vector-based experience storage")
+    ContainerDb(checkpoint_db, "Checkpoint Store", "SQLite (Optional)", "Workflow state persistence")
+
+    Rel(developer, frontend_web, "Uses", "HTTPS")
+    Rel(frontend_web, backend_api, "API calls", "JSON/REST + WebSocket")
+    Rel(backend_api, workspace_fs, "Reads/writes code", "File I/O")
+    Rel(backend_api, memory_db, "Stores/retrieves experiences", "Embedded DB")
+    Rel(backend_api, checkpoint_db, "Saves workflow state", "SQLite")
+
+    System_Ext(codex_api, "Codex API", "GPT-based code generation")
+    System_Ext(claude_api, "Claude API", "Anthropic LLM for code review")
+    System_Ext(gemini_api, "Gemini API", "Google LLM for planning")
+    System_Ext(git_cli, "Git CLI", "Version control operations")
+
+    Rel(backend_api, codex_api, "Generates code", "REST API")
+    Rel(backend_api, claude_api, "Reviews code", "REST API")
+    Rel(backend_api, gemini_api, "Plans architecture", "REST API")
+    Rel(backend_api, git_cli, "Commits code", "Subprocess")
+
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="2")

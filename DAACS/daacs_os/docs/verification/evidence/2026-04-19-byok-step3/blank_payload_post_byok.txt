@@ -1,0 +1,2 @@
+curl -X POST http://127.0.0.1:8001/api/auth/byok -d '{}'
+curl: (7) Failed to connect to 127.0.0.1 port 8001 after 0 ms: Couldn't connect to server

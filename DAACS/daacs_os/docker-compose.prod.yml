@@ -1,0 +1,168 @@
+# ===== DAACS OS Production Docker Compose =====
+# docker compose -f docker-compose.prod.yml up -d --build
+
+services:
+  api:
+    build:
+      context: ./services/api
+      dockerfile: Dockerfile.prod
+    expose:
+      - "8001"
+    volumes:
+      - ./daacs_config.yaml:/app/daacs_config.yaml:ro
+      - workspace_data:/app/workspace
+    environment:
+      - DAACS_ENV=production
+      - DAACS_JWT_SECRET=${DAACS_JWT_SECRET:?DAACS_JWT_SECRET is required}
+      - DAACS_FERNET_SECRET=${DAACS_FERNET_SECRET:?DAACS_FERNET_SECRET is required}
+      - DAACS_CORS_ORIGINS=${DAACS_CORS_ORIGINS:?DAACS_CORS_ORIGINS is required}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-daacs}
+      - POSTGRES_USER=${POSTGRES_USER:-daacs}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CHROMADB_HOST=chromadb
+      - CHROMADB_PORT=8000
+      - API_PORT=8001
+      - API_WORKERS=1
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      chromadb:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - daacs-net
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+
+  worker:
+    build:
+      context: .
+      dockerfile: services/worker/Dockerfile.prod
+    volumes:
+      - ./daacs_config.yaml:/app/daacs_config.yaml:ro
+      - workspace_data:/app/workspace
+    environment:
+      - DAACS_ENV=production
+      - DAACS_JWT_SECRET=${DAACS_JWT_SECRET:?DAACS_JWT_SECRET is required}
+      - DAACS_FERNET_SECRET=${DAACS_FERNET_SECRET:?DAACS_FERNET_SECRET is required}
+      - PYTHONPATH=/app/api:/app
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=${POSTGRES_DB:-daacs}
+      - POSTGRES_USER=${POSTGRES_USER:-daacs}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+    depends_on:
+      - api
+      - redis
+    restart: unless-stopped
+    networks:
+      - daacs-net
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile.prod
+    depends_on:
+      - api
+    restart: unless-stopped
+    networks:
+      - daacs-net
+
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./infra/docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./infra/docker/nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - api
+      - web
+    restart: unless-stopped
+    networks:
+      - daacs-net
+
+  postgres:
+    image: postgres:17-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-daacs}
+      - POSTGRES_USER=${POSTGRES_USER:-daacs}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-daacs}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - daacs-net
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+
+  redis:
+    image: redis:8-alpine
+    volumes:
+      - redis_data:/data
+      - ./infra/docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - daacs-net
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+
+  chromadb:
+    image: chromadb/chroma:latest
+    volumes:
+      - chroma_data:/chroma/chroma
+    environment:
+      - ANONYMIZED_TELEMETRY=false
+    restart: unless-stopped
+    networks:
+      - daacs-net
+
+volumes:
+  postgres_data:
+  redis_data:
+  chroma_data:
+  workspace_data:
+
+networks:
+  daacs-net:
+    driver: bridge

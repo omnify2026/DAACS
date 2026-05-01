@@ -1,0 +1,8 @@
+[package]
+name = "omni-error"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+jsonwebtoken = "9"
+sqlx = { version = "0.8", default-features = false }
