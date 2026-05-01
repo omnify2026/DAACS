@@ -9,6 +9,7 @@ commands.allow = [
   "auth_list_projects",
   "auth_create_project",
   "auth_ws_ticket",
+  "prepare_artifact_workspace",
   "prepare_agent_workspaces",
   "omni_cli_run_command",
   "list_local_llm_models",
