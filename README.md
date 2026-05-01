@@ -7,6 +7,8 @@
 DAACS OS turns natural-language goals into coordinated work performed by AI agents.  
 People decide direction. Agents plan, execute, report, ask for approval, and hand work to each other.
 
+[English](README.md) | [한국어](README.ko.md)
+
 [![Rust](https://img.shields.io/badge/Rust-2021-000000?logo=rust)](https://www.rust-lang.org/)
 [![Tauri](https://img.shields.io/badge/Tauri-2.x-24C8DB?logo=tauri&logoColor=white)](https://tauri.app/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev/)
@@ -16,7 +18,35 @@ People decide direction. Agents plan, execute, report, ask for approval, and han
 
 **Run locally** | **Create agents** | **Start a company workflow**
 
+![DAACS OS office](DAACS_OS/docs/assets/readme/hero-office.png)
+
+<sub>DAACS office view: agents, provider controls, team actions, and workspace state in one operating surface.</sub>
+
 </div>
+
+---
+
+## Quick Start
+
+```powershell
+# Terminal 1: backend
+cargo run -p daacs-auth-api
+
+# Terminal 2: desktop
+cd DAACS_OS/apps/desktop
+npm install
+npm run dev
+```
+
+Then open DAACS OS and run a provider connection check.
+
+Try this goal:
+
+```text
+Create a product landing page, backend API endpoint, review checklist, and release report for a small SaaS product.
+```
+
+The PM agent should analyze the goal, split it into work, and route tasks to the available agents.
 
 ---
 
@@ -61,6 +91,30 @@ Most AI tools are chat windows. DAACS is built as an operating environment.
 | Human drives every step | Human focuses on goals, approvals, and judgment |
 
 DAACS is not trying to make a better prompt box. It is building the control surface for an AI-run company.
+
+---
+
+## Design Principles
+
+| Principle | Meaning |
+| --- | --- |
+| Human decides, agents execute | People set direction and approve important choices. Agents do the operational work. |
+| Agents are workers, not personas | Each agent needs a role, prompt, skills, tools, state, memory, and work history. |
+| Local-first execution | DAACS starts from the user's machine and local CLI providers before expanding to distributed nodes. |
+| Approval before irreversible actions | Risky or high-impact actions should pass through an explicit decision queue. |
+| Work should be visible | Planning, handoffs, logs, artifacts, and agent state should be inspectable. |
+
+---
+
+## Use Cases
+
+| User | DAACS Helps With |
+| --- | --- |
+| Founder or operator | Turn business goals into coordinated agent work without manually prompting every step. |
+| Product team | Move from requirement to plan, build, review, verification, and release notes in one workflow. |
+| Engineering team | Coordinate builder, reviewer, verifier, and research agents around a shared workspace. |
+| AI automation builder | Create custom agents with their own prompts, skills, metadata, and office presence. |
+| Local-first AI user | Run workflows through local CLI providers while keeping project state on the user's machine. |
 
 ---
 
@@ -125,31 +179,6 @@ Tauri desktop app
 
 ---
 
-## Product Screenshots
-
-Screenshots are not committed yet. Before public release, add real product captures here:
-
-```text
-DAACS_OS/docs/assets/readme/
-  hero-office.png
-  workflow-round.png
-  agent-factory.png
-  operations-panel.png
-```
-
-Recommended captures:
-
-| Screenshot | Show This |
-| --- | --- |
-| `hero-office.png` | Main DAACS office with agents visible. |
-| `workflow-round.png` | Shared goal running through the PM workflow. |
-| `agent-factory.png` | Custom agent creation. |
-| `operations-panel.png` | Approval queue, CLI logs, or generated artifacts. |
-
-Do not capture API keys, local secrets, private project paths, or personal account data.
-
----
-
 ## Run Locally
 
 ### Requirements
@@ -202,7 +231,7 @@ cd ../desktop
 npm install
 ```
 
-### 4. Start Backend (Currently You dont need backend)
+### 4. Start Backend
 
 From the repository root:
 
