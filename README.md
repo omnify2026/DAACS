@@ -7,7 +7,7 @@
 DAACS OS turns natural-language goals into coordinated work performed by AI agents.  
 People decide direction. Agents plan, execute, report, ask for approval, and hand work to each other.
 
-[English](README.md) | [한국어](README.ko.md)
+[English](README.md) | [한국어](READMEKOR.md)
 
 [![Rust](https://img.shields.io/badge/Rust-2021-000000?logo=rust)](https://www.rust-lang.org/)
 [![Tauri](https://img.shields.io/badge/Tauri-2.x-24C8DB?logo=tauri&logoColor=white)](https://tauri.app/)
