@@ -231,7 +231,7 @@ cd ../desktop
 npm install
 ```
 
-### 4. Start Backend
+### 4. Start Backend (Currently you dont need to init backend)
 
 From the repository root:
 
